@@ -40,22 +40,22 @@ const cardData = [
 
 function Services() {
   return (
-    <section className="py-10 md:py-16 max-w-5xl">
+    <section className="max-w-5xl px-4 py-10 md:py-16">
       <div className="">
         <div className="text-center">
-          <h2 className="text-3xl sm:text-5xl font-bold mb-4 ">Our Services</h2>
-          <p className="text-lg sm:text-2xl mb-6 md:mb-14">
+          <h2 className="mb-4 text-3xl font-bold sm:text-5xl ">Our Services</h2>
+          <p className="mb-6 text-lg sm:text-2xl md:mb-14">
             Experience our best services.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6 xl:gap-8">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-6 xl:gap-8">
           {cardData.map((card, index) => (
             <div
               key={index}
-              className="card bg-base-200 w-full max-w-md mx-auto transform-gpu transition-all duration-300 hover:-translate-y-2 hover:shadow-lg"
+              className="w-full max-w-md mx-auto transition-all duration-300 card bg-base-200 transform-gpu hover:-translate-y-2 hover:shadow-lg"
             >
-              <div className="card-body items-center text-center gap-4">
+              <div className="items-center gap-4 text-center card-body">
                 {card.icon}
                 <h2 className="card-title">{card.title}</h2>
                 <p>
