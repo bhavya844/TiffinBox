@@ -47,7 +47,12 @@ function Navbar() {
               className="menu menu-sm dropdown-content mt-3 gap-2 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <a>Home</a>
+              <NavLink
+                  to="/"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  Home
+                </NavLink>
               </li>
               <li>
                 <NavLink
@@ -74,9 +79,12 @@ function Navbar() {
         <div className="hidden navbar-center lg:flex">
           <ul className="flex gap-8 px-1">
             <li>
-              <a href="#" className="link link-hover">
-                Home
-              </a>
+            <NavLink
+                  to="/"
+                  className={({ isActive }) => (isActive ? "text-secondary" : "")}
+                >
+                  Home
+                </NavLink>
             </li>
             <li>
               <NavLink

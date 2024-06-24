@@ -6,6 +6,7 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
+        bgHero: "url('/src/assets/image5.jpg')",
         bgContactUs: "url('/src/assets/contact-us-cover-picture.jpg')",
         bgFaq: "url('/src/assets/faq-cover-picture.jpg')",
       },
