@@ -35,7 +35,7 @@ function ContactUsPage() {
               wanting to join our platform, we're here to help. Feel free to
               reach out to us
             </p>
-            <a href="#reach-us" className="btn btn-secondary">
+            <a href="#reach-us" className="btn btn-secondary text-slate-200">
               Reach Us
             </a>
           </div>

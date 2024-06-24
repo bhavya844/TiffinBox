@@ -34,7 +34,7 @@ function FAQPage() {
               common questions about our tiffin service. If you can't find the
               answer you're looking for, please don't hesitate to contact us.
             </p>
-            <a href="#questions" className="btn btn-secondary">
+            <a href="#questions" className="btn btn-secondary text-secondary">
               Questions
             </a>
           </div>

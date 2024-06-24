@@ -2,7 +2,7 @@ import logo from "../../assets/TiffinBox.png";
 
 function Footer() {
   return (
-    <footer className="p-10 rounded footer footer-center bg-primary text-accent-content">
+    <footer className="p-10 rounded footer footer-center bg-secondary text-accent-content">
       <nav className="grid grid-flow-col gap-4 font-medium">
         <a className="link link-hover">Home</a>
         <a className="link link-hover">Contact</a>
