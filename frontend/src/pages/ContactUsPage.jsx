@@ -24,7 +24,7 @@ function ContactUsPage() {
 
   return (
     <div className="flex flex-col items-center">
-      <section className="max-w-5xl mt-20 overflow-hidden rounded-md shadow-md hero h-96 bg-bgContactUs">
+      <section className="max-w-5xl overflow-hidden rounded-md shadow-md hero h-96 bg-bgContactUs">
         <div className="hero-overlay bg-opacity-70"></div>
         <div className="text-center hero-content text-neutral-content">
           <div className="max-w-2xl">

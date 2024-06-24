@@ -1,12 +1,11 @@
-import { NavLink } from "react-router-dom";
-import logo from "../../assets/TiffinBox.png";
+import { Link, NavLink } from "react-router-dom";
 import { useEffect, useRef } from "react";
 
 function Navbar() {
   const ref = useRef(null);
 
   const handleScroll = () => {
-    if (window.scrollY > 20) {
+    if (window.scrollY > 10) {
       ref.current.classList.add("shadow-md");
     } else {
       ref.current.classList.remove("shadow-md");
@@ -21,7 +20,7 @@ function Navbar() {
   return (
     <header
       ref={ref}
-      className="fixed z-50 flex justify-center w-full bg-base-100"
+      className="sticky top-0 z-50 flex justify-center w-full bg-base-100"
     >
       <nav className="max-w-5xl navbar">
         <div className="gap-2 navbar-start">
@@ -47,7 +46,7 @@ function Navbar() {
               className="menu menu-sm dropdown-content mt-3 gap-2 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-              <NavLink
+                <NavLink
                   to="/"
                   className={({ isActive }) => (isActive ? "active" : "")}
                 >
@@ -72,24 +71,32 @@ function Navbar() {
               </li>
             </ul>
           </div>
-          <a href="#" className="cursor-pointer">
-            <img src={logo} alt="tiffin box" className="w-10" />
-          </a>
+          <Link to="/" className="cursor-pointer">
+            <img
+              src="https://res.cloudinary.com/dk1fim9hl/image/upload/v1719262725/Tiffin%20Box/nldinb3ipt9tegyc2hzs.png"
+              alt="tiffin box"
+              className="w-10"
+            />
+          </Link>
         </div>
         <div className="hidden navbar-center lg:flex">
           <ul className="flex gap-8 px-1">
             <li>
-            <NavLink
-                  to="/"
-                  className={({ isActive }) => (isActive ? "text-secondary" : "")}
-                >
-                  Home
-                </NavLink>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive ? "text-secondary" : "hover:text-primary transition"
+                }
+              >
+                Home
+              </NavLink>
             </li>
             <li>
               <NavLink
                 to="/contact-us"
-                className={({ isActive }) => (isActive ? "text-secondary" : "")}
+                className={({ isActive }) =>
+                  isActive ? "text-secondary" : "hover:text-primary transition"
+                }
               >
                 Contact Us
               </NavLink>
@@ -97,7 +104,9 @@ function Navbar() {
             <li>
               <NavLink
                 to="/faqs"
-                className={({ isActive }) => (isActive ? "text-secondary" : "")}
+                className={({ isActive }) =>
+                  isActive ? "text-secondary" : "hover:text-primary transition"
+                }
               >
                 FAQs
               </NavLink>
@@ -105,7 +114,7 @@ function Navbar() {
           </ul>
         </div>
         <div className="navbar-end">
-          <a className="btn btn-secondary">Login</a>
+          <Link className="text-slate-100 btn btn-secondary">Login</Link>
         </div>
       </nav>
     </header>

@@ -1,23 +1,22 @@
 import React from "react";
-import image7 from "../assets/image7.jpg";
 
 function AboutUs() {
   return (
-    <section className="py-10 md:py-16 max-w-5xl">
+    <section className="max-w-5xl py-10 md:py-16">
       <div className="md:px-20">
-        <div className="text-center mb-8">
+        <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold ">About Us</h1>
         </div>
         <div className="grid place-content-center">
-          <div className="w-full mb-8 flex justify-center">
+          <div className="flex justify-center w-full mb-8">
             <img
-              src={image7}
+              src="https://res.cloudinary.com/dk1fim9hl/image/upload/v1719262243/Tiffin%20Box/zjjhedgo3vlimksqbw62.jpg"
               alt="About Us"
-              className="rounded-full w-72 h-72 md:w-3/4 md:h-auto object-cover shadow-animation circle-animation"
+              className="object-cover rounded-full w-72 h-72 md:w-3/4 md:h-auto shadow-animation circle-animation"
             />
           </div>
-          <div className="w-full flex flex-col justify-center px-4">
-            <p className="text-lg mb-4 text-justify indent-20">
+          <div className="flex flex-col justify-center w-full px-4">
+            <p className="mb-4 text-lg text-justify indent-20">
               Welcome to TiffinBox, your go-to platform for seamless food
               ordering and delivery. At TiffinBox, our mission is to simplify
               the food ordering experience for both customers and food service
@@ -28,7 +27,7 @@ function AboutUs() {
               customers and food service providers, ensuring a smooth and
               efficient process for everyone involved.
             </p>
-            <p className="text-lg mb-4 text-justify indent-20">
+            <p className="mb-4 text-lg text-justify indent-20">
               Our application caters to three primary user groups: customers,
               food service providers, and administrators. Customers can browse
               menus, place orders, make payments, and track deliveries
