@@ -24,7 +24,7 @@ const FAQ = [
 function FAQPage() {
   return (
     <div className="flex flex-col items-center">
-      <section className="max-w-5xl mt-20 overflow-hidden rounded-md shadow-md hero h-96 bg-bgFaq">
+      <section className="max-w-5xl overflow-hidden rounded-md shadow-md hero h-96 bg-bgFaq">
         <div className="hero-overlay bg-opacity-70"></div>
         <div className="text-center hero-content text-neutral-content">
           <div className="max-w-2xl">
@@ -34,7 +34,7 @@ function FAQPage() {
               common questions about our tiffin service. If you can't find the
               answer you're looking for, please don't hesitate to contact us.
             </p>
-            <a href="#questions" className="btn btn-secondary text-secondary">
+            <a href="#questions" className="btn btn-secondary text-slate-200">
               Questions
             </a>
           </div>
