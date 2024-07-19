@@ -6,27 +6,67 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Document
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = {"customer", "foodServiceProvider", "order", "review"})
-public class User {
-    @Id
+public class User implements UserDetails{
+    @MongoId
     public String userId;
+    @Indexed(unique = true)
     public String email;
     public String password;
     public Boolean isAdminVerified;
     @Enumerated(EnumType.STRING)
     public UserRole userRole;
-    @OneToOne
+    @DBRef
     public Customer customer;
-    @OneToOne
+    @DBRef
     public FoodServiceProvider foodServiceProvider;
-    @OneToMany
+    @DBRef
     public Order order;
-    @OneToMany
+    @DBRef
     public Review review;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(userRole.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
