@@ -24,21 +24,21 @@ import java.util.List;
 @ToString(exclude = {"customer", "foodServiceProvider", "order", "review"})
 public class User implements UserDetails{
     @MongoId
-    public String userId;
+    private String userId;
     @Indexed(unique = true)
-    public String email;
-    public String password;
-    public Boolean isAdminVerified;
+    private String email;
+    private String password;
+    private Boolean isAdminVerified;
     @Enumerated(EnumType.STRING)
-    public UserRole userRole;
+    private UserRole userRole;
     @DBRef
-    public Customer customer;
+    private Customer customer;
     @DBRef
-    public FoodServiceProvider foodServiceProvider;
+    private FoodServiceProvider foodServiceProvider;
     @DBRef
-    public Order order;
+    private Order order;
     @DBRef
-    public Review review;
+    private Review review;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
