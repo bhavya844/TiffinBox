@@ -7,6 +7,8 @@ import com.tiffinbox.backend.dto.request.SignUpRequestSeller;
 import com.tiffinbox.backend.dto.response.LoginResponse;
 import com.tiffinbox.backend.dto.response.SignUpResponse;
 import com.tiffinbox.backend.exceptions.ApiRequestException;
+import com.tiffinbox.backend.exceptions.NotFoundException;
+import com.tiffinbox.backend.exceptions.NotVerifiedException;
 import com.tiffinbox.backend.models.Customer;
 import com.tiffinbox.backend.models.FoodServiceProvider;
 import com.tiffinbox.backend.models.User;
@@ -15,8 +17,10 @@ import com.tiffinbox.backend.repositories.SellerRepository;
 import com.tiffinbox.backend.repositories.UserRepository;
 import com.tiffinbox.backend.services.AuthService;
 import com.tiffinbox.backend.services.JwtService;
+import com.tiffinbox.backend.utils.ResponseMessages;
 import com.tiffinbox.backend.utils.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
 
         User checkUser = userRepository.findByEmail(signUpRequestCustomer.getEmail());
         if(checkUser!=null){
-            throw new ApiRequestException("User already registered");
+            throw new ApiRequestException(ResponseMessages.USER_ALREADY_PRESENT);
         }
         User user = new User();
         user.setEmail(signUpRequestCustomer.getEmail());
@@ -65,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 
         SignUpResponse signUpResponse =new SignUpResponse();
-        signUpResponse.setMessage("User registration successful!");
+        signUpResponse.setMessage(ResponseMessages.REGISTRATION_SUCCESS);
         signUpResponse.setSuccess(true);
         signUpResponse.setTimeStamp(LocalDateTime.now());
 
@@ -76,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
 
         User checkUser = userRepository.findByEmail(signUpRequestSeller.getEmail());
         if(checkUser!=null){
-            throw new ApiRequestException("Seller is already registered");
+            throw new ApiRequestException(ResponseMessages.SELLER_ALREADY_PRESENT);
         }
         User user = new User();
         user.setEmail(signUpRequestSeller.getEmail());
@@ -102,7 +106,7 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 
         SignUpResponse signUpResponse =new SignUpResponse();
-        signUpResponse.setMessage("User registration successful as a Seller!");
+        signUpResponse.setMessage(ResponseMessages.SELLER_REGISTRATION_SUCCESS);
         signUpResponse.setSuccess(true);
         signUpResponse.setTimeStamp(LocalDateTime.now());
 
@@ -114,16 +118,16 @@ public class AuthServiceImpl implements AuthService {
         LoginResponse loginResponse =new LoginResponse();
         User user = userRepository.findByEmail(loginRequest.getEmail());
         if(user == null){
-            throw new ApiRequestException("User not found for the provided email: "+loginRequest.getEmail());
+            throw new NotFoundException(ResponseMessages.USER_NOT_FOUND);
         }
         if(loginRequest.getPassword()==null){
-            throw new ApiRequestException("Password can't be Null!");
+            throw new ApiRequestException(ResponseMessages.PSWD_NULL);
         }
         if(!BCrypt.checkpw(loginRequest.getPassword(),user.getPassword())){
-            throw new ApiRequestException("Password miss-match for the registered email: "+user.getEmail());
+            throw new ApiRequestException(ResponseMessages.PSWD_MISS_MATCH);
         }
         if(!user.getIsAdminVerified()){
-            throw new RuntimeException("Account is not Verified from Admin Side. Please Contact Admin for Verification");
+            throw new NotVerifiedException(ResponseMessages.ACCOUNT_NOT_VERIFIED);
         }
         String jwtToken = jwtService.generateToken(user);
         String jwtRefreshToken = jwtService.generateRefreshToken(user);
@@ -142,7 +146,6 @@ public class AuthServiceImpl implements AuthService {
         loginResponse.setRefreshToken(jwtRefreshToken);
         loginResponse.setSuccess(true);
         loginResponse.setTimeStamp(LocalDateTime.now());
-        loginResponse.setMessage("Logged In Successfully!");
         return loginResponse;
     }
 
@@ -150,7 +153,7 @@ public class AuthServiceImpl implements AuthService {
         LoginResponse loginResponse =new LoginResponse();
         String email = jwtService.extractUsername(refreshTokenRequest.getToken());
         User user = userRepository.findByEmail(email);
-        if(user == null){throw new ApiRequestException("User not Found for the corresponding token");}
+        if(user == null){throw new NotFoundException(ResponseMessages.USER_NOT_FOUND_TOKEN);}
         if(jwtService.isTokenValid(refreshTokenRequest.getToken(), user)){
             String jwtToken = jwtService.generateToken(user);
 
@@ -169,7 +172,6 @@ public class AuthServiceImpl implements AuthService {
             loginResponse.setRefreshToken(refreshTokenRequest.getToken());
             loginResponse.setSuccess(true);
             loginResponse.setTimeStamp(LocalDateTime.now());
-            loginResponse.setMessage("Token has been Replenished through the Refresh Token!");
             return loginResponse;
         }
         return null;
