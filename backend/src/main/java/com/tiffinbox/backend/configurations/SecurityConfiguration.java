@@ -1,6 +1,6 @@
 package com.tiffinbox.backend.configurations;
 
-import com.tiffinbox.backend.models.UserRole;
+import com.tiffinbox.backend.utils.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
