@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Document
 @Data
@@ -14,19 +16,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @ToString(exclude = {"user", "meal", "payment"})
 public class Order {
-    @Id
-    public String orderId;
-    @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "userId")
-    public User user;
-    @ManyToOne
-    @JoinColumn(name = "mealId", referencedColumnName = "mealId")
-    public Meal meal;
-    @OneToOne
-    @JoinColumn(name = "paymentId", referencedColumnName = "paymentId")
-    public Payment payment;
+    @MongoId
+    private String orderId;
+    @DBRef
+    private User user;
+    @DBRef
+    private Meal meal;
+    @DBRef
+    private Payment payment;
     @Enumerated(EnumType.STRING)
-    public OrderStatus orderStatus;
-    public Double totalAmount;
-    public String additionalRequestDescription;
+    private OrderStatus orderStatus;
+    private Double totalAmount;
+    private String additionalRequestDescription;
 }
