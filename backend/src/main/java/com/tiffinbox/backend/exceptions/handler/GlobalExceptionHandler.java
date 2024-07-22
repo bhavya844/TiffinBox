@@ -57,7 +57,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<BasicResponse>apiRequestExceptionResponse(NotFoundException exception){
+    public ResponseEntity<BasicResponse> notFoundExceptionResponse(NotFoundException exception){
         BasicResponse response = BasicResponse.builder()
                 .message(exception.getMessage())
                 .success(false)
@@ -68,7 +68,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(NotVerifiedException.class)
-    public ResponseEntity<BasicResponse>apiRequestExceptionResponse(NotVerifiedException exception){
+    public ResponseEntity<BasicResponse>forbiddenExceptionResponse(NotVerifiedException exception){
         BasicResponse response = BasicResponse.builder()
                 .message(exception.getMessage())
                 .success(false)
@@ -79,7 +79,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<BasicResponse>apiRequestExceptionResponse(Exception exception){
+    public ResponseEntity<BasicResponse>generalExceptionResponse(Exception exception){
         BasicResponse response = BasicResponse.builder()
                 .message(exception.getMessage())
                 .success(false)
