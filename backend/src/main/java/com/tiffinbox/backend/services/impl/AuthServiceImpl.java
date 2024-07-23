@@ -133,15 +133,18 @@ public class AuthServiceImpl implements AuthService {
         String jwtRefreshToken = jwtService.generateRefreshToken(user);
         loginResponse.setUserRole(user.getUserRole());
 
-        if ((user.getUserRole() == UserRole.CUSTOMER)) {
-            Customer customer = user.getCustomer();
-            loginResponse.setFirstname(customer.getFirstName());
-            loginResponse.setLastname(customer.getLastName());
-        } else {
-            FoodServiceProvider foodServiceProvider = user.getFoodServiceProvider();
-            loginResponse.setFirstname(foodServiceProvider.getFirstName());
-            loginResponse.setLastname(foodServiceProvider.getLastName());
-        }
+//        if (user.getUserRole() == UserRole.CUSTOMER) {
+//            Customer customer = user.getCustomer();
+//            loginResponse.setFirstname(customer.getFirstName());
+//            loginResponse.setLastname(customer.getLastName());
+//        } else if(user.getUserRole() == UserRole.FOOD_SERVICE_PROVIDER) {
+//            FoodServiceProvider foodServiceProvider = user.getFoodServiceProvider();
+//            loginResponse.setFirstname(foodServiceProvider.getFirstName());
+//            loginResponse.setLastname(foodServiceProvider.getLastName());
+//        }
+//        else {
+//            loginResponse.setFirstname();
+//        }
         loginResponse.setToken(jwtToken);
         loginResponse.setRefreshToken(jwtRefreshToken);
         loginResponse.setSuccess(true);

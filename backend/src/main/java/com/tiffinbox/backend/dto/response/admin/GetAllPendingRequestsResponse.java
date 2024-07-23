@@ -2,9 +2,9 @@
  * Author: Keval Gandevia
  */
 
-package com.tiffinbox.backend.dto.response.ordertrack;
+package com.tiffinbox.backend.dto.response.admin;
 
-import com.tiffinbox.backend.dto.AcceptedOrderListDTO;
+import com.tiffinbox.backend.dto.AdminGetAllPendingRequestDTO;
 import com.tiffinbox.backend.dto.response.BasicResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class GetAllAcceptedOrdersResponse extends BasicResponse {
-    private List<AcceptedOrderListDTO> acceptedOrderListDTOList;
+public class GetAllPendingRequestsResponse extends BasicResponse {
+    List<AdminGetAllPendingRequestDTO> pendingRequestList;
 }

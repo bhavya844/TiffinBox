@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
+//            e.printStackTrace();
             ApiRequestException ApiRequestException = new ApiRequestException(e.getMessage());
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             response.getWriter().write(convertObjectToJson(ApiRequestException));
