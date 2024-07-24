@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminGetAllPendingRequestDTO {
+public class UserFoodServiceProviderDTO {
     private String userId;
     private String name;
+    private String foodServiceProviderId;
     private String companyName;
     private String email;
     private String contact;

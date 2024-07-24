@@ -17,6 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class GetAllPendingRequestsResponse extends BasicResponse {
-    List<UserFoodServiceProviderDTO> pendingRequestList;
+public class GetAllUsersResponse extends BasicResponse {
+    List<UserFoodServiceProviderDTO> userList;
 }

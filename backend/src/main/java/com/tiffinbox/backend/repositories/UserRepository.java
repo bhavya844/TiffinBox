@@ -14,4 +14,5 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     List<User> findAllByIsAdminVerifiedAndUserRole(Boolean isAdminVerified, UserRole userRole);
 
+    User findByEmailAndIsAdminVerifiedAndUserRole(String email, Boolean isAdminVerified, UserRole userRole);
 }

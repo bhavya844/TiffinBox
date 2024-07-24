@@ -4,19 +4,18 @@
 
 package com.tiffinbox.backend.dto.response.admin;
 
-import com.tiffinbox.backend.dto.UserFoodServiceProviderDTO;
+import com.tiffinbox.backend.dto.AdminGetSinglePendingRequestDTO;
 import com.tiffinbox.backend.dto.response.BasicResponse;
+import com.tiffinbox.backend.models.FoodServiceProvider;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class GetAllPendingRequestsResponse extends BasicResponse {
-    List<UserFoodServiceProviderDTO> pendingRequestList;
+public class GetSinglePendingRequestResponse extends BasicResponse {
+    AdminGetSinglePendingRequestDTO foodServiceProviderDetails;
 }
