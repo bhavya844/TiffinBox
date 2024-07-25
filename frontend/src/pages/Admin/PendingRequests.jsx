@@ -1,13 +1,14 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAdminContext } from "../../context/AdminContext/AdminContext";
 
 const PendingRequests = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const { userPendingRequests, getAllPendingRequests } = useAdminContext();
 
-    const handleSearchChange = (event) => {
+  const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
@@ -20,13 +21,12 @@ const PendingRequests = () => {
   );
 
   const handleViewClick = (item) => {
-    navigate( `/admin/single-pending-request/${item.foodServiceProviderId}`)
-  }
+    navigate(`/admin/single-pending-request/${item.foodServiceProviderId}`);
+  };
 
   useEffect(() => {
     getAllPendingRequests();
-  }, [])
-  
+  }, [location]);
 
   return (
     <div className="container mx-auto px-6 py-6">

@@ -1,21 +1,32 @@
-import { Link, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useAdminContext } from "../../context/AdminContext/AdminContext";
 
 const SinglePendingRequest = () => {
-  const { email } = useParams();
+  const navigate = useNavigate();
+  const { foodServiceProviderId } = useParams();
+  const { singleUserDetails, getSinglePendingRequest } = useAdminContext();
+
+  useEffect(() => {
+    getSinglePendingRequest(foodServiceProviderId);
+  }, [foodServiceProviderId]);
 
   return (
     <div className="container mx-auto px-6 py-6">
       <div className="grid grid-cols-1 gap-10">
         <div className="flex flex-row justify-between">
-        <div>
-          <h1 className="font-bold text-3xl">User Details</h1>
+          <div>
+            <h1 className="font-bold text-3xl">User Details</h1>
+          </div>
+          <div>
+            <button
+              className="btn btn-neutral"
+              onClick={() => navigate("/admin/pending-request")}
+            >
+              Back
+            </button>
+          </div>
         </div>
-        <div>
-          <Link to="admin/pending-request">
-            <button className="btn btn-neutral">Back</button>
-          </Link>
-        </div>
-      </div>
         <form>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
             <div className="form-control">
@@ -24,7 +35,7 @@ const SinglePendingRequest = () => {
               </label>
               <input
                 type="text"
-                value="Jon"
+                value={singleUserDetails?.firstName || ""}
                 className="input input-bordered w-full"
                 readOnly
               />
@@ -35,7 +46,7 @@ const SinglePendingRequest = () => {
               </label>
               <input
                 type="text"
-                value="Targaryen"
+                value={singleUserDetails?.lastName || ""}
                 className="input input-bordered w-full"
                 readOnly
               />
@@ -46,7 +57,7 @@ const SinglePendingRequest = () => {
               </label>
               <input
                 type="email"
-                value="jon@j.com"
+                value={singleUserDetails?.email || ""}
                 className="input input-bordered w-full"
                 readOnly
               />
@@ -57,18 +68,20 @@ const SinglePendingRequest = () => {
               </label>
               <input
                 type="text"
-                value="1234567"
+                value={singleUserDetails?.contact || ""}
                 className="input input-bordered w-full"
                 readOnly
               />
             </div>
             <div className="form-control sm:col-span-2">
               <label className="label">
-                <span className="label-text font-bold">Company/Restaurant Address</span>
+                <span className="label-text font-bold">
+                  Company/Restaurant Address
+                </span>
               </label>
               <input
                 type="text"
-                value="123 Main St, Opposite Rogers Drive"
+                value={singleUserDetails?.companyAddress || ""}
                 className="input input-bordered w-full"
                 readOnly
               />
@@ -79,7 +92,7 @@ const SinglePendingRequest = () => {
               </label>
               <input
                 type="text"
-                value="Halifax"
+                value={singleUserDetails?.city || ""}
                 className="input input-bordered w-full"
                 readOnly
               />
@@ -90,7 +103,7 @@ const SinglePendingRequest = () => {
               </label>
               <input
                 type="text"
-                value="Nova Scotia"
+                value={singleUserDetails?.province || ""}
                 className="input input-bordered w-full"
                 readOnly
               />
@@ -101,7 +114,7 @@ const SinglePendingRequest = () => {
               </label>
               <input
                 type="text"
-                value="1234JFSJSDK12455"
+                value={singleUserDetails?.licenseNumber || ""}
                 className="input input-bordered w-full"
                 readOnly
               />
