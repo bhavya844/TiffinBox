@@ -58,8 +58,9 @@ const AdminAppProvider = ({ children }) => {
   const approvePendingRequest = async (email) => {
     await API.post(`${backendURLs.APPROVE_PENDING_REQUEST_URL}/${email}`, {})
     .then((res) => {
-      console.log(res.data)
-      dispatch({type: SHOW_ALERT, payload: res.data})
+      const response = res.data;
+      const status = true;
+      dispatch({type: SHOW_ALERT, payload: {response, status}})
     })
     .catch((err) => {
       console.log(err);

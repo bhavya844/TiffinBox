@@ -6,7 +6,7 @@ import Alert from "../../components/Alert";
 const SinglePendingRequest = () => {
   const navigate = useNavigate();
   const { foodServiceProviderId } = useParams();
-  const { singleUserDetails, getSinglePendingRequest, approvePendingRequest, alertMessage, alertVisible, hideAlert } =
+  const { singleUserDetails, getSinglePendingRequest, approvePendingRequest, alertMessage, alertVisible, hideAlert, alertStatus } =
     useAdminContext();
 
     const handleApprove = async (email) => {
@@ -23,7 +23,7 @@ const SinglePendingRequest = () => {
 
   return (
     <div className="container mx-auto px-6 py-6">
-      {alertVisible && <Alert message={alertMessage} visible={alertVisible}/>}
+      {alertVisible && <Alert message={alertMessage} visible={alertVisible} success={alertStatus}/>}
       <div className="grid grid-cols-1 gap-10">
         <div className="flex flex-row justify-between">
           <div>

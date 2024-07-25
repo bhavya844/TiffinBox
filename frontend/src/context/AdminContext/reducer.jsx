@@ -8,7 +8,7 @@ const reducer = (state, action) => {
         return { ...state, singleUserDetails: action.payload.foodServiceProviderDetails };
     }
     if(action.type === SHOW_ALERT) {
-        return { ...state, alertMessage: action.payload.message, alertVisible: true };
+        return { ...state, alertMessage: action.payload.response.message, alertVisible: true, alertStatus: action.payload.status };
     }
     if(action.type === HIDE_ALERT) {
         return { ...state, alertMessage: "", alertVisible: false };
