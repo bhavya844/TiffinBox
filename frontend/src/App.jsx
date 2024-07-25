@@ -5,6 +5,7 @@ import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
 import LandingPage from "./pages/LandingPage";
 import PendingRequests from "./pages/Admin/PendingRequests";
+import { AdminAppProvider } from "./context/AdminContext/AdminContext";
 
 function App() {
   return (
@@ -17,7 +18,17 @@ function App() {
           <Route path="/faqs" element={<FAQPage />} />
 
           {/* admin routes starts */}
-          <Route path="/admin-pending-request" element={<PendingRequests />} />
+          <Route
+            path="/admin/*"
+            element={
+              <AdminAppProvider>
+                <Routes>
+                  <Route path="pending-request" element={<PendingRequests />} />
+                  {/* Add more admin routes here */}
+                </Routes>
+              </AdminAppProvider>
+            }
+          />
           {/* admin routes ends */}
         </Routes>
         <Footer />
