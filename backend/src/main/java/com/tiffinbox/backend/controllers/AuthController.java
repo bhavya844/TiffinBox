@@ -7,8 +7,7 @@ import com.tiffinbox.backend.dto.request.SignUpRequestCustomer;
 import com.tiffinbox.backend.dto.request.SignUpRequestSeller;
 import com.tiffinbox.backend.dto.response.LoginResponse;
 import com.tiffinbox.backend.dto.response.SignUpResponse;
-import com.tiffinbox.backend.services.AuthService;
-import com.tiffinbox.backend.services.impl.AuthServiceImpl;
+import com.tiffinbox.backend.services.IAuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,13 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {
-    private final AuthService authService;
+    private final IAuthService authService;
 
     @PostMapping("/customer/signUp")
     public ResponseEntity<SignUpResponse> customerRegisteration(@RequestBody @Valid  SignUpRequestCustomer signUpRequestCustomer){
