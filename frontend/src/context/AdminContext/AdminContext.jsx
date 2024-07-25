@@ -23,8 +23,6 @@ const AdminAppProvider = ({ children }) => {
   const getAllPendingRequests = async () => {
     await API.get(backendURLs.GET_ALL_PENDING_REQUESTS_URL)
       .then((res) => {
-        // fecth response.
-        console.log(res.data);
         dispatch({type: GET_ALL_USER_PENDING_REQUESTS, payload: res.data})
       })
       .catch((err) => {

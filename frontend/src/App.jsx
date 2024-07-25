@@ -6,6 +6,7 @@ import Footer from "./components/shared/Footer";
 import LandingPage from "./pages/LandingPage";
 import PendingRequests from "./pages/Admin/PendingRequests";
 import { AdminAppProvider } from "./context/AdminContext/AdminContext";
+import SinglePendingRequest from "./pages/Admin/SinglePendingRequest";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
               <AdminAppProvider>
                 <Routes>
                   <Route path="pending-request" element={<PendingRequests />} />
-                  {/* Add more admin routes here */}
+                  <Route path="single-pending-request/:foodServiceProviderId" element={<SinglePendingRequest />} />
                 </Routes>
               </AdminAppProvider>
             }

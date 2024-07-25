@@ -20,7 +20,7 @@ const PendingRequests = () => {
   );
 
   const handleViewClick = (item) => {
-    navigate( `/admin-single-pending-request/${item.email}`)
+    navigate( `/admin/single-pending-request/${item.foodServiceProviderId}`)
   }
 
   useEffect(() => {
