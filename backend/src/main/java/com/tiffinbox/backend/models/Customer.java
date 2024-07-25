@@ -8,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Document
 @Data
@@ -16,17 +18,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @ToString(exclude = {"user"})
 public class Customer {
-    @Id
-    public String customerId;
-    @OneToOne
-    @JoinColumn(name = "userId", referencedColumnName = "userId")
-    public User user;
-    public String firstName;
-    public String lastName;
-    public String contactNumber;
-    public String streetAddress;
-    public String city;
-    public String postalCode;
-    public String province;
-    public String profileImage;
+    @MongoId
+    private String customerId;
+   @DBRef
+    private User user;
+    private String firstName;
+    private String lastName;
+    private String contactNumber;
+    private String streetAddress;
+    private String city;
+    private String postalCode;
+    private String province;
+    private String profileImage;
 }
