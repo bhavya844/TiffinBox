@@ -16,6 +16,7 @@ const backendURLs = {
   GET_ALL_PENDING_REQUESTS_URL: `getAllPendingRequests`,
   GET_SINGLE_PENDING_REQUEST_URL: `getSinglePendingRequest`,
   APPROVE_PENDING_REQUEST_URL: `approve`,
+  REJECT_PENDING_REQUEST_URL: `reject`,
 };
 
 const initialState = {
@@ -68,6 +69,20 @@ const AdminAppProvider = ({ children }) => {
     });
   }
 
+  const rejectPendingRequest = async (email) => {
+    await API.post(`${backendURLs.REJECT_PENDING_REQUEST_URL}/${email}`, {})
+    .then((res) => {
+      const response = res.data;
+      const status = false;
+      dispatch({type: SHOW_ALERT, payload: {response, status}})
+    })
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+  }
+
+
   const hideAlert = () => {
     dispatch({ type: HIDE_ALERT });
   };
@@ -79,6 +94,7 @@ const AdminAppProvider = ({ children }) => {
         getAllPendingRequests,
         getSinglePendingRequest,
         approvePendingRequest,
+        rejectPendingRequest,
         hideAlert,
       }}
     >
