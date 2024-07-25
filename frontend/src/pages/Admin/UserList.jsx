@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAdminContext } from "../../context/AdminContext/AdminContext";
+import Alert from "../../components/Alert";
 
 const UserList = () => {
-  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const { userList, getAllUsers } = useAdminContext();
-  
+  const [userToRemove, setUserToRemove] = useState(null);
+  const {
+    userList,
+    getAllUsers,
+    removeUser,
+    alertMessage,
+    alertVisible,
+    hideAlert,
+    alertStatus,
+  } = useAdminContext();
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -19,12 +26,36 @@ const UserList = () => {
       item.contact.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleRemove = (email) => {
+    setUserToRemove(email);
+    document.getElementById("remove_user_modal").showModal();
+  };
+
+  const confirmRemove = async () => {
+    if (userToRemove) {
+      removeUser(userToRemove);
+      setUserToRemove(null);
+      document.getElementById("remove_user_modal").close();
+      getAllUsers();
+      setTimeout(() => {
+        hideAlert();
+      }, 3000);
+    }
+  };
+
   useEffect(() => {
     getAllUsers();
   }, []);
 
   return (
     <div className="container mx-auto px-6 py-6">
+      {alertVisible && (
+        <Alert
+          message={alertMessage}
+          visible={alertVisible}
+          success={alertStatus}
+        />
+      )}
       <div className="grid grid-cols-1 gap-10">
         <div>
           <h1 className="font-bold text-3xl">User List</h1>
@@ -75,11 +106,7 @@ const UserList = () => {
                     <td>
                       <button
                         className="btn btn-error"
-                        onClick={() =>
-                          document
-                            .getElementById("remove_user_modal")
-                            .showModal()
-                        }
+                        onClick={() => handleRemove(item.email)}
                       >
                         Remove
                       </button>
@@ -97,7 +124,7 @@ const UserList = () => {
         </div>
         {/* Order list ends */}
       </div>
-       {/* Modal starts */}
+      {/* Modal starts */}
       <dialog
         id="remove_user_modal"
         className="modal modal-middle sm:modal-middle"
@@ -113,7 +140,9 @@ const UserList = () => {
                 </form>
               </div>
               <div>
-                <button className="btn btn-error">Remove</button>
+                <button className="btn btn-error" onClick={confirmRemove}>
+                  Remove
+                </button>
               </div>
             </div>
           </div>

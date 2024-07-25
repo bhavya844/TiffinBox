@@ -19,6 +19,7 @@ const backendURLs = {
   APPROVE_PENDING_REQUEST_URL: `approve`,
   REJECT_PENDING_REQUEST_URL: `reject`,
   GET_ALL_USERS_URL: `getAllUsers`,
+  REMOVE_USER_URL: `removeUser`,
 };
 
 const initialState = {
@@ -96,6 +97,19 @@ const AdminAppProvider = ({ children }) => {
     });
   }
 
+  const removeUser = async (email) => {
+    await API.post(`${backendURLs.REMOVE_USER_URL}/${email}`, {})
+    .then((res) => {
+      const response = res.data;
+      const status = true;
+      dispatch({type: SHOW_ALERT, payload: {response, status}})
+    })
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+  }
+
 
   const hideAlert = () => {
     dispatch({ type: HIDE_ALERT });
@@ -110,6 +124,7 @@ const AdminAppProvider = ({ children }) => {
         approvePendingRequest,
         rejectPendingRequest,
         getAllUsers,
+        removeUser,
         hideAlert,
       }}
     >
