@@ -1,68 +1,32 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAdminContext } from "../../context/AdminContext/AdminContext";
 
 const PendingRequests = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const { userPendingRequests, getAllPendingRequests } = useAdminContext();
 
-  const tableRows = [
-    {
-      no: 1,
-      name: "Jon",
-      companyName: "ABC Restaurant",
-      email: "abc@abc.com",
-      contactNumber: "+11234567890",
-      view: "View",
-    },
-    {
-      no: 2,
-      name: "Alice",
-      companyName: "XYZ Diner",
-      email: "alice@xyz.com",
-      contactNumber: "+19876543210",
-      view: "View",
-    },
-    {
-      no: 3,
-      name: "Bob",
-      companyName: "123 Cafe",
-      email: "bob@123.com",
-      contactNumber: "+12345678901",
-      view: "View",
-    },
-    {
-      no: 4,
-      name: "Charlie",
-      companyName: "Foo Bar",
-      email: "charlie@foobar.com",
-      contactNumber: "+10987654321",
-      view: "View",
-    },
-    {
-      no: 5,
-      name: "Dave",
-      companyName: "QRS Grill",
-      email: "dave@qrs.com",
-      contactNumber: "+11223344556",
-      view: "View",
-    },
-  ];
-
-  const handleSearchChange = (event) => {
+    const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredRows = tableRows.filter(
+  const filteredRows = userPendingRequests.filter(
     (item) =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.companyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.contactNumber.toLowerCase().includes(searchQuery.toLowerCase())
+      item.contact.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleViewClick = (item) => {
     navigate( `/admin-single-pending-request/${item.email}`)
   }
+
+  useEffect(() => {
+    getAllPendingRequests();
+  }, [])
+  
 
   return (
     <div className="container mx-auto px-6 py-6">
@@ -110,17 +74,17 @@ const PendingRequests = () => {
               </thead>
               <tbody>
                 {filteredRows.map((item) => (
-                  <tr key={item.no}>
+                  <tr key={item.userId}>
                     <td>{item.name}</td>
                     <td>{item.companyName}</td>
                     <td>{item.email}</td>
-                    <td>{item.contactNumber}</td>
+                    <td>{item.contact}</td>
                     <td>
                       <button
                         className="btn btn-primary"
                         onClick={() => handleViewClick(item)}
                       >
-                        {item.view}
+                        View
                       </button>
                     </td>
                   </tr>

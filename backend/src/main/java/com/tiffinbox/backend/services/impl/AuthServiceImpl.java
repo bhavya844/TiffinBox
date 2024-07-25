@@ -85,7 +85,7 @@ public class AuthServiceImpl implements IAuthService {
         user.setEmail(signUpRequestSeller.getEmail());
         user.setUserRole(UserRole.FOOD_SERVICE_PROVIDER);
         user.setPassword(passwordEncoder.encode(signUpRequestSeller.getPassword()));
-        user.setIsAdminVerified(true);
+        user.setIsAdminVerified(false);
         userRepository.save(user);
 
         FoodServiceProvider seller = new FoodServiceProvider();
