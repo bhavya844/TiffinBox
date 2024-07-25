@@ -1,12 +1,11 @@
 import axios from "axios";
 import { createContext, useContext, useReducer } from "react";
 import reducer from "./reducer";
+import { toast } from "react-hot-toast";
 import {
   GET_ALL_USER_PENDING_REQUESTS,
   GET_ALL_USERS,
   GET_SINGLE_PENDING_REQUEST,
-  HIDE_ALERT,
-  SHOW_ALERT,
 } from "./action";
 
 const API = axios.create({
@@ -25,9 +24,6 @@ const backendURLs = {
 const initialState = {
   userPendingRequests: [],
   singleUserDetails: null,
-  alertMessage: "",
-  alertVisible: false,
-  alertStatus: true,
   userList: [],
 };
 
@@ -62,57 +58,47 @@ const AdminAppProvider = ({ children }) => {
 
   const approvePendingRequest = async (email) => {
     await API.post(`${backendURLs.APPROVE_PENDING_REQUEST_URL}/${email}`, {})
-    .then((res) => {
-      const response = res.data;
-      const status = true;
-      dispatch({type: SHOW_ALERT, payload: {response, status}})
-    })
-    .catch((err) => {
-      console.log(err);
-      return err;
-    });
-  }
+      .then((res) => {
+        toast.success(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
+  };
 
   const rejectPendingRequest = async (email) => {
     await API.post(`${backendURLs.REJECT_PENDING_REQUEST_URL}/${email}`, {})
-    .then((res) => {
-      const response = res.data;
-      const status = false;
-      dispatch({type: SHOW_ALERT, payload: {response, status}})
-    })
-    .catch((err) => {
-      console.log(err);
-      return err;
-    });
-  }
+      .then((res) => {
+        toast.error(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
+  };
 
   const getAllUsers = async () => {
     await API.get(backendURLs.GET_ALL_USERS_URL)
-    .then((res) => {
-      dispatch({ type: GET_ALL_USERS, payload: res.data });
-    })
-    .catch((err) => {
-      console.log(err);
-      return err;
-    });
-  }
+      .then((res) => {
+        dispatch({ type: GET_ALL_USERS, payload: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
+  };
 
   const removeUser = async (email) => {
     await API.post(`${backendURLs.REMOVE_USER_URL}/${email}`, {})
-    .then((res) => {
-      const response = res.data;
-      const status = true;
-      dispatch({type: SHOW_ALERT, payload: {response, status}})
-    })
-    .catch((err) => {
-      console.log(err);
-      return err;
-    });
-  }
-
-
-  const hideAlert = () => {
-    dispatch({ type: HIDE_ALERT });
+      .then((res) => {
+        toast.success(res.data.message);
+        getAllUsers();
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
   };
 
   return (
@@ -125,7 +111,6 @@ const AdminAppProvider = ({ children }) => {
         rejectPendingRequest,
         getAllUsers,
         removeUser,
-        hideAlert,
       }}
     >
       {children}

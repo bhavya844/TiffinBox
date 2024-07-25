@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAdminContext } from "../../context/AdminContext/AdminContext";
-import Alert from "../../components/Alert";
 
 const SinglePendingRequest = () => {
   const navigate = useNavigate();
@@ -10,27 +9,17 @@ const SinglePendingRequest = () => {
     singleUserDetails,
     getSinglePendingRequest,
     approvePendingRequest,
-    alertMessage,
-    alertVisible,
-    hideAlert,
-    alertStatus,
     rejectPendingRequest,
   } = useAdminContext();
 
   const handleApprove = async (email) => {
     await approvePendingRequest(email);
-    setTimeout(() => {
-      hideAlert();
-      navigate("/admin/pending-request");
-    }, 3000);
+    navigate("/admin/pending-request");
   };
 
   const handleReject = async (email) => {
     await rejectPendingRequest(email);
-    setTimeout(() => {
-      hideAlert();
-      navigate("/admin/pending-request");
-    }, 3000);
+    navigate("/admin/pending-request");
   };
 
   useEffect(() => {
@@ -39,13 +28,6 @@ const SinglePendingRequest = () => {
 
   return (
     <div className="container mx-auto px-6 py-6">
-      {alertVisible && (
-        <Alert
-          message={alertMessage}
-          visible={alertVisible}
-          success={alertStatus}
-        />
-      )}
       <div className="grid grid-cols-1 gap-10">
         <div className="flex flex-row justify-between">
           <div>
@@ -58,7 +40,12 @@ const SinglePendingRequest = () => {
             >
               Accept
             </button>
-            <button className="btn btn-error" onClick={() => handleReject(singleUserDetails?.email)}>Reject</button>
+            <button
+              className="btn btn-error"
+              onClick={() => handleReject(singleUserDetails?.email)}
+            >
+              Reject
+            </button>
             <button
               className="btn btn-neutral"
               onClick={() => navigate("/admin/pending-request")}

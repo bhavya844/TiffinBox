@@ -1,19 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAdminContext } from "../../context/AdminContext/AdminContext";
-import Alert from "../../components/Alert";
 
 const UserList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [userToRemove, setUserToRemove] = useState(null);
-  const {
-    userList,
-    getAllUsers,
-    removeUser,
-    alertMessage,
-    alertVisible,
-    hideAlert,
-    alertStatus,
-  } = useAdminContext();
+  const { userList, getAllUsers, removeUser } = useAdminContext();
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -31,15 +22,11 @@ const UserList = () => {
     document.getElementById("remove_user_modal").showModal();
   };
 
-  const confirmRemove = async () => {
+  const confirmRemove = () => {
     if (userToRemove) {
       removeUser(userToRemove);
       setUserToRemove(null);
       document.getElementById("remove_user_modal").close();
-      getAllUsers();
-      setTimeout(() => {
-        hideAlert();
-      }, 3000);
     }
   };
 
@@ -49,13 +36,6 @@ const UserList = () => {
 
   return (
     <div className="container mx-auto px-6 py-6">
-      {alertVisible && (
-        <Alert
-          message={alertMessage}
-          visible={alertVisible}
-          success={alertStatus}
-        />
-      )}
       <div className="grid grid-cols-1 gap-10">
         <div>
           <h1 className="font-bold text-3xl">User List</h1>
