@@ -4,6 +4,8 @@ import reducer from "./reducer";
 import {
   GET_ALL_USER_PENDING_REQUESTS,
   GET_SINGLE_PENDING_REQUEST,
+  HIDE_ALERT,
+  SHOW_ALERT,
 } from "./action";
 
 const API = axios.create({
@@ -13,11 +15,15 @@ const API = axios.create({
 const backendURLs = {
   GET_ALL_PENDING_REQUESTS_URL: `getAllPendingRequests`,
   GET_SINGLE_PENDING_REQUEST_URL: `getSinglePendingRequest`,
+  APPROVE_PENDING_REQUEST_URL: `approve`,
 };
 
 const initialState = {
   userPendingRequests: [],
   singleUserDetails: null,
+  alertMessage: "",
+  alertVisible: false,
+  alertStatus: true
 };
 
 const AppContext = createContext();
@@ -49,12 +55,30 @@ const AdminAppProvider = ({ children }) => {
       });
   };
 
+  const approvePendingRequest = async (email) => {
+    await API.post(`${backendURLs.APPROVE_PENDING_REQUEST_URL}/${email}`, {})
+    .then((res) => {
+      console.log(res.data)
+      dispatch({type: SHOW_ALERT, payload: res.data})
+    })
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+  }
+
+  const hideAlert = () => {
+    dispatch({ type: HIDE_ALERT });
+  };
+
   return (
     <AppContext.Provider
       value={{
         ...state,
         getAllPendingRequests,
         getSinglePendingRequest,
+        approvePendingRequest,
+        hideAlert,
       }}
     >
       {children}

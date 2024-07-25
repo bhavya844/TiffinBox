@@ -1,11 +1,21 @@
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAdminContext } from "../../context/AdminContext/AdminContext";
+import Alert from "../../components/Alert";
 
 const SinglePendingRequest = () => {
   const navigate = useNavigate();
   const { foodServiceProviderId } = useParams();
-  const { singleUserDetails, getSinglePendingRequest } = useAdminContext();
+  const { singleUserDetails, getSinglePendingRequest, approvePendingRequest, alertMessage, alertVisible, hideAlert } =
+    useAdminContext();
+
+    const handleApprove = async (email) => {
+      await approvePendingRequest(email);
+      setTimeout(() => {
+        hideAlert();
+        navigate("/admin/pending-request");
+      }, 3000);
+    };
 
   useEffect(() => {
     getSinglePendingRequest(foodServiceProviderId);
@@ -13,12 +23,20 @@ const SinglePendingRequest = () => {
 
   return (
     <div className="container mx-auto px-6 py-6">
+      {alertVisible && <Alert message={alertMessage} visible={alertVisible}/>}
       <div className="grid grid-cols-1 gap-10">
         <div className="flex flex-row justify-between">
           <div>
             <h1 className="font-bold text-3xl">User Details</h1>
           </div>
-          <div>
+          <div className="flex space-x-4">
+            <button
+              className="btn btn-success"
+              onClick={() => handleApprove(singleUserDetails?.email)}
+            >
+              Accept
+            </button>
+            <button className="btn btn-error">Reject</button>
             <button
               className="btn btn-neutral"
               onClick={() => navigate("/admin/pending-request")}
@@ -120,11 +138,16 @@ const SinglePendingRequest = () => {
               />
             </div>
           </div>
-          <div className="mt-4 flex justify-start space-x-4">
-            <button className="btn btn-success">Accept</button>
-            <button className="btn btn-error">Reject</button>
-          </div>
         </form>
+        <div className="flex justify-start space-x-4">
+          <button
+            className="btn btn-success"
+            onClick={() => approvePendingRequest(singleUserDetails?.email)}
+          >
+            Accept
+          </button>
+          <button className="btn btn-error">Reject</button>
+        </div>
       </div>
     </div>
   );
