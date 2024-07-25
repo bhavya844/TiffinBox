@@ -1,59 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAdminContext } from "../../context/AdminContext/AdminContext";
 
 const UserList = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-
-  const tableRows = [
-    {
-      no: 1,
-      name: "Jon",
-      email: "abc@abc.com",
-      contactNumber: "+11234567890",
-      remove: "Remove",
-    },
-    {
-      no: 2,
-      name: "Alice",
-      email: "alice@xyz.com",
-      contactNumber: "+19876543210",
-      remove: "Remove",
-    },
-    {
-      no: 3,
-      name: "Bob",
-      email: "bob@123.com",
-      contactNumber: "+12345678901",
-      remove: "Remove",
-    },
-    {
-      no: 4,
-      name: "Charlie",
-      email: "charlie@foobar.com",
-      contactNumber: "+10987654321",
-      remove: "Remove",
-    },
-    {
-      no: 5,
-      name: "Dave",
-      email: "dave@qrs.com",
-      contactNumber: "+11223344556",
-      remove: "Remove",
-    },
-  ];
+  const { userList, getAllUsers } = useAdminContext();
+  
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredRows = tableRows.filter(
+  const filteredRows = userList.filter(
     (item) =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.contactNumber.toLowerCase().includes(searchQuery.toLowerCase())
+      item.contact.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  useEffect(() => {
+    getAllUsers();
+  }, []);
 
   return (
     <div className="container mx-auto px-6 py-6">
@@ -100,20 +68,20 @@ const UserList = () => {
               </thead>
               <tbody>
                 {filteredRows.map((item) => (
-                  <tr key={item.no}>
+                  <tr key={item.userId}>
                     <td>{item.name}</td>
                     <td>{item.email}</td>
-                    <td>{item.contactNumber}</td>
+                    <td>{item.contact}</td>
                     <td>
                       <button
-                        className="btn btn-accent"
+                        className="btn btn-error"
                         onClick={() =>
                           document
                             .getElementById("remove_user_modal")
                             .showModal()
                         }
                       >
-                        {item.remove}
+                        Remove
                       </button>
                     </td>
                   </tr>

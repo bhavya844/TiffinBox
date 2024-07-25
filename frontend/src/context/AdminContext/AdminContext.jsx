@@ -3,6 +3,7 @@ import { createContext, useContext, useReducer } from "react";
 import reducer from "./reducer";
 import {
   GET_ALL_USER_PENDING_REQUESTS,
+  GET_ALL_USERS,
   GET_SINGLE_PENDING_REQUEST,
   HIDE_ALERT,
   SHOW_ALERT,
@@ -17,6 +18,7 @@ const backendURLs = {
   GET_SINGLE_PENDING_REQUEST_URL: `getSinglePendingRequest`,
   APPROVE_PENDING_REQUEST_URL: `approve`,
   REJECT_PENDING_REQUEST_URL: `reject`,
+  GET_ALL_USERS_URL: `getAllUsers`,
 };
 
 const initialState = {
@@ -24,7 +26,8 @@ const initialState = {
   singleUserDetails: null,
   alertMessage: "",
   alertVisible: false,
-  alertStatus: true
+  alertStatus: true,
+  userList: [],
 };
 
 const AppContext = createContext();
@@ -82,6 +85,17 @@ const AdminAppProvider = ({ children }) => {
     });
   }
 
+  const getAllUsers = async () => {
+    await API.get(backendURLs.GET_ALL_USERS_URL)
+    .then((res) => {
+      dispatch({ type: GET_ALL_USERS, payload: res.data });
+    })
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+  }
+
 
   const hideAlert = () => {
     dispatch({ type: HIDE_ALERT });
@@ -95,6 +109,7 @@ const AdminAppProvider = ({ children }) => {
         getSinglePendingRequest,
         approvePendingRequest,
         rejectPendingRequest,
+        getAllUsers,
         hideAlert,
       }}
     >
