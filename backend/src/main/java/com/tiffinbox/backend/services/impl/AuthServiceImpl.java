@@ -15,12 +15,11 @@ import com.tiffinbox.backend.models.User;
 import com.tiffinbox.backend.repositories.CustomerRepository;
 import com.tiffinbox.backend.repositories.SellerRepository;
 import com.tiffinbox.backend.repositories.UserRepository;
-import com.tiffinbox.backend.services.AuthService;
+import com.tiffinbox.backend.services.IAuthService;
 import com.tiffinbox.backend.services.JwtService;
 import com.tiffinbox.backend.utils.ResponseMessages;
 import com.tiffinbox.backend.utils.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,9 +27,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class AuthServiceImpl implements AuthService {
+public class AuthServiceImpl implements IAuthService {
     @Autowired
-    private  UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -40,10 +39,10 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private JwtService jwtService;
 
-    public SignUpResponse customerSignUp(SignUpRequestCustomer signUpRequestCustomer){
+    public SignUpResponse customerSignUp(SignUpRequestCustomer signUpRequestCustomer) {
 
         User checkUser = userRepository.findByEmail(signUpRequestCustomer.getEmail());
-        if(checkUser!=null){
+        if (checkUser != null) {
             throw new ApiRequestException(ResponseMessages.USER_ALREADY_PRESENT);
         }
         User user = new User();
@@ -53,14 +52,14 @@ public class AuthServiceImpl implements AuthService {
         user.setIsAdminVerified(true);
         userRepository.save(user);
 
-        Customer customer =new Customer();
+        Customer customer = new Customer();
         customer.setUser(user);
         customer.setFirstName(signUpRequestCustomer.getFirstname());
         customer.setLastName(signUpRequestCustomer.getLastname());
         customer.setContactNumber(signUpRequestCustomer.getContactNumber());
-        customer.setStreetAddress(signUpRequestCustomer.getStreetNumber()+","
-                +signUpRequestCustomer.getStreetName()+","
-                +signUpRequestCustomer.getApartmentNumber());
+        customer.setStreetAddress(signUpRequestCustomer.getStreetNumber() + ","
+                + signUpRequestCustomer.getStreetName() + ","
+                + signUpRequestCustomer.getApartmentNumber());
         customer.setCity(signUpRequestCustomer.getCityName());
         customer.setProvince(signUpRequestCustomer.getProvinceName());
         customer.setPostalCode(signUpRequestCustomer.getZipCode());
@@ -68,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
         user.setCustomer(customer);
         userRepository.save(user);
 
-        SignUpResponse signUpResponse =new SignUpResponse();
+        SignUpResponse signUpResponse = new SignUpResponse();
         signUpResponse.setMessage(ResponseMessages.REGISTRATION_SUCCESS);
         signUpResponse.setSuccess(true);
         signUpResponse.setTimeStamp(LocalDateTime.now());
@@ -76,17 +75,17 @@ public class AuthServiceImpl implements AuthService {
         return signUpResponse;
     }
 
-    public SignUpResponse sellerSignUp(SignUpRequestSeller signUpRequestSeller){
+    public SignUpResponse sellerSignUp(SignUpRequestSeller signUpRequestSeller) {
 
         User checkUser = userRepository.findByEmail(signUpRequestSeller.getEmail());
-        if(checkUser!=null){
+        if (checkUser != null) {
             throw new ApiRequestException(ResponseMessages.SELLER_ALREADY_PRESENT);
         }
         User user = new User();
         user.setEmail(signUpRequestSeller.getEmail());
         user.setUserRole(UserRole.FOOD_SERVICE_PROVIDER);
         user.setPassword(passwordEncoder.encode(signUpRequestSeller.getPassword()));
-        user.setIsAdminVerified(true);
+        user.setIsAdminVerified(false);
         userRepository.save(user);
 
         FoodServiceProvider seller = new FoodServiceProvider();
@@ -105,7 +104,7 @@ public class AuthServiceImpl implements AuthService {
         user.setFoodServiceProvider(seller);
         userRepository.save(user);
 
-        SignUpResponse signUpResponse =new SignUpResponse();
+        SignUpResponse signUpResponse = new SignUpResponse();
         signUpResponse.setMessage(ResponseMessages.SELLER_REGISTRATION_SUCCESS);
         signUpResponse.setSuccess(true);
         signUpResponse.setTimeStamp(LocalDateTime.now());
@@ -113,34 +112,41 @@ public class AuthServiceImpl implements AuthService {
         return signUpResponse;
     }
 
-    public LoginResponse logIn(LoginRequest loginRequest){
+    public LoginResponse logIn(LoginRequest loginRequest) {
 
-        LoginResponse loginResponse =new LoginResponse();
+        LoginResponse loginResponse = new LoginResponse();
         User user = userRepository.findByEmail(loginRequest.getEmail());
-        if(user == null){
+        if (user == null) {
             throw new NotFoundException(ResponseMessages.USER_NOT_FOUND);
         }
-        if(loginRequest.getPassword()==null){
+        if (loginRequest.getPassword() == null) {
             throw new ApiRequestException(ResponseMessages.PSWD_NULL);
         }
-        if(!BCrypt.checkpw(loginRequest.getPassword(),user.getPassword())){
+        if (!BCrypt.checkpw(loginRequest.getPassword(), user.getPassword())) {
             throw new ApiRequestException(ResponseMessages.PSWD_MISS_MATCH);
         }
-        if(!user.getIsAdminVerified()){
+        if (!user.getIsAdminVerified()) {
             throw new NotVerifiedException(ResponseMessages.ACCOUNT_NOT_VERIFIED);
         }
         String jwtToken = jwtService.generateToken(user);
         String jwtRefreshToken = jwtService.generateRefreshToken(user);
         loginResponse.setUserRole(user.getUserRole());
 
-        if ((user.getUserRole() == UserRole.CUSTOMER)) {
+        if (user.getUserRole() == UserRole.CUSTOMER) {
             Customer customer = user.getCustomer();
             loginResponse.setFirstname(customer.getFirstName());
             loginResponse.setLastname(customer.getLastName());
-        } else {
+        } else if(user.getUserRole() == UserRole.FOOD_SERVICE_PROVIDER) {
             FoodServiceProvider foodServiceProvider = user.getFoodServiceProvider();
             loginResponse.setFirstname(foodServiceProvider.getFirstName());
             loginResponse.setLastname(foodServiceProvider.getLastName());
+        }else if(user.getUserRole() == UserRole.ADMIN) {
+            loginResponse.setFirstname("Tiffin Box Admin");
+            loginResponse.setLastname("Admin");
+        }
+        else {
+            loginResponse.setFirstname("Tiffin Box User");
+            loginResponse.setLastname("Tiffin Box User");
         }
         loginResponse.setToken(jwtToken);
         loginResponse.setRefreshToken(jwtRefreshToken);
@@ -149,12 +155,14 @@ public class AuthServiceImpl implements AuthService {
         return loginResponse;
     }
 
-    public LoginResponse jwtRefreshToken(RefreshTokenRequest refreshTokenRequest){
-        LoginResponse loginResponse =new LoginResponse();
+    public LoginResponse jwtRefreshToken(RefreshTokenRequest refreshTokenRequest) {
+        LoginResponse loginResponse = new LoginResponse();
         String email = jwtService.extractUsername(refreshTokenRequest.getToken());
         User user = userRepository.findByEmail(email);
-        if(user == null){throw new NotFoundException(ResponseMessages.USER_NOT_FOUND_TOKEN);}
-        if(jwtService.isTokenValid(refreshTokenRequest.getToken(), user)){
+        if (user == null) {
+            throw new NotFoundException(ResponseMessages.USER_NOT_FOUND_TOKEN);
+        }
+        if (jwtService.isTokenValid(refreshTokenRequest.getToken(), user)) {
             String jwtToken = jwtService.generateToken(user);
 
             loginResponse.setUserRole(user.getUserRole());
