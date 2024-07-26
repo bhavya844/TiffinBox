@@ -132,18 +132,22 @@ public class AuthServiceImpl implements IAuthService {
         String jwtRefreshToken = jwtService.generateRefreshToken(user);
         loginResponse.setUserRole(user.getUserRole());
 
-//        if (user.getUserRole() == UserRole.CUSTOMER) {
-//            Customer customer = user.getCustomer();
-//            loginResponse.setFirstname(customer.getFirstName());
-//            loginResponse.setLastname(customer.getLastName());
-//        } else if(user.getUserRole() == UserRole.FOOD_SERVICE_PROVIDER) {
-//            FoodServiceProvider foodServiceProvider = user.getFoodServiceProvider();
-//            loginResponse.setFirstname(foodServiceProvider.getFirstName());
-//            loginResponse.setLastname(foodServiceProvider.getLastName());
-//        }
-//        else {
-//            loginResponse.setFirstname();
-//        }
+        if (user.getUserRole() == UserRole.CUSTOMER) {
+            Customer customer = user.getCustomer();
+            loginResponse.setFirstname(customer.getFirstName());
+            loginResponse.setLastname(customer.getLastName());
+        } else if(user.getUserRole() == UserRole.FOOD_SERVICE_PROVIDER) {
+            FoodServiceProvider foodServiceProvider = user.getFoodServiceProvider();
+            loginResponse.setFirstname(foodServiceProvider.getFirstName());
+            loginResponse.setLastname(foodServiceProvider.getLastName());
+        }else if(user.getUserRole() == UserRole.ADMIN) {
+            loginResponse.setFirstname("Tiffin Box Admin");
+            loginResponse.setLastname("Admin");
+        }
+        else {
+            loginResponse.setFirstname("Tiffin Box User");
+            loginResponse.setLastname("Tiffin Box User");
+        }
         loginResponse.setToken(jwtToken);
         loginResponse.setRefreshToken(jwtRefreshToken);
         loginResponse.setSuccess(true);
