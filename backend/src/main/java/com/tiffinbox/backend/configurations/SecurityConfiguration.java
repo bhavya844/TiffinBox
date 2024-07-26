@@ -32,7 +32,7 @@ public class SecurityConfiguration {
                        .requestMatchers("/api/auth/**").permitAll()
                        .requestMatchers("/api/admin/**").permitAll()
                        .requestMatchers("/api/home/**").permitAll()
-                       .requestMatchers("/api/meal/**/**").permitAll()
+                       .requestMatchers("/api/meal/**").permitAll()
                        .anyRequest().authenticated()
                ).sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                .authenticationProvider(authenticationProvider)
