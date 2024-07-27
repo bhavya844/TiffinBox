@@ -16,6 +16,7 @@ public class LoginResponse extends BasicResponse{
     private String firstname;
     private String lastname;
     private UserRole userRole;
+    private String userId;
     private String token;
     private String refreshToken;
 
