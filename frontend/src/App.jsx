@@ -12,6 +12,7 @@ import OrderHistoryPage from "./pages/Order/OrderHistoryPage";
 import OrderDetailsPage from "./pages/Order/OrderDetailsPage";
 import ScrollToTop from "./components/shared/ScrollToTop";
 import OrderCartPage from "./pages/Order/OrderCartPage";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             element={
               <AdminAppProvider>
                 <Routes>
+                  <Route path="dashboard" element={<AdminDashboard />} />
                   <Route path="pending-request" element={<PendingRequests />} />
                   <Route
                     path="single-pending-request/:foodServiceProviderId"

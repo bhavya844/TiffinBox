@@ -22,4 +22,5 @@ public class ResponseMessages {
     public static final String APPROVE_PENDING_REQUEST = "Pending request approved.";
     public static final String REJECT_PENDING_REQUEST = "Pending request rejected.";
     public static final String REMOVE_USER_SUCCESSFUL = "User removed successfully.";
+    public static final String GET_ANALYSIS = "Analysis retrieved successfully.";
 }
