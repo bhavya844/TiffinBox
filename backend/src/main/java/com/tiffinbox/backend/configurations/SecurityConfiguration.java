@@ -33,7 +33,6 @@ public class SecurityConfiguration {
                        .requestMatchers("/api/admin/**").permitAll()
                        .requestMatchers("/api/home/**").permitAll()
                        .requestMatchers("/api/meal/**").permitAll()
-                       .requestMatchers("/api/reviews/**").permitAll()
                        .anyRequest().authenticated()
                ).sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                .authenticationProvider(authenticationProvider)
