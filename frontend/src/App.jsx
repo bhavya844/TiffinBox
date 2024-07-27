@@ -8,6 +8,7 @@ import PendingRequests from "./pages/Admin/PendingRequests";
 import { AdminAppProvider } from "./context/AdminContext/AdminContext";
 import SinglePendingRequest from "./pages/Admin/SinglePendingRequest";
 import UserList from "./pages/Admin/UserList";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             element={
               <AdminAppProvider>
                 <Routes>
+                  <Route path="dashboard" element={<AdminDashboard />} />
                   <Route path="pending-request" element={<PendingRequests />} />
                   <Route path="single-pending-request/:foodServiceProviderId" element={<SinglePendingRequest />} />
                   <Route path="user-list" element={<UserList />} />
