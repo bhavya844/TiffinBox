@@ -14,4 +14,12 @@ public class ResponseMessages {
     public static final String ALREADY_SUBSCRIBED = "User already subscribed to another subscription!";
     public static final String MEAL_NOT_FOUND = "No such meal exists!";
     public static final String INVALID_SUBSCRIPTION = "Invalid subscription type.";
+
+    // Admin Service Response
+    public static final String FOOD_SERVICE_PROVIDER_NOT_FOUND = "Food service provider does not exist";
+    public static final String USER_PENDING_REQUEST_RETRIVED = "User pending requests retrieved.";
+    public static final String USER_SINGLE_PENDING_REQUEST_RETRIEVED = "Food service provider retrieved.";
+    public static final String APPROVE_PENDING_REQUEST = "Pending request approved.";
+    public static final String REJECT_PENDING_REQUEST = "Pending request rejected.";
+    public static final String REMOVE_USER_SUCCESSFUL = "User removed successfully.";
 }

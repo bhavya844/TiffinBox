@@ -30,9 +30,9 @@ public class SecurityConfiguration {
                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                .authorizeHttpRequests(request -> request
                        .requestMatchers("/api/auth/**").permitAll()
-                       .requestMatchers("/api/admin/**").hasAnyAuthority(UserRole.ADMIN.name())
+                       .requestMatchers("/api/admin/**").permitAll()
                        .requestMatchers("/api/home/**").permitAll()
-                       .requestMatchers("/api/meal/**/**").permitAll()
+                       .requestMatchers("/api/meal/**").permitAll()
                        .anyRequest().authenticated()
                ).sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                .authenticationProvider(authenticationProvider)
@@ -45,9 +45,9 @@ public class SecurityConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader(HttpHeaders.CONTENT_TYPE);
-        config.addAllowedHeader(HttpHeaders.AUTHORIZATION);
+        config.addAllowedOrigin("http://localhost:5173");
+//        config.addAllowedHeader(HttpHeaders.CONTENT_TYPE);
+        config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
         return source;
