@@ -3,8 +3,8 @@ package com.tiffinbox.backend.services.impl;
 import com.tiffinbox.backend.dto.MealResponseDTO;
 import com.tiffinbox.backend.dto.request.AddMealRequest;
 import com.tiffinbox.backend.dto.response.BasicResponse;
-import com.tiffinbox.backend.dto.response.foodServiceProvider.GetASingleMealResponse;
-import com.tiffinbox.backend.dto.response.foodServiceProvider.GetMealListResponse;
+import com.tiffinbox.backend.dto.response.mealmenumanagement.GetASingleMealResponse;
+import com.tiffinbox.backend.dto.response.mealmenumanagement.GetMealListResponse;
 import com.tiffinbox.backend.exceptions.NotFoundException;
 import com.tiffinbox.backend.models.Meal;
 import com.tiffinbox.backend.models.User;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +62,7 @@ public class FoodProviderServiceImpl implements IFoodProviderService {
         }
 
         List<MealResponseDTO> getMealListResponse = mealRepository
-                                .findAll()
+                                .findByUser(user)
                 .stream().map(this::convertToMealResponse)
                 .toList();
 

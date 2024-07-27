@@ -1,4 +1,4 @@
-package com.tiffinbox.backend.dto.response.foodServiceProvider;
+package com.tiffinbox.backend.dto.response.mealmenumanagement;
 
 import com.tiffinbox.backend.dto.MealResponseDTO;
 import com.tiffinbox.backend.dto.response.BasicResponse;
@@ -7,10 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @SuperBuilder
-public class GetASingleMealResponse extends BasicResponse {
-    MealResponseDTO mealResponse;
+public class GetMealListResponse extends BasicResponse {
+    List<MealResponseDTO> mealResponseList;
 }

@@ -1,6 +1,5 @@
 package com.tiffinbox.backend.dto;
 
-import com.tiffinbox.backend.dto.response.BasicResponse;
 import lombok.Data;
 
 @Data

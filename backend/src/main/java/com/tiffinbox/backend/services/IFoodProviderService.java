@@ -2,11 +2,10 @@ package com.tiffinbox.backend.services;
 
 import com.tiffinbox.backend.dto.request.AddMealRequest;
 import com.tiffinbox.backend.dto.response.BasicResponse;
-import com.tiffinbox.backend.dto.response.foodServiceProvider.GetASingleMealResponse;
-import com.tiffinbox.backend.dto.response.foodServiceProvider.GetMealListResponse;
+import com.tiffinbox.backend.dto.response.mealmenumanagement.GetASingleMealResponse;
+import com.tiffinbox.backend.dto.response.mealmenumanagement.GetMealListResponse;
 
 import java.security.Principal;
-import java.util.List;
 
 public interface IFoodProviderService {
     GetASingleMealResponse addMeal(Principal principal, AddMealRequest addMealRequest);

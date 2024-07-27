@@ -7,7 +7,7 @@ import lombok.Data;
 public class AddMealRequest {
     private String mealName;
     private String mealDescription;
-    private Multipart mealType;
+    private String mealType;
     private String cuisineType;
     private String mealImage;
     private Double mealPrice;
