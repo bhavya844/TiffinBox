@@ -1,4 +1,4 @@
-import { GET_ALL_USER_PENDING_REQUESTS, GET_ALL_USERS, GET_SINGLE_PENDING_REQUEST } from "./action";
+import { GET_ALL_USER_PENDING_REQUESTS, GET_ALL_USERS, GET_ANALYSIS, GET_SINGLE_PENDING_REQUEST } from "./action";
 
 const reducer = (state, action) => {
     if(action.type === GET_ALL_USER_PENDING_REQUESTS) {
@@ -9,6 +9,9 @@ const reducer = (state, action) => {
     }
     if(action.type === GET_ALL_USERS) {
         return { ...state, userList: action.payload.userList };
+    }
+    if(action.type === GET_ANALYSIS) {
+        return { ...state, analysisDetails: action.payload.analysisDetails };
     }
 };
 
