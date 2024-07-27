@@ -4,31 +4,31 @@ const reducer = (state, action) => {
     if(action.type === ADD_A_MEAL){
         return {
             ...state,
-            mealList:[...state.mealList, action.payload]
+            mealList:[...state.mealList, action.payload.mealResponse]
         };
     }
     if(action.type === UPDATE_A_MEAL){
         return {
             ...state,
-            meal:action.payload
+            meal:action.payload.mealResponse
         }
     }
     if(action.type === DELETE_A_MEAL){
         return {
             ...state,
-            isMealDeleted:action.payload
+            isMealDeleted:action.payload.success
         };
     }
     if(action.type === GET_ALL_MEALS){
         return {
             ...state,
-            mealList:action.payload
+            mealList:action.payload.mealResponseList
         }
     }
     if(action.type === GET_A_MEAL_FROM_ID){
         return {
             ...state,
-            meal:action.payload
+            meal:action.payload.mealResponse
         }
     }
 }

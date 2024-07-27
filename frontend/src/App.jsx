@@ -8,6 +8,11 @@ import PendingRequests from "./pages/Admin/PendingRequests";
 import { AdminAppProvider } from "./context/AdminContext/AdminContext";
 import SinglePendingRequest from "./pages/Admin/SinglePendingRequest";
 import UserList from "./pages/Admin/UserList";
+import { FoodProviderMealAppProvider } from "./context/FoodProviderMealContext/FoodProviderMealContext";
+import MealMenuManagement from "./pages/FoodProvider/MealMenuManagement";
+import AddAMeal from "./pages/FoodProvider/AddAMeal";
+import MealPage from "./pages/FoodProvider/MealPage";
+import UpdateAMeal from "./pages/FoodProvider/UpdateAMeal";
 
 function App() {
   return (
@@ -33,6 +38,22 @@ function App() {
             }
           />
           {/* admin routes ends */}
+
+          {/*Food Service Provider routes starts */}
+          <Route
+            path="/foodprovider/*"
+            element={
+              <FoodProviderMealAppProvider>
+                <Routes>
+                  <Route path="mealmenumanagement" element={<MealMenuManagement />} />
+                  <Route path="meal-page/:mealId" element={<MealPage />} />
+                  <Route path="add-a-meal" element={<AddAMeal/>} />
+                  <Route path="update-a-meal/:mealId" element={<UpdateAMeal />} />
+                </Routes>
+              </FoodProviderMealAppProvider>
+            }
+          />
+          {/* Food Service Provider routes ends */}
         </Routes>
         <Footer />
       </Router>

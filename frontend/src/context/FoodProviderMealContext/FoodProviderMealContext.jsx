@@ -1,5 +1,6 @@
 import axios from "axios";
-import { createContext, useContext, useReducer, useNavigate } from "react";
+import { createContext, useContext, useReducer } from "react";
+import { useNavigate } from "react-router-dom";
 import reducer from "./reducer";
 import { toast } from "react-hot-toast";
 import {
@@ -11,7 +12,7 @@ import {
 } from "./action";
 
 const API = axios.create({
-  baseURL: "http://localhost:8080/api/foodprovider/"
+  baseURL: "http://localhost:8080/api/foodserviceprovider/"
 });
 
 const backendURLs = {
@@ -24,7 +25,7 @@ const backendURLs = {
 
 const initialState = {
   mealList: [],
-  updatedMeal: null,
+  meal: null,
   isMealDeleted: null
 };
 
@@ -33,19 +34,18 @@ const AppContext = createContext();
 const FoodProviderMealAppProvider = ({ children }) => {
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, initialState);
-  const token = localStorage.getItem("token");
-
+  const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lLnNtaXRoQGZtYWlsLmNvbSIsImlhdCI6MTcyMjExMTQ1OCwiZXhwIjoxNzIyMTE1MDU4fQ.OrZrxG7re0-VL36WS9JbwcUSBF-Yxu4MXaIDkMGMEXs"
   const addAMeal = async (mealData) => {
-    await API.post(backendURLs.ADD_A_MEAL_URL, mealData, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    await API.post(backendURLs.ADD_A_MEAL_URL, mealData,{
+      headers:{
+        Authorization:`Bearer ${token}`
       }
     })
       .then((response) => {
         console.log(response);
         dispatch({ type: ADD_A_MEAL, payload: response.data });
         toast.success("Meal Added Successfully");
-        navigate("/mealmenumanagement");
+        navigate("/foodprovider/mealmenumanagement");
       })
       .catch((error) => {
         console.log(error);
@@ -63,7 +63,7 @@ const FoodProviderMealAppProvider = ({ children }) => {
         console.log(response);
         dispatch({ type: UPDATE_A_MEAL, payload: response.data });
         toast.success("Meal Updated successfully");
-        navigate("/mealmenumanagement");
+        navigate("/foodprovider/mealmenumanagement");
       })
       .catch((error) => {
         console.log(error);
@@ -81,7 +81,7 @@ const FoodProviderMealAppProvider = ({ children }) => {
         console.log(response);
         dispatch({ type: DELETE_A_MEAL, payload: response.data });
         toast.success("Meal Deleted Successfully");
-        navigate("/mealmenumanagement");
+        navigate("/foodprovider/mealmenumanagement");
       })
       .catch((error) => {
         console.log(error);
@@ -97,7 +97,7 @@ const FoodProviderMealAppProvider = ({ children }) => {
     })
       .then((response) => {
         console.log(response);
-        dispatch({ type: GET_ALL_MEALS, payload: response.data });
+        dispatch({ type: GET_ALL_MEALS, payload: response.data});
       })
       .catch((error) => {
         console.log(error);
@@ -106,6 +106,8 @@ const FoodProviderMealAppProvider = ({ children }) => {
   };
 
   const getMealFromId = async (mealId) => {
+
+    console.log("Hello")
     await API.get(`${backendURLs.GET_A_MEAL_FROM_ID_URL}/${mealId}`, {
       headers: {
         Authorization: `Bearer ${token}`
