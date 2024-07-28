@@ -6,6 +6,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Author: Raj Kamlesh Patel
+ * Banner ID: B00978721
+ * Email: rj227488@dal.ca
+ */
+
 @Configuration
 public class CloudinaryConfiguration {
     @Value("${cloudinary.cloud_name}")
