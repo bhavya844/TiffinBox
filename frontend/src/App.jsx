@@ -13,6 +13,10 @@ import MealMenuManagement from "./pages/FoodProvider/MealMenuManagement";
 import AddAMeal from "./pages/FoodProvider/AddAMeal";
 import MealPage from "./pages/FoodProvider/MealPage";
 import UpdateAMeal from "./pages/FoodProvider/UpdateAMeal";
+import {CustomerMealAppProvider} from "./context/CustomerMealContext/CustomerMealContext"
+import CustomerHomePage from "./pages/Customer/CustomerHomePage";
+import FoodProviderPage from "./pages/Customer/FoodProviderPage";
+import MealPageCustomer from "./pages/Customer/MealPageCustomer";
 
 function App() {
   return (
@@ -31,7 +35,10 @@ function App() {
               <AdminAppProvider>
                 <Routes>
                   <Route path="pending-request" element={<PendingRequests />} />
-                  <Route path="single-pending-request/:foodServiceProviderId" element={<SinglePendingRequest />} />
+                  <Route
+                    path="single-pending-request/:foodServiceProviderId"
+                    element={<SinglePendingRequest />}
+                  />
                   <Route path="user-list" element={<UserList />} />
                 </Routes>
               </AdminAppProvider>
@@ -45,15 +52,35 @@ function App() {
             element={
               <FoodProviderMealAppProvider>
                 <Routes>
-                  <Route path="mealmenumanagement" element={<MealMenuManagement />} />
+                  <Route
+                    path="mealmenumanagement"
+                    element={<MealMenuManagement />}
+                  />
                   <Route path="meal-page/:mealId" element={<MealPage />} />
-                  <Route path="add-a-meal" element={<AddAMeal/>} />
-                  <Route path="update-a-meal/:mealId" element={<UpdateAMeal />} />
+                  <Route path="add-a-meal" element={<AddAMeal />} />
+                  <Route
+                    path="update-a-meal/:mealId"
+                    element={<UpdateAMeal />}
+                  />
                 </Routes>
               </FoodProviderMealAppProvider>
             }
           />
           {/* Food Service Provider routes ends */}
+
+          {/* Routes for Customer */}
+          <Route
+            path="/customer/*"
+            element={
+              <CustomerMealAppProvider>
+                <Routes>
+                  <Route path="home-page" element={<CustomerHomePage />} />
+                  <Route path="food-provider-page/:foodProviderId" element={<FoodProviderPage />}/>
+                  <Route path="meal-page/:mealId" element={<MealPageCustomer />} />
+                </Routes>
+              </CustomerMealAppProvider>
+            }
+          />
         </Routes>
         <Footer />
       </Router>

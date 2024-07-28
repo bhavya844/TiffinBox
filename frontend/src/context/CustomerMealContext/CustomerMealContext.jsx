@@ -1,7 +1,6 @@
 import axios from "axios";
-import {React, useContext, useNavigate, useReducer} from "react";
-import { GET_A_MEAL_FROM_ID, GET_ALL_FOOD_SERVICE_PROVIDER_IN_CITY, GET_ALL_MEALS_FROM_PROVIDER } from "./action";
-import { createContext } from "vm";
+import {React, useContext, useReducer, createContext} from "react";
+import { GET_A_MEAL_FROM_ID, GET_ALL_FOOD_SERVICE_PROVIDER_IN_CITY, GET_ALL_MEALS_FROM_PROVIDER, GET_FOOD_SERVICE_PROVIDER } from "./action";
 import reducer from "./reducer";
 import toast from "react-hot-toast";
 
@@ -10,26 +9,27 @@ const API = axios.create({
 });
 
 const backendURLs = {
-    GET_ALL_FOOD_SERVICE_PROVIDER_IN_CITY_URL:"getAllProvidersFromCity",
-    GET_ALL_MEALS_FROM_PROVIDER_URL:"getMealsForProvider",
-    GET_A_MEAL_FROM_ID_URL:"getMeal"
+    GET_ALL_FOOD_SERVICE_PROVIDER_URL:"getfoodproviders",
+    SEARCH_FOOD_SERVICE_PROVIDERS_URL:"searchfoodproviders",
+    GET_ALL_MEALS_FROM_PROVIDER_URL:"getmeals",
+    GET_A_MEAL_FROM_ID_URL:"getMealFromId",
+    GET_FOOD_SERVICE_PROVIDER_URL:"getfoodprovider"
 }
 
 const initialState = {
     foodServiceProviderList:[],
     mealsProvided:[],
-    meal:null
+    meal:null,
+    foodServiceProvider:null
 }
 
 const AppContext = createContext();
 
 const CustomerMealAppProvider = ({children}) => {
-    const navigate = useNavigate();
     const [state, dispatch] = useReducer(reducer,initialState);
-    const token = localStorage.getItem("token");
-
-    const getAllFoodServiceProvider = async (city) => {
-        await API.get(`${GET_ALL_FOOD_SERVICE_PROVIDER_IN_CITY_URL}/${city}`,{
+    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lLnNtaXRoQGZtYWlsLmNvbSIsImlhdCI6MTcyMjEzOTAxNiwiZXhwIjoxNzIyMTQyNjE2fQ.ykb8TqMfG8IE2kTc6-Y4RoycEeI4XJgh7FY0hSgJmLw"
+    const getAllFoodServiceProvider = async () => {
+        await API.get(`${backendURLs.GET_ALL_FOOD_SERVICE_PROVIDER_URL}`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }
@@ -44,8 +44,38 @@ const CustomerMealAppProvider = ({children}) => {
         })
     }
 
-    const getAllMealsFromProvider = async (userId) => {
-        await API.get(`${GET_ALL_MEALS_FROM_PROVIDER}/${userId}`,{
+    const getAllFoodServiceProviderwithSearch = async (searchData) => {
+        await API.post(`${backendURLs.SEARCH_FOOD_SERVICE_PROVIDERS_URL}`,searchData,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+        .then(response => {
+            console.log(response)
+            dispatch({type:GET_ALL_FOOD_SERVICE_PROVIDER_IN_CITY,payload:response.data})
+        })
+        .catch(error => {
+            console.log(error)
+            toast.error("Error getting food service providers")
+        })
+    }
+
+    const getFoodServiceProvider = async (foodProviderId) => {
+        await API.get(`${backendURLs.GET_FOOD_SERVICE_PROVIDER_URL}/${foodProviderId}`,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        }).then(response => {
+            console.log(response);
+            dispatch({type:GET_FOOD_SERVICE_PROVIDER, payload:response.data})
+        }).catch(error=>{
+            console.log(error)
+            toast.error("Error getting food service provider info.")
+        })
+    }
+
+    const getAllMealsFromProvider = async (foodProviderId) => {
+        await API.post(`${backendURLs.GET_ALL_MEALS_FROM_PROVIDER_URL}/${foodProviderId}`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }
@@ -61,7 +91,7 @@ const CustomerMealAppProvider = ({children}) => {
     }
 
     const getMealFromId = async (mealId) => {
-        await API.get(`${GET_A_MEAL_FROM_ID}/${mealId}`,{
+        await API.get(`${backendURLs.GET_A_MEAL_FROM_ID_URL}/${mealId}`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }
@@ -82,7 +112,9 @@ const CustomerMealAppProvider = ({children}) => {
                 ...state,
                 getAllFoodServiceProvider,
                 getAllMealsFromProvider,
-                getMealFromId
+                getMealFromId,
+                getFoodServiceProvider,
+                getAllFoodServiceProviderwithSearch
             }}
         >
             {children}
@@ -90,9 +122,9 @@ const CustomerMealAppProvider = ({children}) => {
     )
 }
 
-const CustomerMealContext = () => {
+const useCustomerMealContext = () => {
     return useContext(AppContext);
 }
 
-export {CustomerMealAppProvider,CustomerMealContext}
+export {CustomerMealAppProvider,useCustomerMealContext}
 
