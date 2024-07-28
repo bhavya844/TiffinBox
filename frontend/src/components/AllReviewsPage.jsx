@@ -1,64 +1,74 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
+// axios.defaults.baseURL = 'http://localhost:8080';
 
-function ReviewCard({ review }) {
-    return (
-        <div className="bg-white p-4 rounded-lg shadow mb-4">
-            <div className="flex items-center">
-                <img className="w-12 h-12 rounded-full mr-4" src={review.image} alt="User" />
-                <div className="flex-grow">
-                    <h4 className="text-lg font-semibold">{review.user}</h4>
-                    <span className="text-sm text-gray-600">{review.date}</span>
+function ReviewsManagement() {
+  const foodServiceProviderId = '66a42535048a7362220864d6'; // Static ID for demonstration
+  const [reviews, setReviews] = useState([]);
+  const [averageRating, setAverageRating] = useState(0);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/reviews/foodServiceProvider/${foodServiceProviderId}`,{
+            headers:{
+                Authorization:`Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIxNjQ5NzksImV4cCI6MTcyMjE2ODU3OX0.N3YwLal-5gSFipMFc_q72ldD1O7RCC8V3dwIFJqQAKE`
+            }
+        });
+        console.log('Response data:', response.data);
+
+        const fetchedReviews = response.data.map(review => ({
+          ...review,
+          user: {
+            name: `${review.firstName} ${review.lastName}`,
+            image: 'https://via.placeholder.com/150' // Assuming default image for now
+          },
+          text: review.reviewDescription,
+          rating: review.reviewStars
+        }));
+        setReviews(fetchedReviews);
+
+        const totalStars = fetchedReviews.reduce((acc, curr) => acc + curr.rating, 0);
+        const avgRating = (totalStars / fetchedReviews.length) || 0;
+        setAverageRating(avgRating.toFixed(1));
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+
+    fetchReviews();
+  }, []); // Only run once, since foodServiceProviderId is constant
+
+  return (
+    <div className="min-h-screen bg-white p-5">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-white p-4 rounded-lg shadow-lg col-span-1 md:col-span-2" style={{ width: '600px' }}>
+          <h2 className="text-2xl font-bold text-center mb-4">All Reviews for Provider {foodServiceProviderId}</h2>
+          {reviews.length === 0 ? (
+            <p className="text-center text-gray-600">No reviews available</p>
+          ) : (
+            reviews.map((review, index) => (
+              <div key={index} className="border-b border-gray-200 last:border-b-0 py-4" style={{ height: '150px', overflow: 'hidden' }}>
+                <div className="flex items-center space-x-4">
+                  <img src={review.user.image} alt={review.user.name} className="w-12 h-12 rounded-full object-cover" />
+                  <div className="flex-grow">
+                    <h3 className="text-lg font-semibold">{review.user.name}</h3>
+                    <div className="text-yellow-500">
+                      {[...Array(5)].map((_, i) => (
+                        <span key={i} className={i < review.rating ? 'text-yellow-500' : 'text-gray-400'}>★</span>
+                      ))}
+                    </div>
+                    <p className="mt-2 text-gray-600 truncate">{review.text}</p>
+                  </div>
                 </div>
-            </div>
-            <div className="mt-2">
-                {[...Array(5)].map((_, i) => (
-                    <span key={i} className={`text-xl ${i < review.rating ? 'text-yellow-500' : 'text-gray-300'}`}>★</span>
-                ))}
-            </div>
-            <p className="mt-2 text-gray-700">{review.text}</p>
-            <button className="text-indigo-600 hover:text-indigo-800 mt-2">See more</button>
+              </div>
+            ))
+          )}
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
-
-function AllReviewsPage() {
-    const reviews = [
-        {
-            id: 1,
-            user: "User 1",
-            date: "Two months ago",
-            rating: 3,
-            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque efficitur nunc neque, sit amet cursus...",
-            image: "https://via.placeholder.com/150"
-        },
-        {
-            id: 2,
-            user: "User 2",
-            date: "Four months ago",
-            rating: 4,
-            text: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...",
-            image: "https://via.placeholder.com/150"
-        }
-    ];
-
-    return (
-        <div className="max-w-5xl mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold text-center mb-6">Kathiyawadi Tiffin Reviews</h1>
-            <div className="flex justify-center items-center mb-4">
-                <span className="text-6xl font-bold text-gray-800">4.2</span>
-                <span className="text-yellow-500 ml-2 text-5xl">★</span>
-                <span className="ml-4 text-lg text-gray-600">(50 reviews)</span>
-            </div>
-            {reviews.map(review => (
-                <ReviewCard key={review.id} review={review} />
-            ))}
-            <div className="flex justify-center mt-4">
-                <button className="btn btn-primary bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-lg shadow">Load More</button>
-            </div>
-        </div>
-    );
-}
-
-export default AllReviewsPage;
+export default ReviewsManagement;

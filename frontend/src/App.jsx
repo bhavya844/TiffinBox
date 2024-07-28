@@ -15,6 +15,18 @@ import ScrollToTop from "./components/shared/ScrollToTop";
 import OrderCartPage from "./pages/Order/OrderCartPage";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import SubmitReview from "./components/SubmitReview";
+import ViewProfile from "./pages/Profile/ViewProfile";
+import EditProfile from "./pages/Profile/EditProfile";
+
+import { FoodProviderMealAppProvider } from "./context/FoodProviderMealContext/FoodProviderMealContext";
+import MealMenuManagement from "./pages/FoodProvider/MealMenuManagement";
+import AddAMeal from "./pages/FoodProvider/AddAMeal";
+import MealPage from "./pages/FoodProvider/MealPage";
+import UpdateAMeal from "./pages/FoodProvider/UpdateAMeal";
+import {CustomerMealAppProvider} from "./context/CustomerMealContext/CustomerMealContext"
+import CustomerHomePage from "./pages/Customer/CustomerHomePage";
+import FoodProviderPage from "./pages/Customer/FoodProviderPage";
+import MealPageCustomer from "./pages/Customer/MealPageCustomer";
 
 function App() {
   return (
@@ -50,6 +62,47 @@ function App() {
           <Route path="/order-history" element={<OrderHistoryPage />} />
           <Route path="/order-details" element={<OrderDetailsPage />} />
           <Route path="/order-cart" element={<OrderCartPage />} />
+          {/* profile routes ends */}
+          <Route path="/view-profile" element={<ViewProfile />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+
+
+
+          {/*Food Service Provider routes starts */}
+          <Route
+            path="/foodprovider/*"
+            element={
+              <FoodProviderMealAppProvider>
+                <Routes>
+                  <Route
+                    path="mealmenumanagement"
+                    element={<MealMenuManagement />}
+                  />
+                  <Route path="meal-page/:mealId" element={<MealPage />} />
+                  <Route path="add-a-meal" element={<AddAMeal />} />
+                  <Route
+                    path="update-a-meal/:mealId"
+                    element={<UpdateAMeal />}
+                  />
+                </Routes>
+              </FoodProviderMealAppProvider>
+            }
+          />
+          {/* Food Service Provider routes ends */}
+
+          {/* Routes for Customer */}
+          <Route
+            path="/customer/*"
+            element={
+              <CustomerMealAppProvider>
+                <Routes>
+                  <Route path="home-page" element={<CustomerHomePage />} />
+                  <Route path="food-provider-page/:foodProviderId" element={<FoodProviderPage />}/>
+                  <Route path="meal-page/:mealId" element={<MealPageCustomer />} />
+                </Routes>
+              </CustomerMealAppProvider>
+            }
+          />
         </Routes>
         <Footer />
       </Router>

@@ -18,6 +18,7 @@ function LandingPage() {
       <AboutUs />
       <WhyChooseUs />
       <Testimonials />
+      <ReviewsManagement />
     </div>
   );
 }

@@ -12,6 +12,8 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Document
 @Data
 @AllArgsConstructor
@@ -20,10 +22,12 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 public class Review {
     @MongoId
     private String reviewId;
-    @DBRef
-    private User user;
+    // @DBRef
+    // private User user;
     @DBRef
     private FoodServiceProvider foodServiceProvider;
+    @DBRef
+    private Customer customer;
     private String reviewDescription;
     private Double reviewStars;
 }

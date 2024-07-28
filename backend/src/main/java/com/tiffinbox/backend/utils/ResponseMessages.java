@@ -22,5 +22,15 @@ public class ResponseMessages {
     public static final String APPROVE_PENDING_REQUEST = "Pending request approved.";
     public static final String REJECT_PENDING_REQUEST = "Pending request rejected.";
     public static final String REMOVE_USER_SUCCESSFUL = "User removed successfully.";
+
+    //Meal Menu Management
+    public static final String MEAL_ADD_SUCCESSFUL = "Meal added Successfully";
+    public static final String MEALS_RETRIEVED_SUCCESSFUL = "Meals retrieved Successfully";
+    public static final String MEAL_NOT_FOUND = "Cannot find this meal";
+    public static final String MEAL_UPDATE_SUCCESSFUL = "Meal updated Successfullly";
+    public static final String MEAL_RETRIEVED_SUCCESSFUL = "Meal retrieved Successfully";
+    public static final String MEAL_DELETE_SUCCESSFUL = "Meal deleted Successfully";
+    public static final String PROVIDERS_LIST_SUCCESSFUL = "Food Service Providers retrieved Successfully.";
+    public static final String PROVIDER_RETRIEVED_SUCCESSFUL = "Food Service Provider retrieved Successfully.";
     public static final String GET_ANALYSIS = "Analysis retrieved successfully.";
 }
