@@ -29,4 +29,6 @@ public class ResponseMessages {
     public static final String UPDATE_ORDER_STATUS = "Order status updated successfully.";
     public static final String UPDATE_ORDER_STATUS_ERROR = "Error updating order status.";
     public static final String OTP_SENT_VIA_EMAIL_SUCCESS = "OTP is sent successfully.";
+    public static final String OTP_VERIFIED = "OTP verified successfully.";
+    public static final String OTP_VERIFIED_FAILED = "OTP does not match.";
 }

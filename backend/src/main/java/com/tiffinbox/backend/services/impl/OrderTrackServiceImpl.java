@@ -7,6 +7,7 @@ package com.tiffinbox.backend.services.impl;
 import com.tiffinbox.backend.dto.AcceptedOrderListDTO;
 import com.tiffinbox.backend.dto.mappers.AcceptedOrderMapper;
 import com.tiffinbox.backend.dto.request.UpdateOrderRequest;
+import com.tiffinbox.backend.dto.request.VerifyOTPRequest;
 import com.tiffinbox.backend.dto.response.BasicResponse;
 import com.tiffinbox.backend.dto.response.ordertrack.GetAllAcceptedOrdersResponse;
 import com.tiffinbox.backend.exceptions.NotFoundException;
@@ -78,7 +79,7 @@ public class OrderTrackServiceImpl implements IOrderTrackService {
             order.setOTP(otp);
             orderRepository.save(order);
             String customerEmail = order.getCustomer().getEmail();
-            emailService.sendEmail(EmailType.DELIVERY_OTP, customerEmail, "Order Delivery - OTP Confirmation", "Your OTP is: " ,otp);
+            emailService.sendEmail(EmailType.DELIVERY_OTP, customerEmail, "Order Delivery - OTP Confirmation", "Your OTP is: ", otp);
             return BasicResponse.builder()
                     .success(true)
                     .timeStamp(LocalDateTime.now())
@@ -89,6 +90,35 @@ public class OrderTrackServiceImpl implements IOrderTrackService {
                     .success(false)
                     .timeStamp(LocalDateTime.now())
                     .message(ResponseMessages.UPDATE_ORDER_STATUS_ERROR)
+                    .build();
+        }
+    }
+
+    @Override
+    public BasicResponse verifyOTP(VerifyOTPRequest verifyOTPRequest, String orderId) {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+
+        if (!orderOptional.isPresent()) {
+            throw new NotFoundException(ResponseMessages.ORDER_NOT_FOUND);
+        }
+
+        Order order = orderOptional.get();
+        System.out.println("Printing otp: " + order.getOTP());
+        System.out.println("Printing request orp: " + verifyOTPRequest);
+        if (order.getOTP().equals(verifyOTPRequest.getOtp())) {
+            order.setOrderStatus(OrderStatus.DELIVERED);
+            orderRepository.save(order);
+
+            return BasicResponse.builder()
+                    .success(true)
+                    .timeStamp(LocalDateTime.now())
+                    .message(ResponseMessages.OTP_VERIFIED)
+                    .build();
+        } else {
+            return BasicResponse.builder()
+                    .success(false)
+                    .timeStamp(LocalDateTime.now())
+                    .message(ResponseMessages.OTP_VERIFIED_FAILED)
                     .build();
         }
     }
