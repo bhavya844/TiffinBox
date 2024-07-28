@@ -15,6 +15,7 @@ import OrderCartPage from "./pages/Order/OrderCartPage";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ViewProfile from "./pages/Profile/ViewProfile";
 import EditProfile from "./pages/Profile/EditProfile";
+import AcceptedOrders from "./pages/Order/AcceptedOrders";
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
           <Route path="/order-history" element={<OrderHistoryPage />} />
           <Route path="/order-details" element={<OrderDetailsPage />} />
           <Route path="/order-cart" element={<OrderCartPage />} />
+          <Route path="/accepted-orders" element={<AcceptedOrders />} />
           {/* profile routes ends */}
           <Route path="/view-profile" element={<ViewProfile />} />
           <Route path="/edit-profile" element={<EditProfile />} />
