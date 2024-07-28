@@ -2,7 +2,7 @@ package com.tiffinbox.backend.services.impl;
 
 import com.tiffinbox.backend.dto.FoodProviderResponseDTO;
 import com.tiffinbox.backend.dto.MealResponseDTO;
-import com.tiffinbox.backend.dto.request.SearchMealRequest;
+import com.tiffinbox.backend.dto.request.SearchFoodProviderRequest;
 import com.tiffinbox.backend.dto.response.mealmenumanagement.GetASingleFoodProvider;
 import com.tiffinbox.backend.dto.response.mealmenumanagement.GetASingleMealResponse;
 import com.tiffinbox.backend.dto.response.mealmenumanagement.GetFoodProviderListResponse;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +29,22 @@ public class CustomerServiceImpl implements ICustomerService {
     private final MealRepository mealRepository;
     private final UserRepository userRepository;
     @Override
-    public GetFoodProviderListResponse getFoodProviders(String city) {
-        List<FoodProviderResponseDTO> foodProviderResponseDTOList = sellerRepository.findByCity(city).stream().map(this::convertToFoodProviderDTO).toList();
+    public GetFoodProviderListResponse getFoodProviders(SearchFoodProviderRequest searchFoodProviderRequest) {
+
+        List<FoodProviderResponseDTO> foodProviderResponseDTOList;
+
+        String city = searchFoodProviderRequest.getCity();
+        if(city == null || city == ""){
+            foodProviderResponseDTOList = sellerRepository.findAll().stream().map(this::convertToFoodProviderDTO).toList();
+            System.out.println(foodProviderResponseDTOList);
+            int end = Math.min(foodProviderResponseDTOList.size(), 10);
+            foodProviderResponseDTOList = foodProviderResponseDTOList.subList(0, end);
+        }else{
+            foodProviderResponseDTOList = sellerRepository.findByCity(city).stream().map(this::convertToFoodProviderDTO)
+                    .filter(foodProviderResponseDTO -> foodProviderResponseDTO.getCuisineType().contains(searchFoodProviderRequest.getCuisineType()))
+                    .toList();
+        }
+
         return GetFoodProviderListResponse.builder()
                 .success(true)
                 .message(ResponseMessages.PROVIDERS_LIST_SUCCESSFUL)
@@ -55,21 +68,18 @@ public class CustomerServiceImpl implements ICustomerService {
 
 
     @Override
-    public GetMealListResponse getMeals(String userEmail, SearchMealRequest searchMealRequest) {
-        User user = userRepository.findByEmail(userEmail);
+    public GetMealListResponse getMeals(String foodServiceProviderId) {
+        FoodServiceProvider foodServiceProvider = sellerRepository.findSellerByFoodServiceProviderId(foodServiceProviderId);
+        System.out.println(foodServiceProvider);
+        User user = userRepository.findByFoodServiceProvider(foodServiceProvider);
         System.out.println(user);
         List<Meal> listOfMeals = mealRepository.findByUser(user);
         System.out.println(listOfMeals);
 
-        String requiredMealName = searchMealRequest.getMealName();
-        String requiredMealType = searchMealRequest.getMealType();
-        String requiredCuisineType = searchMealRequest.getCuisineType();
+
         List<MealResponseDTO> mealResponseList = listOfMeals
                 .stream()
                 .map(this::convertToMealResponse)
-                .filter(meal -> (requiredMealName == "" || meal.getMealName().contains(requiredMealName))
-                        && (requiredMealType == "" || meal.getMealType().equalsIgnoreCase(requiredMealName))
-                        && (requiredCuisineType == "" || meal.getCuisineType().equalsIgnoreCase(requiredCuisineType)))
                 .toList();
 
         return GetMealListResponse.builder()
@@ -99,6 +109,7 @@ public class CustomerServiceImpl implements ICustomerService {
         foodProviderResponseDTO.setFoodServiceProviderId(foodServiceProvider.getFoodServiceProviderId());
         foodProviderResponseDTO.setFirstName(foodServiceProvider.getFirstName());
         foodProviderResponseDTO.setLastName(foodServiceProvider.getLastName());
+        foodProviderResponseDTO.setCuisineType(foodServiceProvider.getCuisineType());
         foodProviderResponseDTO.setCompanyName(foodServiceProvider.getCompanyName());
         foodProviderResponseDTO.setCity(foodServiceProvider.getCity());
         foodProviderResponseDTO.setContact(foodServiceProvider.getContact());
