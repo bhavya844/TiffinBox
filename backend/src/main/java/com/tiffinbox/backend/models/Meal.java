@@ -12,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = {"user"})
-@Document(collection = "meals")
 public class Meal {
     @MongoId
     private String mealId;
