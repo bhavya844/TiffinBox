@@ -13,6 +13,9 @@ import OrderDetailsPage from "./pages/Order/OrderDetailsPage";
 import ScrollToTop from "./components/shared/ScrollToTop";
 import OrderCartPage from "./pages/Order/OrderCartPage";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
+import ViewProfile from "./pages/Profile/ViewProfile";
+import EditProfile from "./pages/Profile/EditProfile";
+
 
 function App() {
   return (
@@ -45,6 +48,11 @@ function App() {
           <Route path="/order-history" element={<OrderHistoryPage />} />
           <Route path="/order-details" element={<OrderDetailsPage />} />
           <Route path="/order-cart" element={<OrderCartPage />} />
+          {/* profile routes ends */}
+          <Route path="/view-profile" element={<ViewProfile />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+
+
         </Routes>
         <Footer />
       </Router>
