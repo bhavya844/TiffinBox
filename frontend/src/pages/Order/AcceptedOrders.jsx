@@ -1,67 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useOrderTrackContext } from "../../context/OrderTrackContext/OrderTrackContext";
 
 function AcceptedOrders() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const {acceptedOrderList, getAllAcceptedOrders} = useOrderTrackContext();
 
-  const tableRows = [
-    {
-      no: 1,
-      orderId: 123,
-      customerName: "Jon",
-      currentStatus: "In-Preparation",
-      view: "View",
-      updateStatus: "Update",
-    },
-    {
-      no: 2,
-      orderId: 234,
-      customerName: "Sansa",
-      currentStatus: "In-Preparation",
-      view: "View",
-      updateStatus: "Update",
-    },
-    {
-      no: 3,
-      orderId: 345,
-      customerName: "Arya",
-      currentStatus: "Delivered",
-      view: "View",
-      updateStatus: "Update",
-    },
-    {
-      no: 4,
-      orderId: 456,
-      customerName: "Ned",
-      currentStatus: "In-Preparation",
-      view: "View",
-      updateStatus: "Update",
-    },
-    {
-      no: 5,
-      orderId: 567,
-      customerName: "Bran",
-      currentStatus: "Delivered",
-      view: "View",
-      updateStatus: "Update",
-    },
-  ];
-
+  
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredRows = tableRows.filter(
+  const filteredRows = acceptedOrderList.filter(
     (item) =>
       item.orderId.toString().includes(searchQuery) ||
       item.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.currentStatus.toLowerCase().includes(searchQuery.toLowerCase())
+      item.currentOrderStatus.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleViewClick = (item) => {
     navigate("/view-detailed-order", { state: item });
   };
+
+  useEffect(() => {
+    getAllAcceptedOrders();
+  }, [])
+  
 
   return (
     <div className="container mx-auto px-6 py-6">
@@ -109,18 +74,18 @@ function AcceptedOrders() {
               </thead>
               <tbody>
                 {filteredRows.map((item) => (
-                  <tr key={item.no}>
+                  <tr key={item.orderId}>
                     <td>{item.orderId}</td>
                     <td>{item.customerName}</td>
                     <td>
                       <div className="flex">
-                        {item.currentStatus === "In-Preparation" ? (
+                        {item.currentOrderStatus === "IN_PREPARATION" ? (
                           <span className="badge badge-secondary text-[8px] md:text-sm md:font-light font-bold">
-                            {item.currentStatus}
+                            {item.currentOrderStatus}
                           </span>
                         ) : (
                           <span className="badge badge-success text-[8px] font-bold md:text-sm md:font-light">
-                            {item.currentStatus}
+                            {item.currentOrderStatus}
                           </span>
                         )}
                       </div>
@@ -130,7 +95,7 @@ function AcceptedOrders() {
                         className="btn btn-neutral"
                         onClick={() => handleViewClick(item)}
                       >
-                        {item.view}
+                        View
                       </button>
                     </td>
                     <td>
@@ -140,7 +105,7 @@ function AcceptedOrders() {
                           role="button"
                           className="btn btn-accent m-1"
                         >
-                          {item.updateStatus}
+                          Update
                         </div>
                         <ul
                           tabIndex={0}
@@ -149,7 +114,7 @@ function AcceptedOrders() {
                           <li>
                             <a
                               onClick={(item) =>
-                                (item.currentStatus = "In-Preparation")
+                                (item.currentOrderStatus = "IN_PREPARATION")
                               }
                             >
                               In-Preparation

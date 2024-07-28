@@ -16,7 +16,7 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ViewProfile from "./pages/Profile/ViewProfile";
 import EditProfile from "./pages/Profile/EditProfile";
 import AcceptedOrders from "./pages/Order/AcceptedOrders";
-
+import { OrderTrackAppProvider } from "./context/OrderTrackContext/OrderTrackContext";
 
 function App() {
   return (
@@ -49,12 +49,22 @@ function App() {
           <Route path="/order-history" element={<OrderHistoryPage />} />
           <Route path="/order-details" element={<OrderDetailsPage />} />
           <Route path="/order-cart" element={<OrderCartPage />} />
-          <Route path="/accepted-orders" element={<AcceptedOrders />} />
-          {/* profile routes ends */}
+          {/* order track routes starts */}
+          <Route
+            path="/order-track/*"
+            element={
+              <OrderTrackAppProvider>
+                <Routes>
+                  <Route path="/accepted-orders" element={<AcceptedOrders />} />
+                </Routes>
+              </OrderTrackAppProvider>
+            }
+          />
+          {/* order track routes ends */}
+          {/* profile routes starts */}
           <Route path="/view-profile" element={<ViewProfile />} />
           <Route path="/edit-profile" element={<EditProfile />} />
-
-
+          {/* profile routes ends */}
         </Routes>
         <Footer />
       </Router>
