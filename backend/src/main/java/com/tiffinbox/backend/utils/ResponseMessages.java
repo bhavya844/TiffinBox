@@ -10,6 +10,10 @@ public class ResponseMessages {
     public static final String PSWD_MISS_MATCH = "Password miss-match for the registered user!";
     public static final String ACCOUNT_NOT_VERIFIED = "Account is Not Verified from the Admin side, Please Contact Admin for Verification.";
     public static final String USER_NOT_FOUND_TOKEN = "User not Found for the corresponding token!";
+    public static final String ORDER_NOT_FOUND = "No such order exists!";
+    public static final String ALREADY_SUBSCRIBED = "User already subscribed to another subscription!";
+    public static final String MEAL_NOT_FOUND = "No such meal exists!";
+    public static final String INVALID_SUBSCRIPTION = "Invalid subscription type.";
 
     // Admin Service Response
     public static final String FOOD_SERVICE_PROVIDER_NOT_FOUND = "Food service provider does not exist";
@@ -28,4 +32,5 @@ public class ResponseMessages {
     public static final String MEAL_DELETE_SUCCESSFUL = "Meal deleted Successfully";
     public static final String PROVIDERS_LIST_SUCCESSFUL = "Food Service Providers retrieved Successfully.";
     public static final String PROVIDER_RETRIEVED_SUCCESSFUL = "Food Service Provider retrieved Successfully.";
+    public static final String GET_ANALYSIS = "Analysis retrieved successfully.";
 }

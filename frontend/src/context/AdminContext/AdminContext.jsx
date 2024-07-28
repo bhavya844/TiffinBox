@@ -6,6 +6,7 @@ import {
   GET_ALL_USER_PENDING_REQUESTS,
   GET_ALL_USERS,
   GET_SINGLE_PENDING_REQUEST,
+  GET_ANALYSIS
 } from "./action";
 
 const API = axios.create({
@@ -19,12 +20,14 @@ const backendURLs = {
   REJECT_PENDING_REQUEST_URL: `reject`,
   GET_ALL_USERS_URL: `getAllUsers`,
   REMOVE_USER_URL: `removeUser`,
+  GET_ANALYSIS_URL: `getAnalysis`
 };
 
 const initialState = {
   userPendingRequests: [],
   singleUserDetails: null,
   userList: [],
+  analysisDetails: null,
 };
 
 const AppContext = createContext();
@@ -101,6 +104,18 @@ const AdminAppProvider = ({ children }) => {
       });
   };
 
+  const getAnalysis = async () => {
+    await API.get(backendURLs.GET_ANALYSIS_URL)
+      .then((res) => {
+        console.log(res.data)
+        dispatch({ type: GET_ANALYSIS, payload: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -111,6 +126,7 @@ const AdminAppProvider = ({ children }) => {
         rejectPendingRequest,
         getAllUsers,
         removeUser,
+        getAnalysis,
       }}
     >
       {children}

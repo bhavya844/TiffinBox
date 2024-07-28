@@ -1,6 +1,5 @@
 package com.tiffinbox.backend.dto.response;
 
-import com.tiffinbox.backend.utils.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,12 +11,15 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class LoginResponse extends BasicResponse{
+public class ViewProfileResponseCustomer extends BasicResponse{
     private String firstname;
     private String lastname;
-    private UserRole userRole;
-    private String userId;
-    private String token;
-    private String refreshToken;
+    private String email;
+    private String profileImage;
+    private String contact;
+    private String streetAddress;
+    private String city;
+    private String province;
+    private String postalCode;
 
 }

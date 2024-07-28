@@ -8,6 +8,14 @@ import PendingRequests from "./pages/Admin/PendingRequests";
 import { AdminAppProvider } from "./context/AdminContext/AdminContext";
 import SinglePendingRequest from "./pages/Admin/SinglePendingRequest";
 import UserList from "./pages/Admin/UserList";
+import OrderHistoryPage from "./pages/Order/OrderHistoryPage";
+import OrderDetailsPage from "./pages/Order/OrderDetailsPage";
+import ScrollToTop from "./components/shared/ScrollToTop";
+import OrderCartPage from "./pages/Order/OrderCartPage";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import ViewProfile from "./pages/Profile/ViewProfile";
+import EditProfile from "./pages/Profile/EditProfile";
+
 import { FoodProviderMealAppProvider } from "./context/FoodProviderMealContext/FoodProviderMealContext";
 import MealMenuManagement from "./pages/FoodProvider/MealMenuManagement";
 import AddAMeal from "./pages/FoodProvider/AddAMeal";
@@ -23,17 +31,18 @@ function App() {
     <main data-theme="bumblebee">
       <Router>
         <Navbar />
+        <ScrollToTop />
         <Routes>
           <Route exact path="/" element={<LandingPage />} />
           <Route path="/contact-us" element={<ContactUsPage />} />
           <Route path="/faqs" element={<FAQPage />} />
-
           {/* admin routes starts */}
           <Route
             path="/admin/*"
             element={
               <AdminAppProvider>
                 <Routes>
+                  <Route path="dashboard" element={<AdminDashboard />} />
                   <Route path="pending-request" element={<PendingRequests />} />
                   <Route
                     path="single-pending-request/:foodServiceProviderId"
@@ -45,6 +54,14 @@ function App() {
             }
           />
           {/* admin routes ends */}
+          <Route path="/order-history" element={<OrderHistoryPage />} />
+          <Route path="/order-details" element={<OrderDetailsPage />} />
+          <Route path="/order-cart" element={<OrderCartPage />} />
+          {/* profile routes ends */}
+          <Route path="/view-profile" element={<ViewProfile />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+
+
 
           {/*Food Service Provider routes starts */}
           <Route

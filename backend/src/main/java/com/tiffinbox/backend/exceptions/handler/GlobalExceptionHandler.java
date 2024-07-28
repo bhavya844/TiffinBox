@@ -1,6 +1,7 @@
 package com.tiffinbox.backend.exceptions.handler;
 
 import com.tiffinbox.backend.dto.response.BasicResponse;
+import com.tiffinbox.backend.exceptions.AlreadySubscribedException;
 import com.tiffinbox.backend.exceptions.ApiRequestException;
 import com.tiffinbox.backend.exceptions.NotFoundException;
 import com.tiffinbox.backend.exceptions.NotVerifiedException;
@@ -79,7 +80,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<BasicResponse>generalExceptionResponse(Exception exception){
+    public ResponseEntity<BasicResponse> generalExceptionResponse(Exception exception){
         BasicResponse response = BasicResponse.builder()
                 .message(exception.getMessage())
                 .success(false)
@@ -89,4 +90,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
+    @ExceptionHandler(AlreadySubscribedException.class)
+    public ResponseEntity<BasicResponse> alreadySubscribedExceptionHandler(AlreadySubscribedException exception){
+        BasicResponse response = BasicResponse.builder()
+                .message(exception.getMessage())
+                .success(false)
+                .timeStamp(LocalDateTime.now())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 }
