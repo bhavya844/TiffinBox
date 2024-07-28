@@ -22,7 +22,7 @@ public class ThymeleafConfiguration {
     public ClassLoaderTemplateResolver templateResolver() {
         ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
 
-        resolver.setPrefix("mail-templates/"); // Location of thymeleaf template
+        resolver.setPrefix("templates/"); // Location of thymeleaf template
         resolver.setCacheable(false); // Turning of cache to facilitate template changes
         resolver.setSuffix(".html"); // Template file extension
         resolver.setTemplateMode("HTML"); // Template Type

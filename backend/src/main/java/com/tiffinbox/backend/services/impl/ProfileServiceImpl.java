@@ -96,12 +96,10 @@ public class ProfileServiceImpl implements IProfileService {
         customer.setFirstName(signUpRequestCustomer.getFirstname());
         customer.setLastName(signUpRequestCustomer.getLastname());
         customer.setContactNumber(signUpRequestCustomer.getContactNumber());
-        customer.setStreetAddress(signUpRequestCustomer.getStreetNumber() + ","
-                + signUpRequestCustomer.getStreetName() + ","
-                + signUpRequestCustomer.getApartmentNumber());
-        customer.setCity(signUpRequestCustomer.getCityName());
-        customer.setProvince(signUpRequestCustomer.getProvinceName());
-        customer.setPostalCode(signUpRequestCustomer.getZipCode());
+        customer.setStreetAddress(signUpRequestCustomer.getStreetAddress());
+        customer.setCity(signUpRequestCustomer.getCity());
+        customer.setProvince(signUpRequestCustomer.getProvince());
+        customer.setPostalCode(signUpRequestCustomer.getPostalCode());
         customerRepository.save(customer);
         basicResponse.setTimeStamp(LocalDateTime.now());
         basicResponse.setSuccess(true);
@@ -121,14 +119,14 @@ public class ProfileServiceImpl implements IProfileService {
         }
         seller.setFirstName(signUpRequestSeller.getFirstname());
         seller.setLastName(signUpRequestSeller.getLastname());
-        seller.setContact(signUpRequestSeller.getContactNumber());
+        seller.setContact(signUpRequestSeller.getContact());
         seller.setCompanyAddress(signUpRequestSeller.getCompanyAddress());
         seller.setCompanyName(signUpRequestSeller.getCompanyName());
-        seller.setCity(signUpRequestSeller.getCityName());
-        seller.setProvince(signUpRequestSeller.getProvinceName());
-        seller.setCompanyPostalCode(signUpRequestSeller.getCompanyZipCode());
-        seller.setCuisineType(signUpRequestSeller.getCuisine());
-        seller.setLicenseNumber(signUpRequestSeller.getCfcrNumber());
+        seller.setCity(signUpRequestSeller.getCity());
+        seller.setProvince(signUpRequestSeller.getProvince());
+        seller.setCompanyPostalCode(signUpRequestSeller.getCompanyPostalCode());
+        seller.setCuisineType(signUpRequestSeller.getCuisineType());
+        seller.setLicenseNumber(signUpRequestSeller.getLicenseNumber());
         sellerRepository.save(seller);
         basicResponse.setTimeStamp(LocalDateTime.now());
         basicResponse.setSuccess(true);
