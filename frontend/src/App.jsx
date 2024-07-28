@@ -9,15 +9,12 @@ import PendingRequests from "./pages/Admin/PendingRequests";
 import { AdminAppProvider } from "./context/AdminContext/AdminContext";
 import SinglePendingRequest from "./pages/Admin/SinglePendingRequest";
 import UserList from "./pages/Admin/UserList";
-<<<<<<< Updated upstream
 import OrderHistoryPage from "./pages/Order/OrderHistoryPage";
 import OrderDetailsPage from "./pages/Order/OrderDetailsPage";
 import ScrollToTop from "./components/shared/ScrollToTop";
 import OrderCartPage from "./pages/Order/OrderCartPage";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
-=======
 import SubmitReview from "./components/SubmitReview";
->>>>>>> Stashed changes
 
 function App() {
   return (
@@ -29,12 +26,9 @@ function App() {
           <Route exact path="/" element={<LandingPage />} />
           <Route path="/contact-us" element={<ContactUsPage />} />
           <Route path="/faqs" element={<FAQPage />} />
-<<<<<<< Updated upstream
-=======
           <Route path="/all-reviews" element={<AllReviewsPage />} />
           <Route path="//add-review" element={<SubmitReview />} />
 
->>>>>>> Stashed changes
           {/* admin routes starts */}
           <Route
             path="/admin/*"
