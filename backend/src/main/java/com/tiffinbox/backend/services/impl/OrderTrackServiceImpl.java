@@ -10,6 +10,7 @@ import com.tiffinbox.backend.dto.request.UpdateOrderRequest;
 import com.tiffinbox.backend.dto.request.VerifyOTPRequest;
 import com.tiffinbox.backend.dto.response.BasicResponse;
 import com.tiffinbox.backend.dto.response.ordertrack.GetAllAcceptedOrdersResponse;
+import com.tiffinbox.backend.dto.response.ordertrack.GetOrderStatusResponse;
 import com.tiffinbox.backend.exceptions.NotFoundException;
 import com.tiffinbox.backend.models.Order;
 import com.tiffinbox.backend.models.User;
@@ -103,8 +104,7 @@ public class OrderTrackServiceImpl implements IOrderTrackService {
         }
 
         Order order = orderOptional.get();
-        System.out.println("Printing otp: " + order.getOTP());
-        System.out.println("Printing request orp: " + verifyOTPRequest);
+
         if (order.getOTP().equals(verifyOTPRequest.getOtp())) {
             order.setOrderStatus(OrderStatus.DELIVERED);
             orderRepository.save(order);
@@ -121,5 +121,23 @@ public class OrderTrackServiceImpl implements IOrderTrackService {
                     .message(ResponseMessages.OTP_VERIFIED_FAILED)
                     .build();
         }
+    }
+
+    @Override
+    public GetOrderStatusResponse getOrderStatus(String orderId) {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+
+        if (!orderOptional.isPresent()) {
+            throw new NotFoundException(ResponseMessages.ORDER_NOT_FOUND);
+        }
+
+        Order order = orderOptional.get();
+
+        return GetOrderStatusResponse.builder()
+                .success(true)
+                .timeStamp(LocalDateTime.now())
+                .message(ResponseMessages.ORDER_STATUS_RETRIEVED)
+                .orderStatus(order.getOrderStatus())
+                .build();
     }
 }

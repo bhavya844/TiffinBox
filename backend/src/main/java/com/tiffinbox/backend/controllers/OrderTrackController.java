@@ -8,6 +8,7 @@ import com.tiffinbox.backend.dto.request.UpdateOrderRequest;
 import com.tiffinbox.backend.dto.request.VerifyOTPRequest;
 import com.tiffinbox.backend.dto.response.BasicResponse;
 import com.tiffinbox.backend.dto.response.ordertrack.GetAllAcceptedOrdersResponse;
+import com.tiffinbox.backend.dto.response.ordertrack.GetOrderStatusResponse;
 import com.tiffinbox.backend.services.IOrderTrackService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -38,10 +39,11 @@ public class OrderTrackController {
 
     @PostMapping(path = "/verifyOTP/{orderId}")
     public ResponseEntity<BasicResponse> verifyOTP(@RequestBody VerifyOTPRequest verifyOTPRequest, @PathVariable String orderId) {
-        System.out.println("Printing verify otp: " + verifyOTPRequest);
         return new ResponseEntity<>(orderTrackService.verifyOTP(verifyOTPRequest, orderId), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/getOrderStatus{orderId}")
-    public ResponseEntity<>
+    @GetMapping(path = "/getOrderStatus/{orderId}")
+    public ResponseEntity<GetOrderStatusResponse> getOrderStatus(@PathVariable String orderId) {
+        return new ResponseEntity<>(orderTrackService.getOrderStatus(orderId), HttpStatus.OK);
+    }
 }
