@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 
 const SubmitReview = () => {
+  const location = useLocation();
+  const { foodProviderId } = location.state;
+  console.log(foodProviderId)
   const navigate = useNavigate();
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
@@ -15,7 +19,7 @@ const SubmitReview = () => {
     setReview(e.target.value);
   };
 
-  const submitButtonClick = (e) => {
+  const submitButtonClick = async (e) => {
     e.preventDefault();
 
     if (rating === 0 || review.trim() === '') {
@@ -34,22 +38,43 @@ const SubmitReview = () => {
       return;
     }
 
-    toast.success('Your review has been successfully submitted.', {
-      position: "top-center",
-      duration: 2000
-    });
+    
+    const reviewData = {
+      reviewDescription: review,
+      reviewStars: rating,
+      foodServiceProviderId: foodProviderId
+    };
+    console.log(reviewData)
+    try {
+      const abc= await axios.post('http://localhost:8080/api/reviews/addReview', reviewData,{
+        headers:{
+          Authorization:'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIxOTE1MzYsImV4cCI6MTcyMjE5NTEzNn0.cZntchwribeWj23_F4l16mdUbn_x08WnBhCxFO1JY8w'
+        }
+      });
+      console.log(abc)
+      toast.success('Your review has been successfully submitted.', {
+        position: "top-center",
+        duration: 2000
+      });
 
-    // Navigate to home page after the toast duration
-    setTimeout(() => {
-      navigate('/');
-    }, 2000); // 2000 ms corresponds to the toast duration
+      
+      setTimeout(() => {
+        navigate('/');
+      }, 2000); 
+    } catch (error) {
+      console.error('Failed to submit review:', error);
+      toast.error('Failed to submit the review. Please try again.', {
+        position: "top-center",
+        duration: 2000
+      });
+    }
   };
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-5">
       <div className="max-w-2xl w-full bg-white p-6 rounded-lg shadow-md">
         <form onSubmit={submitButtonClick} className="space-y-6">
-          <h1 className="text-2xl font-bold text-gray-800">Give your review for Kathiyawadi Tiffin</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Give your review for Provider</h1>
           <div>
             <label className="block mb-2 text-gray-700 font-semibold">Select a Rating:</label>
             <div className="flex">

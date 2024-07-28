@@ -5,7 +5,7 @@ import HowItWorks from "../components/HowItWorks";
 import AboutUs from "../components/AboutUs";
 import WhyChooseUs from "../components/WhyChooseUs";
 import Testimonials from "../components/Testimonials";
-import ReviewsManagement from "../components/ReviewsManagement";
+// import ReviewsManagement from "../components/ReviewsManagement";
 
 
 
@@ -18,7 +18,6 @@ function LandingPage() {
       <AboutUs />
       <WhyChooseUs />
       <Testimonials />
-      <ReviewsManagement />
     </div>
   );
 }

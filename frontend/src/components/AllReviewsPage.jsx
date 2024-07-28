@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-
 function AllReviewsPage() {
-  const {foodProviderId} = useParams();
-  console.log(foodProviderId)
+  const { foodProviderId } = useParams();
   const [reviews, setReviews] = useState([]);
+  const [expandedReviews, setExpandedReviews] = useState({});
   const [averageRating, setAverageRating] = useState(0);
+
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/reviews/foodServiceProvider/${foodProviderId}`,{
-            headers:{
-                Authorization:`Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIxNjg5NTEsImV4cCI6MTcyMjE3MjU1MX0.idw8Om5cYMuGT980oFQqTXu4vwsRgMmlzfJiG7-obvc`
-            }
+        const response = await axios.get(`http://localhost:8080/api/reviews/foodServiceProvider/${foodProviderId}`, {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIxOTE1MzYsImV4cCI6MTcyMjE5NTEzNn0.cZntchwribeWj23_F4l16mdUbn_x08WnBhCxFO1JY8w`
+          }
         });
         console.log('Response data:', response.data);
 
@@ -38,28 +38,40 @@ function AllReviewsPage() {
     };
 
     fetchReviews();
-  }, []); // Only run once, since foodServiceProviderId is constant
+  }, [foodProviderId]);  // Dependency on foodProviderId to re-fetch if it changes
+
+  const toggleReview = index => {
+    setExpandedReviews(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
 
   return (
-    <div className="min-h-screen bg-white p-5">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow-lg col-span-1 md:col-span-2" style={{ width: '600px' }}>
+    <div className="min-h-screen bg-gray-100 p-5 flex justify-center items-center">
+      <div className="max-w-4xl w-full bg-white rounded-lg shadow-xl overflow-hidden">
+        <div className="p-4">
           <h2 className="text-2xl font-bold text-center mb-4">All Reviews for Provider</h2>
           {reviews.length === 0 ? (
             <p className="text-center text-gray-600">No reviews available</p>
           ) : (
             reviews.map((review, index) => (
-              <div key={index} className="border-b border-gray-200 last:border-b-0 py-4" style={{ height: '150px', overflow: 'hidden' }}>
+              <div key={index} className="border-b border-gray-300 last:border-b-0 py-4">
                 <div className="flex items-center space-x-4">
-                  <img src={review.user.image} alt={review.user.name} className="w-12 h-12 rounded-full object-cover" />
+                  <img src={review.user.image || "path_to_default_image.jpg"} alt={review.user.name} className="w-12 h-12 rounded-full object-cover" />
                   <div className="flex-grow">
                     <h3 className="text-lg font-semibold">{review.user.name}</h3>
-                    <div className="text-yellow-500">
+                    <div className="flex space-x-1">
                       {[...Array(5)].map((_, i) => (
                         <span key={i} className={i < review.rating ? 'text-yellow-500' : 'text-gray-400'}>★</span>
                       ))}
                     </div>
-                    <p className="mt-2 text-gray-600 truncate">{review.text}</p>
+                    <p className={`mt-2 text-gray-600 ${expandedReviews[index] ? '' : 'truncate'}`}>
+                      {review.text}
+                    </p>
+                    <button className="text-indigo-600 hover:text-indigo-800" onClick={() => toggleReview(index)}>
+                      {expandedReviews[index] ? 'See less' : 'See more'}
+                    </button>
                   </div>
                 </div>
               </div>
