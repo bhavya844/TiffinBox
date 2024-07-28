@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function ReviewsManagement() {
+function ReviewsManagement({foodProviderId}) {
+  console.log(foodProviderId);
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([
     {
       user: 'User 1',
       rating: 4,
-      text: 'Lorem ipsum dolor asdg auysdg ayus dasd ashd aosgdoausyg dauys gduya gsdoauy gsod a. asd asdg aiusd as..',
-      image: 'https://example.com/user1.jpg',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      image: 'https://via.placeholder.com/150',
     },
     {
       user: 'User 2',
       rating: 3,
-      text: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ...',
-      image: 'https://example.com/user2.jpg',
+      text: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      image: 'https://via.placeholder.com/150',
     },
   ]);
   const [ratingDistribution, setRatingDistribution] = useState([
@@ -31,7 +32,7 @@ function ReviewsManagement() {
   };
 
   const handleViewAllReviewsClick = () => {
-    navigate('/all-reviews');
+    navigate(`/all-reviews/${foodProviderId}`);
   };
 
   const handleAddReviewClick = () => {
@@ -62,16 +63,16 @@ function ReviewsManagement() {
                   {5 - index} {5 - index === 1 ? 'star' : 'stars'}
                 </div>
                 <div className="flex-1 ml-4 h-3 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="bg-yellow-500 h-full" style={{ width: `${(item.value / 100) * 100}%` }}></div>
+                  <div className="bg-yellow-500 h-full" style={{ width: `${item.value}%` }}></div>
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow-lg col-span-1 md:col-span-2" style={{ width: '600px' }}>
+        <div className="bg-white p-4 rounded-lg shadow-lg col-span-1 md:col-span-2" style={{ width: '100%' }}>
           <h2 className="text-2xl font-bold text-center mb-4">All Reviews</h2>
           {reviews.map((review, index) => (
-            <div key={index} className="border-b border-gray-200 last:border-b-0 py-4" style={{ height: '150px', overflow: 'hidden' }}>
+            <div key={index} className="border-b border-gray-200 last:border-b-0 py-4">
               <div className="flex items-center space-x-4">
                 <img src={review.image} alt={review.user} className="w-12 h-12 rounded-full object-cover" />
                 <div className="flex-grow">

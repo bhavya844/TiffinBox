@@ -38,7 +38,7 @@ function App() {
           <Route exact path="/" element={<LandingPage />} />
           <Route path="/contact-us" element={<ContactUsPage />} />
           <Route path="/faqs" element={<FAQPage />} />
-          <Route path="/all-reviews" element={<AllReviewsPage />} />
+          <Route path="/all-reviews/:foodProviderId" element={<AllReviewsPage />} />
           <Route path="//add-review" element={<SubmitReview />} />
 
           {/* admin routes starts */}

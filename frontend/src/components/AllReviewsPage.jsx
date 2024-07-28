@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
-// axios.defaults.baseURL = 'http://localhost:8080';
 
-function ReviewsManagement() {
-  const foodServiceProviderId = '66a42535048a7362220864d6'; // Static ID for demonstration
+function AllReviewsPage() {
+  const {foodProviderId} = useParams();
+  console.log(foodProviderId)
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
-
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/reviews/foodServiceProvider/${foodServiceProviderId}`,{
+        const response = await axios.get(`http://localhost:8080/api/reviews/foodServiceProvider/${foodProviderId}`,{
             headers:{
-                Authorization:`Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIxNjQ5NzksImV4cCI6MTcyMjE2ODU3OX0.N3YwLal-5gSFipMFc_q72ldD1O7RCC8V3dwIFJqQAKE`
+                Authorization:`Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIxNjg5NTEsImV4cCI6MTcyMjE3MjU1MX0.idw8Om5cYMuGT980oFQqTXu4vwsRgMmlzfJiG7-obvc`
             }
         });
         console.log('Response data:', response.data);
@@ -22,7 +22,7 @@ function ReviewsManagement() {
           ...review,
           user: {
             name: `${review.firstName} ${review.lastName}`,
-            image: 'https://via.placeholder.com/150' // Assuming default image for now
+            image: ''
           },
           text: review.reviewDescription,
           rating: review.reviewStars
@@ -44,7 +44,7 @@ function ReviewsManagement() {
     <div className="min-h-screen bg-white p-5">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-white p-4 rounded-lg shadow-lg col-span-1 md:col-span-2" style={{ width: '600px' }}>
-          <h2 className="text-2xl font-bold text-center mb-4">All Reviews for Provider {foodServiceProviderId}</h2>
+          <h2 className="text-2xl font-bold text-center mb-4">All Reviews for Provider</h2>
           {reviews.length === 0 ? (
             <p className="text-center text-gray-600">No reviews available</p>
           ) : (
@@ -71,4 +71,4 @@ function ReviewsManagement() {
   );
 }
 
-export default ReviewsManagement;
+export default AllReviewsPage;
