@@ -35,4 +35,5 @@ public class Order {
     private LocalDateTime orderDate;
     @Enumerated(EnumType.STRING)
     private OrderType orderType;
+    private String OTP;
 }
