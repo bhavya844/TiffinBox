@@ -27,7 +27,7 @@ const AppContext = createContext();
 
 const CustomerMealAppProvider = ({children}) => {
     const [state, dispatch] = useReducer(reducer,initialState);
-    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIxOTE1MzYsImV4cCI6MTcyMjE5NTEzNn0.cZntchwribeWj23_F4l16mdUbn_x08WnBhCxFO1JY8w"
+    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lLnNtaXRoQGZtYWlsLmNvbSIsImlhdCI6MTcyMjIyMTYyOSwiZXhwIjoxNzIyMjI1MjI5fQ.q3z1mhVdUzeIjipCjJkpc6MCT2w9ZYvJ436r5gAd-Do"
     const getAllFoodServiceProvider = async () => {
         await API.get(`${backendURLs.GET_ALL_FOOD_SERVICE_PROVIDER_URL}`,{
             headers:{

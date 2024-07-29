@@ -2,9 +2,10 @@ package com.tiffinbox.backend.configurations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tiffinbox.backend.exceptions.ApiRequestException;
+import com.tiffinbox.backend.exceptions.ExpiredJwtTokenException;
 import com.tiffinbox.backend.services.JwtService;
 import com.tiffinbox.backend.services.impl.UserDetailsServiceImpl;
+import com.tiffinbox.backend.utils.ResponseMessages;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,9 +56,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         catch (Exception e){
 //            e.printStackTrace();
-            ApiRequestException ApiRequestException = new ApiRequestException(e.getMessage());
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            response.getWriter().write(convertObjectToJson(ApiRequestException));
+            ExpiredJwtTokenException exception = new ExpiredJwtTokenException(ResponseMessages.TOKEN_Expired);
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.getWriter().write(convertObjectToJson(exception.getLocalizedMessage()));
 
         }
     }

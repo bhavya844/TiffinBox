@@ -10,6 +10,7 @@ public class ResponseMessages {
     public static final String PSWD_MISS_MATCH = "Password miss-match for the registered user!";
     public static final String ACCOUNT_NOT_VERIFIED = "Account is Not Verified from the Admin side, Please Contact Admin for Verification.";
     public static final String USER_NOT_FOUND_TOKEN = "User not Found for the corresponding token!";
+    public static final String TOKEN_Expired = "Session timed out Please Login Again.";
     public static final String ORDER_NOT_FOUND = "No such order exists!";
     public static final String ALREADY_SUBSCRIBED = "User already subscribed to another subscription!";
     public static final String MEAL_NOT_FOUND = "No such meal exists!";
@@ -26,11 +27,19 @@ public class ResponseMessages {
     //Meal Menu Management
     public static final String MEAL_ADD_SUCCESSFUL = "Meal added Successfully";
     public static final String MEALS_RETRIEVED_SUCCESSFUL = "Meals retrieved Successfully";
-    // public static final String MEAL_NOT_FOUND = "Cannot find this meal";
     public static final String MEAL_UPDATE_SUCCESSFUL = "Meal updated Successfullly";
     public static final String MEAL_RETRIEVED_SUCCESSFUL = "Meal retrieved Successfully";
     public static final String MEAL_DELETE_SUCCESSFUL = "Meal deleted Successfully";
     public static final String PROVIDERS_LIST_SUCCESSFUL = "Food Service Providers retrieved Successfully.";
     public static final String PROVIDER_RETRIEVED_SUCCESSFUL = "Food Service Provider retrieved Successfully.";
     public static final String GET_ANALYSIS = "Analysis retrieved successfully.";
+
+    // Order Track Service Response
+    public static final String GET_ALL_ACCEPTED_ORDERS = "Accepted orders retrieved.";
+    public static final String UPDATE_ORDER_STATUS = "Order status updated successfully.";
+    public static final String UPDATE_ORDER_STATUS_ERROR = "Error updating order status.";
+    public static final String OTP_SENT_VIA_EMAIL_SUCCESS = "OTP is sent successfully.";
+    public static final String OTP_VERIFIED = "OTP verified successfully.";
+    public static final String OTP_VERIFIED_FAILED = "OTP does not match.";
+    public static final String ORDER_STATUS_RETRIEVED = "Order status retrieved successfully.";
 }

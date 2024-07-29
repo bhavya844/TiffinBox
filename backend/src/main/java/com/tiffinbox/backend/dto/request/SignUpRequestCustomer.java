@@ -19,13 +19,7 @@ public class SignUpRequestCustomer {
     private String password;
 
     @NotBlank(message = "Please provide Street Name")
-    private String streetName;
-
-    @NotBlank(message = "Please provide Street Number")
-    private String streetNumber;
-
-    @NotBlank(message = "Please provide Apartment Identity")
-    private String apartmentNumber;
+    private String streetAddress;
 
     @NotBlank(message = "Please provide ZipCode")
     private String zipCode;

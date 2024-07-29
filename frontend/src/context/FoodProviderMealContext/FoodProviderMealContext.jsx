@@ -34,11 +34,13 @@ const AppContext = createContext();
 const FoodProviderMealAppProvider = ({ children }) => {
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, initialState);
-  const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lLnNtaXRoQGZtYWlsLmNvbSIsImlhdCI6MTcyMjExMTQ1OCwiZXhwIjoxNzIyMTE1MDU4fQ.OrZrxG7re0-VL36WS9JbwcUSBF-Yxu4MXaIDkMGMEXs"
-  const addAMeal = async (mealData) => {
-    await API.post(backendURLs.ADD_A_MEAL_URL, mealData,{
+  const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lLnNtaXRoQGZtYWlsLmNvbSIsImlhdCI6MTcyMjIyMTYyOSwiZXhwIjoxNzIyMjI1MjI5fQ.q3z1mhVdUzeIjipCjJkpc6MCT2w9ZYvJ436r5gAd-Do"
+  const addAMeal = async (formData) => {
+    await API.post(backendURLs.ADD_A_MEAL_URL, formData,{
       headers:{
-        Authorization:`Bearer ${token}`
+        'Content-Type': 'multipart/form-data',
+        'Authorization':`Bearer ${token}`
+        
       }
     })
       .then((response) => {
@@ -53,10 +55,12 @@ const FoodProviderMealAppProvider = ({ children }) => {
       });
   };
 
-  const updateAMeal = async (mealId, mealData) => {
-    await API.put(`${backendURLs.UPDATE_A_MEAL_URL}/${mealId}`, mealData, {
+  const updateAMeal = async (mealId, formData) => {
+    console.log(formData);
+    await API.put(`${backendURLs.UPDATE_A_MEAL_URL}/${mealId}`, formData, {
       headers: {
-        Authorization: `Bearer ${token}`
+        'Content-Type': 'multipart/form-data',
+        'Authorization':`Bearer ${token}`
       }
     })
       .then((response) => {

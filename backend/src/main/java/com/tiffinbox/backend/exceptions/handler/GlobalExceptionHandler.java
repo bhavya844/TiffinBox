@@ -3,8 +3,10 @@ package com.tiffinbox.backend.exceptions.handler;
 import com.tiffinbox.backend.dto.response.BasicResponse;
 import com.tiffinbox.backend.exceptions.AlreadySubscribedException;
 import com.tiffinbox.backend.exceptions.ApiRequestException;
+import com.tiffinbox.backend.exceptions.ExpiredJwtTokenException;
 import com.tiffinbox.backend.exceptions.NotFoundException;
 import com.tiffinbox.backend.exceptions.NotVerifiedException;
+import com.tiffinbox.backend.utils.ResponseMessages;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -88,6 +90,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+
+    @ExceptionHandler(ExpiredJwtTokenException.class)
+    public ResponseEntity<BasicResponse>expiredJwtExceptionResponse(ExpiredJwtTokenException exception){
+        BasicResponse response = BasicResponse.builder()
+                .message(ResponseMessages.TOKEN_Expired)
+                .success(false)
+                .timeStamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(AlreadySubscribedException.class)

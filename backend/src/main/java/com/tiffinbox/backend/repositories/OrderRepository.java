@@ -2,6 +2,7 @@ package com.tiffinbox.backend.repositories;
 
 import com.tiffinbox.backend.models.Order;
 import com.tiffinbox.backend.models.User;
+import com.tiffinbox.backend.utils.OrderStatus;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +20,7 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     List<Order> findAllByCustomer(User customer);
     Optional<Order> findByOrderIdAndCustomer(String orderId, User customer);
     List<Order> findAllByFoodServiceProvider(User foodServiceProvider);
+    List<Order> findAllByFoodServiceProviderAndOrderStatusIn(User foodServiceProvider, List<OrderStatus> orderStatuses);
+
+    Optional<Order> findByOrderIdAndFoodServiceProvider(String orderId, User foodServiceProvider);
 }
