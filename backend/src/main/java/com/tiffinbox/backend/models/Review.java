@@ -1,3 +1,7 @@
+/**
+ * Author: Bhavya Dave
+ */
+
 package com.tiffinbox.backend.models;
 
 import jakarta.persistence.Id;

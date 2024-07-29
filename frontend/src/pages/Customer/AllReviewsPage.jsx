@@ -1,3 +1,7 @@
+/**
+ * Author: Bhavya Dave
+ */
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -15,7 +19,7 @@ function AllReviewsPage() {
           `http://localhost:8080/api/reviews/foodServiceProvider/${foodProviderId}`,
           {
             headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIyNjgxODYsImV4cCI6MTcyMjI3MTc4Nn0.nmf-xDKC6aCOaMURoVhs9nBLeN7ceyePW721eJ7cLdY`,
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIyNzM1ODQsImV4cCI6MTcyMjI3NzE4NH0.Q6JzihGoo0-Fj8b866Jn5cBsap2ZElJRB1A67BYUU94`,
             },
           }
         );

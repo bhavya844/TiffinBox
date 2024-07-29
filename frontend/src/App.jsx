@@ -42,7 +42,7 @@ function App() {
           <Route path="/contact-us" element={<ContactUsPage />} />
           <Route path="/faqs" element={<FAQPage />} />
           <Route path="/all-reviews/:foodProviderId" element={<AllReviewsPage />} />
-          <Route path="/add-review" element={<SubmitReview />} />
+          <Route path="/add-review/:foodProviderId" element={<SubmitReview />} />
 
           {/* admin routes starts */}
           <Route

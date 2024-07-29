@@ -1,11 +1,16 @@
+/**
+ * Author: Bhavya Dave
+ */
+
 import React, { useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 
 const SubmitReview = () => {
-  const location = useLocation();
-  const { foodProviderId } = location.state;
+  // const location = useLocation();
+  // const { foodProviderId } = location.state;
+  const { foodProviderId } = useParams();
   console.log(foodProviderId)
   const navigate = useNavigate();
   const [rating, setRating] = useState(0);
@@ -48,7 +53,7 @@ const SubmitReview = () => {
     try {
       const abc= await axios.post('http://localhost:8080/api/reviews/addReview', reviewData,{
         headers:{
-          Authorization:'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIyNjgxODYsImV4cCI6MTcyMjI3MTc4Nn0.nmf-xDKC6aCOaMURoVhs9nBLeN7ceyePW721eJ7cLdY'
+          Authorization:'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIyNzM1ODQsImV4cCI6MTcyMjI3NzE4NH0.Q6JzihGoo0-Fj8b866Jn5cBsap2ZElJRB1A67BYUU94'
         }
       });
       console.log(abc)
@@ -103,7 +108,7 @@ const SubmitReview = () => {
           </div>
           <div className="flex justify-between">
             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none">Submit</button>
-            <button onClick={() => navigate('/')} className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 focus:outline-none">Go Back</button>
+            <button onClick={() => navigate(`/customer/food-provider-page/${foodProviderId}`)} className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 focus:outline-none">Go Back</button>
           </div>
         </form>
         <Toaster />
