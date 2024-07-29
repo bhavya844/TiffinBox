@@ -1,3 +1,7 @@
+/**
+ * Author: Savan Patel
+ */
+
 import React, { useEffect, useState } from "react";
 import MealCard from "../../components/FoodServiceProvider/MealCard.jsx";
 import { useNavigate } from "react-router-dom";
@@ -50,8 +54,7 @@ const MealMenuManagement = () => {
           />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-          {mealList
-            .filter((meal) => {
+          {mealList.length != 0 ? mealList.filter((meal) => {
               return (
                 meal.mealName
                   .toLowerCase()
@@ -67,7 +70,11 @@ const MealMenuManagement = () => {
                 price={meal.mealPrice}
                 handleCardClick={handleCardClick}
               />
-            ))}
+            )) : (
+              <div className="text-xl italic">
+                You have not added any meal....
+              </div>
+            )}
         </div>
       </main>
     </div>
