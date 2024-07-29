@@ -13,11 +13,11 @@ function OrderCard({ order }) {
         order.orderStatus === "DELIVERED" && "bg-slate-300"
       }`}
     >
-      <figure>
+      <figure className="h-60">
         <img
           src={order.mealImage || "https://picsum.photos/200"}
           alt="Album"
-          className="object-cover w-full h-52 md:h-full md:w-80"
+          className="w-full h-full object-fit md:w-80"
         />
       </figure>
       <div className="card-body">
