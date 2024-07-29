@@ -3,7 +3,7 @@ import { createContext, useContext, useReducer } from "react";
 import reducer from "./reducer";
 import { toast } from "react-hot-toast";
 import { api } from "../../config/axiosConfig";
-import { GET_ALL_ACCEPTED_ORDERS } from "./action";
+import { GET_ALL_ACCEPTED_ORDERS, GET_ORDER_STATUS } from "./action";
 
 // const API = axios.create({
 //   baseURL: "http://localhost:8080/api/",
@@ -13,10 +13,12 @@ const backendURLs = {
   GET_ALL_ACCEPTED_ORDERS_URL: `/ordertrack/getAllAcceptedOrders`,
   UPDATE_ORDER_STATUS_URL: `/ordertrack/updateStatus`,
   VERIFY_ORDER_STATUS_URL: `/ordertrack/verifyOTP`,
+  GET_ORDER_STATUS_URL: `/ordertrack/getOrderStatus`,
 };
 
 const initialState = {
   acceptedOrderList: [],
+  orderStatus: ""
 };
 
 const AppContext = createContext();
@@ -73,6 +75,19 @@ const OrderTrackAppProvider = ({ children }) => {
     return response;
   };
 
+  const getOrderStatus = async (orderId) => {
+    console.log(orderId);
+    await api.get(`${backendURLs.GET_ORDER_STATUS_URL}/${orderId}`)
+    .then((res) => {
+      console.log(res.data);
+      dispatch({type: GET_ORDER_STATUS, payload: res.data});
+    })
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -80,6 +95,7 @@ const OrderTrackAppProvider = ({ children }) => {
         getAllAcceptedOrders,
         updateOrderStatus,
         verifyOtp,
+        getOrderStatus,
       }}
     >
       {children}

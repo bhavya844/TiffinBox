@@ -17,6 +17,7 @@ import ViewProfile from "./pages/Profile/ViewProfile";
 import EditProfile from "./pages/Profile/EditProfile";
 import AcceptedOrders from "./pages/Order/AcceptedOrders";
 import { OrderTrackAppProvider } from "./context/OrderTrackContext/OrderTrackContext";
+import TrackOrderStatus from "./pages/Order/TrackOrderStatus";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
               <OrderTrackAppProvider>
                 <Routes>
                   <Route path="/accepted-orders" element={<AcceptedOrders />} />
+                  <Route path="/:orderId" element={<TrackOrderStatus />} />
                 </Routes>
               </OrderTrackAppProvider>
             }
