@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const authToken =
-  "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIyNTk5OTAsImV4cCI6MTcyMjI2MzU5MH0.hL-CICIQIDRXNviG48eHqhF1rCxUUK9nXwEERoq052M";
+  "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGVtYWlsLmNvbSIsImlhdCI6MTcyMjIyMTczNCwiZXhwIjoxNzIyMjI1MzM0fQ.HySzXqbTIWPiCpJ0iit75wSJgmXDethHE9p3N9dQWs4";
 
 const api = axios.create({
   baseURL: "http://localhost:8080/api",

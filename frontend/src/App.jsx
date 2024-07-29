@@ -17,7 +17,9 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import SubmitReview from "./components/SubmitReview";
 import ViewProfile from "./pages/Profile/ViewProfile";
 import EditProfile from "./pages/Profile/EditProfile";
-
+import AcceptedOrders from "./pages/Order/AcceptedOrders";
+import { OrderTrackAppProvider } from "./context/OrderTrackContext/OrderTrackContext";
+import TrackOrderStatus from "./pages/Order/TrackOrderStatus";
 import { FoodProviderMealAppProvider } from "./context/FoodProviderMealContext/FoodProviderMealContext";
 import MealMenuManagement from "./pages/FoodProvider/MealMenuManagement";
 import AddAMeal from "./pages/FoodProvider/AddAMeal";
@@ -63,12 +65,23 @@ function App() {
           <Route path="/order-history" element={<OrderHistoryPage />} />
           <Route path="/order-details" element={<OrderDetailsPage />} />
           <Route path="/order-cart" element={<OrderCartPage />} />
-          {/* profile routes ends */}
+          {/* order track routes starts */}
+          <Route
+            path="/order-track/*"
+            element={
+              <OrderTrackAppProvider>
+                <Routes>
+                  <Route path="/accepted-orders" element={<AcceptedOrders />} />
+                  <Route path="/:orderId" element={<TrackOrderStatus />} />
+                </Routes>
+              </OrderTrackAppProvider>
+            }
+          />
+          {/* order track routes ends */}
+          {/* profile routes starts */}
           <Route path="/view-profile" element={<ViewProfile />} />
           <Route path="/edit-profile" element={<EditProfile />} />
-
-
-
+          {/* profile routes ends */}
           {/*Food Service Provider routes starts */}
           <Route
             path="/foodprovider/*"
