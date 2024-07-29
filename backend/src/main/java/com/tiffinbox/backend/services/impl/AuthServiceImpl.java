@@ -156,12 +156,12 @@ public class AuthServiceImpl implements IAuthService {
 
     public LoginResponse jwtRefreshToken(RefreshTokenRequest refreshTokenRequest) {
         LoginResponse loginResponse = new LoginResponse();
-        String email = jwtService.extractUsername(refreshTokenRequest.getToken());
+        String email = jwtService.extractUsername(refreshTokenRequest.getRefreshToken());
         User user = userRepository.findByEmail(email);
         if (user == null) {
             throw new NotFoundException(ResponseMessages.USER_NOT_FOUND_TOKEN);
         }
-        if (jwtService.isTokenValid(refreshTokenRequest.getToken(), user)) {
+        if (jwtService.isTokenValid(refreshTokenRequest.getRefreshToken(), user)) {
             String jwtToken = jwtService.generateToken(user);
 
             loginResponse.setUserRole(user.getUserRole());
@@ -176,7 +176,7 @@ public class AuthServiceImpl implements IAuthService {
                 loginResponse.setLastname(foodServiceProvider.getLastName());
             }
             loginResponse.setToken(jwtToken);
-            loginResponse.setRefreshToken(refreshTokenRequest.getToken());
+            loginResponse.setRefreshToken(refreshTokenRequest.getRefreshToken());
             loginResponse.setSuccess(true);
             loginResponse.setTimeStamp(LocalDateTime.now());
             return loginResponse;
