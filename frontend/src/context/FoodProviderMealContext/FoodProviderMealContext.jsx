@@ -12,11 +12,11 @@ import {
   UPDATE_A_MEAL,
   DELETE_A_MEAL,
   GET_ALL_MEALS,
-  GET_A_MEAL_FROM_ID
+  GET_A_MEAL_FROM_ID,
 } from "./action";
 
 const API = axios.create({
-  baseURL: "http://localhost:8080/api/foodserviceprovider/"
+  baseURL: "http://localhost:8080/api/foodserviceprovider/",
 });
 
 const backendURLs = {
@@ -24,13 +24,13 @@ const backendURLs = {
   UPDATE_A_MEAL_URL: "updateMeal",
   DELETE_A_MEAL_URL: "deleteMeal",
   GET_ALL_MEALS_URL: "getAllMeals",
-  GET_A_MEAL_FROM_ID_URL: "getMeal"
+  GET_A_MEAL_FROM_ID_URL: "getMeal",
 };
 
 const initialState = {
   mealList: [],
   meal: null,
-  isMealDeleted: null
+  isMealDeleted: null,
 };
 
 const AppContext = createContext();
@@ -38,14 +38,14 @@ const AppContext = createContext();
 const FoodProviderMealAppProvider = ({ children }) => {
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, initialState);
-  const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lLnNtaXRoQGZtYWlsLmNvbSIsImlhdCI6MTcyMjI2NzI0MCwiZXhwIjoxNzIyMjcwODQwfQ._j1ZV_LPRr6C3sBukYc0M2g2V3s_Y5rK0njr4kvdGS4"
+  const token =
+    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lLnNtaXRoQGZtYWlsLmNvbSIsImlhdCI6MTcyMjI2NzI0MCwiZXhwIjoxNzIyMjcwODQwfQ._j1ZV_LPRr6C3sBukYc0M2g2V3s_Y5rK0njr4kvdGS4";
   const addAMeal = async (formData) => {
-    await API.post(backendURLs.ADD_A_MEAL_URL, formData,{
-      headers:{
-        'Content-Type': 'multipart/form-data',
-        'Authorization':`Bearer ${token}`
-        
-      }
+    await API.post(backendURLs.ADD_A_MEAL_URL, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((response) => {
         console.log(response);
@@ -63,9 +63,9 @@ const FoodProviderMealAppProvider = ({ children }) => {
     console.log(formData);
     await API.put(`${backendURLs.UPDATE_A_MEAL_URL}/${mealId}`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization':`Bearer ${token}`
-      }
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((response) => {
         console.log(response);
@@ -82,8 +82,8 @@ const FoodProviderMealAppProvider = ({ children }) => {
   const deleteAMeal = async (mealId) => {
     await API.delete(`${backendURLs.DELETE_A_MEAL_URL}/${mealId}`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((response) => {
         console.log(response);
@@ -100,12 +100,12 @@ const FoodProviderMealAppProvider = ({ children }) => {
   const getAllMeals = async () => {
     await API.get(backendURLs.GET_ALL_MEALS_URL, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((response) => {
         console.log(response);
-        dispatch({ type: GET_ALL_MEALS, payload: response.data});
+        dispatch({ type: GET_ALL_MEALS, payload: response.data });
       })
       .catch((error) => {
         console.log(error);
@@ -114,12 +114,11 @@ const FoodProviderMealAppProvider = ({ children }) => {
   };
 
   const getMealFromId = async (mealId) => {
-
-    console.log("Hello")
+    console.log("Hello");
     await API.get(`${backendURLs.GET_A_MEAL_FROM_ID_URL}/${mealId}`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((response) => {
         console.log(response);
@@ -139,7 +138,7 @@ const FoodProviderMealAppProvider = ({ children }) => {
         updateAMeal,
         deleteAMeal,
         getAllMeals,
-        getMealFromId
+        getMealFromId,
       }}
     >
       {children}
@@ -151,4 +150,4 @@ const useFoodProviderMealContext = () => {
   return useContext(AppContext);
 };
 
-export { useFoodProviderMealContext,FoodProviderMealAppProvider };
+export { useFoodProviderMealContext, FoodProviderMealAppProvider };
