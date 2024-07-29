@@ -1,3 +1,7 @@
+/**
+ * Author: Savan Patel
+ */
+
 package com.tiffinbox.backend.services.impl;
 
 import com.tiffinbox.backend.dto.MealResponseDTO;
@@ -96,7 +100,6 @@ public class FoodProviderServiceImpl implements IFoodProviderService {
     @Override
     public GetASingleMealResponse updateMeal(String mealId, AddMealRequest addMealRequest,MultipartFile mealImage) throws IOException {
         Meal meal = mealRepository.findById(mealId).orElse(null);
-        System.out.println(meal);
         if (meal == null) {
             System.out.println("Meal not found");
             throw new NotFoundException(ResponseMessages.MEAL_NOT_FOUND);

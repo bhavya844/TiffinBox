@@ -1,3 +1,7 @@
+/**
+ * Author: Savan Patel
+ */
+
 import React from 'react';
 
 const MealCard = ({ mealId, image, name, price, handleCardClick }) => {

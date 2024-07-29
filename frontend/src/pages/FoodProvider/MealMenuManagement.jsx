@@ -1,3 +1,7 @@
+/**
+ * Author: Savan Patel
+ */
+
 import React, { useEffect, useState } from "react";
 import MealCard from "../../components/FoodServiceProvider/MealCard.jsx";
 import { useNavigate } from "react-router-dom";
