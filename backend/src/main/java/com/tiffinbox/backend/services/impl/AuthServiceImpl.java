@@ -57,9 +57,7 @@ public class AuthServiceImpl implements IAuthService {
         customer.setFirstName(signUpRequestCustomer.getFirstname());
         customer.setLastName(signUpRequestCustomer.getLastname());
         customer.setContactNumber(signUpRequestCustomer.getContactNumber());
-        customer.setStreetAddress(signUpRequestCustomer.getStreetNumber() + ","
-                + signUpRequestCustomer.getStreetName() + ","
-                + signUpRequestCustomer.getApartmentNumber());
+        customer.setStreetAddress(signUpRequestCustomer.getStreetAddress());
         customer.setCity(signUpRequestCustomer.getCityName());
         customer.setProvince(signUpRequestCustomer.getProvinceName());
         customer.setPostalCode(signUpRequestCustomer.getZipCode());

@@ -10,6 +10,7 @@ public class ResponseMessages {
     public static final String PSWD_MISS_MATCH = "Password miss-match for the registered user!";
     public static final String ACCOUNT_NOT_VERIFIED = "Account is Not Verified from the Admin side, Please Contact Admin for Verification.";
     public static final String USER_NOT_FOUND_TOKEN = "User not Found for the corresponding token!";
+    public static final String TOKEN_Expired = "Session timed out Please Login Again.";
 
     // Admin Service Response
     public static final String FOOD_SERVICE_PROVIDER_NOT_FOUND = "Food service provider does not exist";
