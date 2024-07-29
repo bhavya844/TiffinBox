@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useFoodProviderMealContext } from '../../context/FoodProviderMealContext/FoodProviderMealContext';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useFoodProviderMealContext } from "../../context/FoodProviderMealContext/FoodProviderMealContext";
 
 const AddAMeal = () => {
   const [mealData, setMealData] = useState({
@@ -11,36 +11,42 @@ const AddAMeal = () => {
     cuisineType: "",
     mealPrice: ""
   });
+  const [preview, setPreview] = useState(null);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
-  const {
-    addAMeal
-  } = useFoodProviderMealContext()
-  
+  const { addAMeal } = useFoodProviderMealContext();
+
   const handleImageChange = (e) => {
-    setMealData({ ...mealData, mealImage: e.target.files[0]});
-    console.log(e.target.files[0])
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    setMealData({ ...mealData, mealImage: file });
+    console.log(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const regex = /^[+-]?([0-9]*[.])?[0-9]+$/;
     const price = mealData.mealPrice;
-    if(!regex.test(price)){
+    if (!regex.test(price)) {
       setError(true);
-    }else{
-
+    } else {
       const formData = new FormData();
-      formData.append('mealName', mealData.mealName);
-      formData.append('mealDescription', mealData.mealDescription);
-      formData.append('mealPrice',mealData.mealPrice);
-      formData.append('mealImage', mealData.mealImage);
-      formData.append('mealType', mealData.mealType);
-      formData.append('cuisineType',mealData.cuisineType);
-      console.log(formData)
+      formData.append("mealName", mealData.mealName);
+      formData.append("mealDescription", mealData.mealDescription);
+      formData.append("mealPrice", mealData.mealPrice);
+      formData.append("mealImage", mealData.mealImage);
+      formData.append("mealType", mealData.mealType);
+      formData.append("cuisineType", mealData.cuisineType);
+      console.log(formData);
       await addAMeal(formData);
-    }    
+    }
   };
 
   const handleChange = (e) => {
@@ -54,7 +60,9 @@ const AddAMeal = () => {
       <form onSubmit={handleSubmit} className="mt-6 space-y-6">
         <div className="form-control">
           <label className="label">
-            <span className="label-text font-bold">Upload the Image of the Meal</span>
+            <span className="label-text font-bold">
+              Upload the Image of the Meal
+            </span>
           </label>
           <input
             type="file"
@@ -63,6 +71,16 @@ const AddAMeal = () => {
             required
             className="input input-bordered w-full py-2"
           />
+          {preview && (
+            <div className="mt-4">
+              <p className="text-md font-bold text-gray-600">Image Preview:</p>
+              <img
+                src={preview}
+                alt="Preview"
+                className="max-w-full h-auto border border-gray-300 rounded-lg"
+              />
+            </div>
+          )}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="form-control">
@@ -135,7 +153,9 @@ const AddAMeal = () => {
               <span className="label-text font-bold">Meal Price</span>
             </label>
             <div className="flex">
-              <span className="flex items-center bg-gray-200 border border-r-0 rounded-l px-3 text-black">$(CAD)</span>
+              <span className="flex items-center bg-gray-200 border border-r-0 rounded-l px-3 text-black">
+                $(CAD)
+              </span>
               <input
                 type="text"
                 id="mealPrice"
@@ -147,14 +167,13 @@ const AddAMeal = () => {
                 className="input input-bordered w-full"
               />
             </div>
-            <span className={`${error ? "block" : "hidden"} text-red-500`}>* This field should be numbers only</span>
+            <span className={`${error ? "block" : "hidden"} text-red-500`}>
+              * This field should be numbers only
+            </span>
           </div>
         </div>
         <div className="flex space-x-4 mt-4">
-          <button
-            type="submit"
-            className="btn btn-success w-[15%] sm:w-[5%]"
-          >
+          <button type="submit" className="btn btn-success w-[15%] sm:w-[5%]">
             Add
           </button>
           <button

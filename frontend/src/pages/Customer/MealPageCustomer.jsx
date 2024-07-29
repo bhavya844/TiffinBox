@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCustomerMealContext } from "../../context/CustomerMealContext/CustomerMealContext.jsx";
+import toast from "react-hot-toast";
 
 const MealPageCustomer = () => {
   const [loading, setLoading] = useState(true);
@@ -19,6 +20,16 @@ const MealPageCustomer = () => {
     }
     getMeal();
   },[mealId])
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    toast.success("Add to Cart Clicked");
+  }
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    toast.success("Subscribe Clicked");
+  }
 
   if(loading){
     return <div>Loading...</div>;
@@ -56,6 +67,20 @@ const MealPageCustomer = () => {
           <div>
             <p className="font-bold text-xl text-gray-800">Meal Price</p>
             <p className="text-gray-700">$(CAD) {meal.mealPrice}</p>
+          </div>
+          <div className="flex space-x-4 mt-6">
+            <button
+              className="btn btn-secondary"
+              onClick={(e) => handleAddToCart(e)}
+            >
+              Add to Cart
+            </button>
+            <button
+              className="btn btn-success"
+              onClick={(e) => handleSubscribe(e)}
+            >
+              Subscribe
+            </button>
           </div>
         </div>
       </div>

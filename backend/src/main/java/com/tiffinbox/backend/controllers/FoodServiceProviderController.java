@@ -57,7 +57,7 @@ public class FoodServiceProviderController {
     @PutMapping("/updateMeal/{mealId}")
     public ResponseEntity<GetASingleMealResponse> updateMeal(
             @PathVariable String mealId,
-            @RequestPart("mealImage") MultipartFile mealImage,
+            @RequestPart(value="mealImage",required = false) MultipartFile mealImage,
             @RequestPart("mealName") String mealName,
             @RequestPart("mealDescription") String mealDescription,
             @RequestPart("mealPrice") String mealPrice,

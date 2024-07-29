@@ -5,13 +5,14 @@ import { useFoodProviderMealContext } from "../../context/FoodProviderMealContex
 const UpdateAMeal = () => {
   const { mealId } = useParams();
   const [mealData, setMealData] = useState({
-    mealImage: "",
+    mealImage: null,
     mealName: "",
     mealDescription: "",
     mealType: "",
     cuisineType: "",
     mealPrice: ""
   });
+  const [preview, setPreview] = useState(null);
   const [loading,setLoading] = useState(true);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const UpdateAMeal = () => {
 
   useEffect(() => {
     setMealData({
-      mealImage: meal?.mealImage,
+      mealImage: null,
       mealName: meal?.mealName,
       mealDescription: meal?.mealDescription,
       mealType: meal?.mealType,
@@ -33,7 +34,16 @@ const UpdateAMeal = () => {
   }, [mealId]);
 
   const handleImageChange = (e) => {
-    setMealData({ ...mealData, mealImage: e.target.files[0] });
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    setMealData({ ...mealData, mealImage: file });
+    console.log(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
@@ -65,6 +75,24 @@ const UpdateAMeal = () => {
   return (
     <div className="container mx-auto px-6 py-6 min-h-screen">
       <h1 className="font-bold text-3xl text-gray-950">Update this Meal</h1>
+      {
+        preview ? <div className="mt-4">
+        <p className="text-sm text-gray-600">Image Preview:</p>
+        <img
+          src={preview}
+          alt="Preview"
+          className="max-w-full h-auto border border-gray-300 rounded-lg"
+        />
+      </div> : <div className="mt-4">
+        <p className="text-sm text-gray-600">Image Preview:</p>
+        <img
+          src={meal.mealImage}
+          alt="Preview"
+          className="max-w-full h-auto border border-gray-300 rounded-lg"
+        />
+      </div> 
+      }
+      <img src='' alt="" />
       <form onSubmit={handleSubmit} className="mt-6 space-y-6">
         <div className="form-control">
           <label className="label">
