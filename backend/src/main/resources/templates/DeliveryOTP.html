@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Delivery - OTP Confirmation</title>
+</head>
+<body>
+<!--  greeting message to customer  -->
+<p>Greetings,</p>
+<!--  message from food service provider  -->
+<p>You got a new message from <strong>Food Service Provider</strong>:</p>
+<p style="padding: 12px; border-left: 4px solid #d0d0d0; font-style: italic;"><strong th:text="${message}"></strong></p>
+<p style="padding: 12px; border-left: 4px solid #d0d0d0; font-style: italic;"><strong th:text="${otp}"></strong></p>
+<p>Best wishes,<br>Food Service Provider | Tiffin Box</p>
+</body>
+</html>

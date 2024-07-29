@@ -11,6 +11,10 @@ public class ResponseMessages {
     public static final String ACCOUNT_NOT_VERIFIED = "Account is Not Verified from the Admin side, Please Contact Admin for Verification.";
     public static final String USER_NOT_FOUND_TOKEN = "User not Found for the corresponding token!";
     public static final String TOKEN_Expired = "Session timed out Please Login Again.";
+    public static final String ORDER_NOT_FOUND = "No such order exists!";
+    public static final String ALREADY_SUBSCRIBED = "User already subscribed to another subscription!";
+    public static final String MEAL_NOT_FOUND = "No such meal exists!";
+    public static final String INVALID_SUBSCRIPTION = "Invalid subscription type.";
 
     // Admin Service Response
     public static final String FOOD_SERVICE_PROVIDER_NOT_FOUND = "Food service provider does not exist";
@@ -19,4 +23,14 @@ public class ResponseMessages {
     public static final String APPROVE_PENDING_REQUEST = "Pending request approved.";
     public static final String REJECT_PENDING_REQUEST = "Pending request rejected.";
     public static final String REMOVE_USER_SUCCESSFUL = "User removed successfully.";
+    public static final String GET_ANALYSIS = "Analysis retrieved successfully.";
+
+    // Order Track Service Response
+    public static final String GET_ALL_ACCEPTED_ORDERS = "Accepted orders retrieved.";
+    public static final String UPDATE_ORDER_STATUS = "Order status updated successfully.";
+    public static final String UPDATE_ORDER_STATUS_ERROR = "Error updating order status.";
+    public static final String OTP_SENT_VIA_EMAIL_SUCCESS = "OTP is sent successfully.";
+    public static final String OTP_VERIFIED = "OTP verified successfully.";
+    public static final String OTP_VERIFIED_FAILED = "OTP does not match.";
+    public static final String ORDER_STATUS_RETRIEVED = "Order status retrieved successfully.";
 }

@@ -11,20 +11,14 @@ public class EditCustomerRequest {
     private String lastname;
 
     @NotBlank(message = "Please provide Street Name")
-    private String streetName;
-
-    @NotBlank(message = "Please provide Street Number")
-    private String streetNumber;
-
-    @NotBlank(message = "Please provide Apartment Identity")
-    private String apartmentNumber;
+    private String streetAddress;
 
     @NotBlank(message = "Please provide ZipCode")
-    private String zipCode;
+    private String postalCode;
 
     @NotBlank(message = "Please provide contact")
     private String contactNumber;
 
-    private String cityName;
-    private String provinceName;
+    private String city;
+    private String province;
 }

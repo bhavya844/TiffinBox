@@ -7,6 +7,7 @@ package com.tiffinbox.backend.controllers;
 import com.tiffinbox.backend.dto.response.BasicResponse;
 import com.tiffinbox.backend.dto.response.admin.GetAllPendingRequestsResponse;
 import com.tiffinbox.backend.dto.response.admin.GetAllUsersResponse;
+import com.tiffinbox.backend.dto.response.admin.GetAnalysisResponse;
 import com.tiffinbox.backend.dto.response.admin.GetSinglePendingRequestResponse;
 import com.tiffinbox.backend.services.IAdminService;
 import lombok.RequiredArgsConstructor;
@@ -51,5 +52,10 @@ public class AdminController {
     @PostMapping(path = "/removeUser/{email}")
     public ResponseEntity<BasicResponse> removeUser(@PathVariable String email) {
         return new ResponseEntity<>(adminService.removeUser(email), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getAnalysis")
+    public ResponseEntity<GetAnalysisResponse> getAnalysisDashboard() {
+        return new ResponseEntity<>(adminService.getAnalysis(), HttpStatus.OK);
     }
 }

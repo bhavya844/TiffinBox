@@ -4,6 +4,7 @@
 
 package com.tiffinbox.backend.services.impl;
 
+import com.tiffinbox.backend.dto.AdminGetAnalysisDTO;
 import com.tiffinbox.backend.dto.AdminGetSinglePendingRequestDTO;
 import com.tiffinbox.backend.dto.UserFoodServiceProviderDTO;
 import com.tiffinbox.backend.dto.mappers.UserPendingRequestMapper;
@@ -11,10 +12,14 @@ import com.tiffinbox.backend.dto.mappers.UserSinglePendingRequestMapper;
 import com.tiffinbox.backend.dto.response.BasicResponse;
 import com.tiffinbox.backend.dto.response.admin.GetAllPendingRequestsResponse;
 import com.tiffinbox.backend.dto.response.admin.GetAllUsersResponse;
+import com.tiffinbox.backend.dto.response.admin.GetAnalysisResponse;
 import com.tiffinbox.backend.dto.response.admin.GetSinglePendingRequestResponse;
 import com.tiffinbox.backend.exceptions.NotFoundException;
 import com.tiffinbox.backend.models.FoodServiceProvider;
+import com.tiffinbox.backend.models.Payment;
 import com.tiffinbox.backend.models.User;
+import com.tiffinbox.backend.repositories.OrderRepository;
+import com.tiffinbox.backend.repositories.PaymentRepository;
 import com.tiffinbox.backend.repositories.SellerRepository;
 import com.tiffinbox.backend.repositories.UserRepository;
 import com.tiffinbox.backend.services.IAdminService;
@@ -30,9 +35,12 @@ import java.util.List;
 public class AdminServiceImpl implements IAdminService {
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private SellerRepository sellerRepository;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @Override
     public GetAllPendingRequestsResponse getAllPendingRequests() {
@@ -147,6 +155,23 @@ public class AdminServiceImpl implements IAdminService {
                 .success(true)
                 .timeStamp(LocalDateTime.now())
                 .message(ResponseMessages.REMOVE_USER_SUCCESSFUL)
+                .build();
+    }
+
+    @Override
+    public GetAnalysisResponse getAnalysis() {
+        Long totalUsers = userRepository.countByIsAdminVerified(true);
+        Long totalOrders = orderRepository.count();
+        List<Payment> paymentList = paymentRepository.findAll();
+        Double totalEarnings = paymentList.stream().mapToDouble(Payment::getAmount).sum();
+
+        AdminGetAnalysisDTO adminGetAnalysisDTO = new AdminGetAnalysisDTO(totalUsers, totalOrders, totalEarnings);
+
+        return GetAnalysisResponse.builder()
+                .success(true)
+                .timeStamp(LocalDateTime.now())
+                .message(ResponseMessages.GET_ANALYSIS)
+                .analysisDetails(adminGetAnalysisDTO)
                 .build();
     }
 }

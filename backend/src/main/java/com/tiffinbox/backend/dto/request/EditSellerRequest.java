@@ -15,23 +15,23 @@ public class EditSellerRequest {
     private String companyAddress;
 
     @NotBlank(message = "Please provide ZipCode")
-    private String companyZipCode;
+    private String companyPostalCode;
 
     @NotBlank(message = "Please provide Company Name")
     private String companyName;
 
     @NotBlank(message = "Provide the Food Security License Number")
-    private String cfcrNumber;
+    private String licenseNumber;
 
     @NotBlank(message = "Please provide cuisine that yo want to offer")
-    private String cuisine;
+    private String cuisineType;
 
     @NotBlank(message = "Please provide company's contact")
-    private String contactNumber;
+    private String contact;
 
     @NotBlank(message = "Please provide the City Name")
-    private String cityName;
+    private String city;
     @NotBlank(message = "Please provide province Name")
-    private String provinceName;
+    private String province;
 
 }
