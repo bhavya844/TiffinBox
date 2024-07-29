@@ -17,7 +17,7 @@ import java.security.Principal;
  */
 
 @RestController
-@RequestMapping(path = "/orders")
+@RequestMapping(path = "/api/orders")
 public class OrderController {
     @Autowired
     private OrderService orderService;

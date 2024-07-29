@@ -23,4 +23,6 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     List<Order> findAllByFoodServiceProviderAndOrderStatusIn(User foodServiceProvider, List<OrderStatus> orderStatuses);
 
     Optional<Order> findByOrderIdAndFoodServiceProvider(String orderId, User foodServiceProvider);
+    Optional<Order> findByOrderIdAndCustomerOrFoodServiceProvider(String orderId, User customer, User foodServiceProvider);
+    List<Order> findAllByFoodServiceProviderAndOrderStatus(User foodServiceProvider, OrderStatus orderStatus);
 }

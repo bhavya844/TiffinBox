@@ -1,5 +1,6 @@
 package com.tiffinbox.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tiffinbox.backend.utils.OrderStatus;
 import com.tiffinbox.backend.utils.OrderType;
 import jakarta.persistence.*;
@@ -19,12 +20,16 @@ import java.time.LocalDateTime;
 public class Order {
     @MongoId
     private String orderId;
+    @JsonIgnore
     @DBRef
     private User customer;
+    @JsonIgnore
     @DBRef
     private User foodServiceProvider;
+    @JsonIgnore
     @DBRef
     private Meal meal;
+    @JsonIgnore
     @DBRef
     private Payment payment;
     private Integer quantity;

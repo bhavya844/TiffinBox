@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useOrderContext } from "../../context/OrderContext/OrderContext";
+import { useParams } from "react-router-dom";
 
 /**
  * Author: Raj Kamlesh Patel
@@ -6,63 +8,59 @@ import React from "react";
  * Email: rj227488@dal.ca
  */
 
-const order = {
-  providerImage:
-    "https://img.daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg",
-  providerEmail: "provider@email.com",
-  providerPhone: "1234567890",
-  orderId: 1,
-  tiffinServiceName: "tiffin service",
-  meals: [
-    {
-      mealId: 1,
-      mealName: "meal 1",
-      mealCount: 2,
-    },
-  ],
-  orderDate: "10 June 2024",
-  additionalRequest: "Any additional requests",
-  paymentId: 123,
-  amountPaid: 36.78,
-};
-
 function OrderDetailsPage() {
+  const { orderId } = useParams();
+  const { orders, fetchOrderDetails, loading } = useOrderContext();
+  const { orderDetails } = orders;
+
+  useEffect(() => {
+    fetchOrderDetails(orderId);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="grid max-w-5xl mx-auto min-h-dvh place-content-center">
+        <span className="loading loading-dots loading-lg text-primary"></span>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center min-h-dvh">
       <div className="w-full max-w-5xl px-4 my-10">
         <p className="mb-10 text-4xl font-bold">
           <span className="text-5xl text-primary">/</span>
-          <span>Order - #{order.orderId}</span>
+          <span>Order - #{orderDetails.orderId}</span>
         </p>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div>
             <section className="shadow card bg-base-100">
               <figure>
                 <img
-                  src={order.providerImage}
+                  src={orderDetails.mealImage || "https://picsum.photos/200"}
                   alt="provider"
                   className="object-cover w-full h-72"
                 />
               </figure>
               <div className="card-body">
                 <h2 className="font-bold card-title">Provider Details:</h2>
-                <p className="font-semibold">{order.tiffinServiceName}</p>
+                <p className="font-semibold">{orderDetails.companyName}</p>
                 <p>
                   Email:{" "}
                   <a
-                    href={`callto:${order.providerEmail}`}
+                    href={`mailto:${orderDetails.providerEmail}`}
                     className="border-b-2 border-b-primary"
                   >
-                    {order.providerEmail}
+                    {orderDetails.providerEmail}
                   </a>
                 </p>
                 <p>
                   Phone:{" "}
                   <a
-                    href={`mailto:${order.providerPhone}`}
+                    href={`phoneto:${orderDetails.providerPhone}`}
                     className="border-b-2 border-b-primary"
                   >
-                    {order.providerPhone}
+                    {orderDetails.providerPhone}
                   </a>
                 </p>
               </div>
@@ -72,32 +70,36 @@ function OrderDetailsPage() {
             <div className="shadow card bg-base-100">
               <div className="card-body">
                 <h2 className="font-bold card-title">Order Details:</h2>
-                <p>Order Id: {order.orderId}</p>
-                {order.meals.map((meal) => {
-                  return (
-                    <p key={meal.mealId}>
-                      {meal.mealName} X {meal.mealCount}
-                    </p>
-                  );
-                })}
-                <p>Order Date: {order.orderDate}</p>
+                <p>Order Id: {orderDetails.orderId}</p>
+                {/* {order.meals.map((meal) => {
+                  return ( */}
+                <p>
+                  {orderDetails.mealName} X {orderDetails.quantity}
+                </p>
+                {/* );
+                })} */}
+                <p>Order Date: {orderDetails.orderDate}</p>
               </div>
             </div>
             <div className="shadow card bg-base-100">
               <div className="card-body">
                 <h2 className="font-bold card-title">Additional Requests:</h2>
                 <p>
-                  {order.additionalRequest ? order.additionalRequest : "None"}
+                  {orderDetails.additionalRequest
+                    ? orderDetails.additionalRequest
+                    : "None"}
                 </p>
               </div>
             </div>
             <div className="shadow card bg-base-100">
               <div className="card-body">
                 <h2 className="font-bold card-title">Payment Details:</h2>
-                <p>Payment Id: {order.paymentId}</p>
+                <p>Payment Id: {orderDetails.paymentId}</p>
                 <p>
                   Amount Paid:{" "}
-                  <span className="px-1 bg-primary">${order.amountPaid}</span>
+                  <span className="px-1 bg-primary">
+                    ${orderDetails.amountPaid}
+                  </span>
                 </p>
               </div>
             </div>
