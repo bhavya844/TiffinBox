@@ -12,6 +12,7 @@ import { GET_ALL_ACCEPTED_ORDERS } from "./action";
 const backendURLs = {
   GET_ALL_ACCEPTED_ORDERS_URL: `/ordertrack/getAllAcceptedOrders`,
   UPDATE_ORDER_STATUS_URL: `/ordertrack/updateStatus`,
+  VERIFY_ORDER_STATUS_URL: `/ordertrack/verifyOTP`,
 };
 
 const initialState = {
@@ -54,8 +55,23 @@ const OrderTrackAppProvider = ({ children }) => {
   };
 
   const verifyOtp = async (data) => {
+    const { orderId, otp } = data;
+    console.log(orderId + " " + otp);
+    const requestBody = {
+      otp,
+    };
+    const response = await api
+      .post(`${backendURLs.VERIFY_ORDER_STATUS_URL}/${orderId}`, requestBody)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
 
-  }
+    return response;
+  };
 
   return (
     <AppContext.Provider
@@ -63,6 +79,7 @@ const OrderTrackAppProvider = ({ children }) => {
         ...state,
         getAllAcceptedOrders,
         updateOrderStatus,
+        verifyOtp,
       }}
     >
       {children}

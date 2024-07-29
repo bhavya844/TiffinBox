@@ -6,9 +6,16 @@ import { toast } from "react-hot-toast";
 function AcceptedOrders() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedOrder, setSelectedOrder] = useState(null);
   const [newStatus, setNewStatus] = useState("");
-  const { acceptedOrderList, getAllAcceptedOrders, updateOrderStatus } = useOrderTrackContext();
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [otp, setOtp] = useState("");
+  const [otpError, setOtpError] = useState("");
+  const {
+    acceptedOrderList,
+    getAllAcceptedOrders,
+    updateOrderStatus,
+    verifyOtp,
+  } = useOrderTrackContext();
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -26,7 +33,10 @@ function AcceptedOrders() {
   };
 
   const handleUpdateClick = (item, status) => {
-    if (item.currentOrderStatus === "DELIVERED" && (status === "DELIVERED" || status === "IN_PREPARATION")) {
+    if (
+      item.currentOrderStatus === "DELIVERED" &&
+      (status === "DELIVERED" || status === "IN_PREPARATION")
+    ) {
       toast.error("Order is already delivered!");
       return;
     }
@@ -42,9 +52,28 @@ function AcceptedOrders() {
     }
   };
 
-  const handleSubmit = () => {
-    
-    document.getElementById("update_order_status_modal").close();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!otp) {
+      setOtpError("Please enter the OTP!");
+      return;
+    }
+    setOtpError("");
+
+    try {
+      const response = await verifyOtp({ orderId: selectedOrder.orderId, otp });
+      if (response.success) {
+        toast.success(response.message);
+        document.getElementById("update_order_status_modal").close();
+        getAllAcceptedOrders();
+      } else {
+        setOtpError(response.message);
+      }
+    } catch (error) {
+      setOtpError(
+        "An error occurred while verifying the OTP. Please try again."
+      );
+    }
   };
 
   useEffect(() => {
@@ -135,12 +164,20 @@ function AcceptedOrders() {
                           className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
                         >
                           <li>
-                            <a onClick={() => handleUpdateClick(item, "IN_PREPARATION")}>
+                            <a
+                              onClick={() =>
+                                handleUpdateClick(item, "IN_PREPARATION")
+                              }
+                            >
                               In-Preparation
                             </a>
                           </li>
                           <li>
-                            <a onClick={() => handleUpdateClick(item, "DELIVERED")}>
+                            <a
+                              onClick={() =>
+                                handleUpdateClick(item, "DELIVERED")
+                              }
+                            >
                               Delivered
                             </a>
                           </li>
@@ -178,7 +215,12 @@ function AcceptedOrders() {
                   type="text"
                   placeholder="Enter OTP"
                   className="input input-bordered w-full"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
                 />
+                {otpError && (
+                  <p className="text-red-500 text-sm mt-1">{otpError}</p>
+                )}
               </div>
             </div>
             <div className="modal-action">
@@ -189,7 +231,9 @@ function AcceptedOrders() {
                   </form>
                 </div>
                 <div>
-                  <button className="btn btn-info" onClick={handleSubmit}>Submit</button>
+                  <button className="btn btn-info" onClick={handleSubmit}>
+                    Submit
+                  </button>
                 </div>
               </div>
             </div>
