@@ -17,7 +17,7 @@ function OrderDetailsPage() {
     fetchOrderDetails(orderId);
   }, []);
 
-  if (loading) {
+  if (orderDetails === null || loading) {
     return (
       <div className="grid max-w-5xl mx-auto min-h-dvh place-content-center">
         <span className="loading loading-dots loading-lg text-primary"></span>
@@ -39,7 +39,7 @@ function OrderDetailsPage() {
                 <img
                   src={orderDetails.mealImage || "https://picsum.photos/200"}
                   alt="provider"
-                  className="object-cover w-full h-72"
+                  className="object-cover w-full h-52"
                 />
               </figure>
               <div className="card-body">

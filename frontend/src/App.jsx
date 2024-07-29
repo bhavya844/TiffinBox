@@ -11,7 +11,7 @@ import UserList from "./pages/Admin/UserList";
 import OrderHistoryPage from "./pages/Order/OrderHistoryPage";
 import OrderDetailsPage from "./pages/Order/OrderDetailsPage";
 import ScrollToTop from "./components/shared/ScrollToTop";
-import OrderCartPage from "./pages/Order/OrderCartPage";
+import OrderCartPage from "./pages/OrderCart/OrderCartPage";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ViewProfile from "./pages/Profile/ViewProfile";
 import EditProfile from "./pages/Profile/EditProfile";
@@ -35,6 +35,7 @@ import { OrderProvider } from "./context/OrderContext/OrderContext";
 import ViewOrderDetailsPage from "./pages/Order/ViewOrderDetailsPage";
 import React from "react";
 import Sidebar from "./components/shared/Sidebar";
+import { OrderCartProvider } from "./context/OrderCartContext/OrderCartContext";
 
 const AnonymousRoutes = () => {
   return (
@@ -71,7 +72,6 @@ const OrderRoutesCustomer = () => {
       <Routes>
         <Route path="order-history" element={<OrderHistoryPage />} />
         <Route path="order-details/:orderId" element={<OrderDetailsPage />} />
-        <Route path="order-cart" element={<OrderCartPage />} />
       </Routes>
       <Footer />
     </React.Fragment>
@@ -192,6 +192,16 @@ function App() {
               <OrderProvider>
                 <OrderRoutesFoodServiceProvider />
               </OrderProvider>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <OrderCartProvider>
+                <Navbar />
+                <OrderCartPage />
+                <Footer />
+              </OrderCartProvider>
             }
           />
         </Routes>

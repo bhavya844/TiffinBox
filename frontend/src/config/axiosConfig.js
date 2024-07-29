@@ -37,7 +37,7 @@ api.interceptors.response.use(
       localStorage.setItem("authToken", data?.token);
       localStorage.setItem("refreshToken", data?.refreshToken);
 
-      originalRequest.headers.Authorization = `Bearer ${token}`;
+      originalRequest.headers.Authorization = `Bearer ${data?.token}`;
       return axios(originalRequest);
     } catch (error) {
       console.log(error);

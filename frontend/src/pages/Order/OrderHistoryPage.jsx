@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import OrderCard from "../../components/Order/OrderCard";
 import { useOrderContext } from "../../context/OrderContext/OrderContext";
+import { Link } from "react-router-dom";
 
 /**
  * Author: Raj Kamlesh Patel
@@ -31,6 +32,21 @@ function OrderHistoryPage() {
             {orders.orderList?.map((order) => {
               return <OrderCard key={order.orderId} order={order} />;
             })}
+          </div>
+        )}
+        {orders?.orderList.length === 0 && (
+          <div className="grid flex-1 w-full h-full gap-8 place-content-center">
+            <h2 className="text-3xl font-semibold">
+              You haven't ordered anything yet.
+            </h2>
+            <div
+              className="text-center"
+              onClick={() => alert("Redirect to Home Page")}
+            >
+              <Link to="#" role="button" className="btn btn-primary">
+                Let's Order Something
+              </Link>
+            </div>
           </div>
         )}
       </div>
