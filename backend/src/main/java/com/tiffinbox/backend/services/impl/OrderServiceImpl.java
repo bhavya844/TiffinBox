@@ -1,14 +1,19 @@
 package com.tiffinbox.backend.services.impl;
 
+import com.tiffinbox.backend.dto.OrderDetailsDTO;
+import com.tiffinbox.backend.dto.mappers.OrderDetailsMapper;
 import com.tiffinbox.backend.dto.request.CreateOrderRequest;
-import com.tiffinbox.backend.dto.response.BasicResponse;
+import com.tiffinbox.backend.dto.response.orders.GetAllOrderDetailsResponse;
+import com.tiffinbox.backend.dto.response.orders.GetOrderDetailsResponse;
 import com.tiffinbox.backend.exceptions.ApiRequestException;
 import com.tiffinbox.backend.exceptions.NotFoundException;
 import com.tiffinbox.backend.models.Meal;
 import com.tiffinbox.backend.models.Order;
+import com.tiffinbox.backend.models.Payment;
 import com.tiffinbox.backend.models.User;
 import com.tiffinbox.backend.repositories.MealRepository;
 import com.tiffinbox.backend.repositories.OrderRepository;
+import com.tiffinbox.backend.repositories.PaymentRepository;
 import com.tiffinbox.backend.repositories.UserRepository;
 import com.tiffinbox.backend.services.OrderService;
 import com.tiffinbox.backend.utils.OrderStatus;
@@ -36,6 +41,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private MealRepository mealRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     /**
      * Function to create new order
@@ -50,8 +57,16 @@ public class OrderServiceImpl implements OrderService {
         Optional<Meal> meal = mealRepository.findById(request.getMealId());
 
         if(meal.isEmpty()){
-            throw new ApiRequestException("No such meal exists!");
+            throw new ApiRequestException(ResponseMessages.MEAL_NOT_FOUND);
         }
+
+        Payment payment = Payment.builder()
+                .amount(request.getTotalAmount())
+                .paymentDate(LocalDateTime.now())
+                .paymentMethod("Card")
+                .build();
+
+        paymentRepository.save(payment);
 
         Order order = Order.builder()
                 .customer(customer)
@@ -63,9 +78,14 @@ public class OrderServiceImpl implements OrderService {
                 .orderStatus(OrderStatus.PLACED)
                 .orderDate(LocalDateTime.now())
                 .orderType(OrderType.TRIAL)
+                .payment(payment)
                 .build();
 
         orderRepository.save(order);
+
+        payment.setOrder(order);
+        paymentRepository.save(payment);
+
         return order;
     }
 
@@ -75,11 +95,18 @@ public class OrderServiceImpl implements OrderService {
      * @return - list of order details
      */
     @Override
-    public List<Order> getOwnOrders(Principal principal) {
+    public GetAllOrderDetailsResponse getOwnOrders(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
         List<Order> orders = orderRepository.findAllByCustomer(user);
 
-        return orders;
+        List<OrderDetailsDTO> orderDetailsDTOList = OrderDetailsMapper.convertToOrderDetailsDTOList(orders);
+
+        return GetAllOrderDetailsResponse.builder()
+                .success(true)
+                .message(ResponseMessages.ORDER_DETAILS_FETCH)
+                .orderDetails(orderDetailsDTOList)
+                .timeStamp(LocalDateTime.now())
+                .build();
     }
 
     /**
@@ -89,15 +116,22 @@ public class OrderServiceImpl implements OrderService {
      * @return - order details
      */
     @Override
-    public Order getOrderDetails(String orderId, Principal principal) {
+    public GetOrderDetailsResponse getOrderDetails(String orderId, Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
-        Optional<Order> order = orderRepository.findByOrderIdAndCustomer(orderId, user);
+        Optional<Order> order = orderRepository.findByOrderIdAndCustomerOrFoodServiceProvider(orderId, user, user);
 
         if(order.isEmpty()){
             throw new NotFoundException(ResponseMessages.ORDER_NOT_FOUND);
         }
 
-        return order.get();
+        OrderDetailsDTO orderDetailsDTO = OrderDetailsMapper.convertToOrderDetailsDTO(order.get());
+
+        return GetOrderDetailsResponse.builder()
+                .success(true)
+                .message(ResponseMessages.ORDER_DETAILS_FETCH)
+                .orderDetails(orderDetailsDTO)
+                .timeStamp(LocalDateTime.now())
+                .build();
     }
 
     /**
@@ -106,10 +140,17 @@ public class OrderServiceImpl implements OrderService {
      * @return - list of received order details
      */
     @Override
-    public List<Order> getFoodServiceProviderOrders(Principal principal) {
+    public GetAllOrderDetailsResponse getFoodServiceProviderOrders(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
-        List<Order> orders = orderRepository.findAllByFoodServiceProvider(user);
+        List<Order> orders = orderRepository.findAllByFoodServiceProviderAndOrderStatus(user, OrderStatus.PLACED);
 
-        return orders;
+        List<OrderDetailsDTO> orderDetailsDTOList = OrderDetailsMapper.convertToOrderDetailsDTOList(orders);
+
+        return GetAllOrderDetailsResponse.builder()
+                .success(true)
+                .message(ResponseMessages.ORDER_DETAILS_FETCH)
+                .orderDetails(orderDetailsDTOList)
+                .timeStamp(LocalDateTime.now())
+                .build();
     }
 }

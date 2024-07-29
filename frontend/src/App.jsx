@@ -23,45 +23,95 @@ import MealMenuManagement from "./pages/FoodProvider/MealMenuManagement";
 import AddAMeal from "./pages/FoodProvider/AddAMeal";
 import MealPage from "./pages/FoodProvider/MealPage";
 import UpdateAMeal from "./pages/FoodProvider/UpdateAMeal";
-import {CustomerMealAppProvider} from "./context/CustomerMealContext/CustomerMealContext"
+import { CustomerMealAppProvider } from "./context/CustomerMealContext/CustomerMealContext";
 import CustomerHomePage from "./pages/Customer/CustomerHomePage";
 import FoodProviderPage from "./pages/Customer/FoodProviderPage";
 import MealPageCustomer from "./pages/Customer/MealPageCustomer";
 import LoginPage from "./pages/Authentication/LoginPage";
 import SellerRegisterPage from "./pages/Authentication/SellerRegisterPage";
 import CustomerRegisterPage from "./pages/Authentication/CustomerRegisterPage";
+import ViewReceivedOrdersPage from "./pages/Order/ViewReceivedOrdersPage";
+import { OrderProvider } from "./context/OrderContext/OrderContext";
+import ViewOrderDetailsPage from "./pages/Order/ViewOrderDetailsPage";
+import React from "react";
+import Sidebar from "./components/shared/Sidebar";
+
+const AnonymousRoutes = () => {
+  return (
+    <React.Fragment>
+      <Navbar />
+      <Routes>
+        <Route exact path="/" element={<LandingPage />} />
+        <Route path="/contact-us" element={<ContactUsPage />} />
+        <Route path="/faqs" element={<FAQPage />} />
+      </Routes>
+      <Footer />
+    </React.Fragment>
+  );
+};
+
+const AdminRoutes = () => {
+  return (
+    <Routes>
+      <Route path="dashboard" element={<AdminDashboard />} />
+      <Route path="pending-request" element={<PendingRequests />} />
+      <Route
+        path="single-pending-request/:foodServiceProviderId"
+        element={<SinglePendingRequest />}
+      />
+      <Route path="user-list" element={<UserList />} />
+    </Routes>
+  );
+};
+
+const OrderRoutesCustomer = () => {
+  return (
+    <React.Fragment>
+      <Navbar />
+      <Routes>
+        <Route path="order-history" element={<OrderHistoryPage />} />
+        <Route path="order-details/:orderId" element={<OrderDetailsPage />} />
+        <Route path="order-cart" element={<OrderCartPage />} />
+      </Routes>
+      <Footer />
+    </React.Fragment>
+  );
+};
+
+const OrderRoutesFoodServiceProvider = () => {
+  return (
+    <React.Fragment>
+      <Sidebar>
+        <Routes>
+          <Route path="received-orders" element={<ViewReceivedOrdersPage />} />
+          <Route
+            path="received-orders/:orderId"
+            element={<ViewOrderDetailsPage />}
+          />
+        </Routes>
+        <Footer />
+      </Sidebar>
+    </React.Fragment>
+  );
+};
 
 function App() {
   return (
     <main data-theme="bumblebee">
       <Router>
-        <Navbar />
         <ScrollToTop />
         <Routes>
-          <Route exact path="/" element={<LandingPage />} />
-          <Route path="/contact-us" element={<ContactUsPage />} />
-          <Route path="/faqs" element={<FAQPage />} />
+          <Route path="/*" element={<AnonymousRoutes />} />
           {/* admin routes starts */}
           <Route
             path="/admin/*"
             element={
               <AdminAppProvider>
-                <Routes>
-                  <Route path="dashboard" element={<AdminDashboard />} />
-                  <Route path="pending-request" element={<PendingRequests />} />
-                  <Route
-                    path="single-pending-request/:foodServiceProviderId"
-                    element={<SinglePendingRequest />}
-                  />
-                  <Route path="user-list" element={<UserList />} />
-                </Routes>
+                <AdminRoutes />
               </AdminAppProvider>
             }
           />
           {/* admin routes ends */}
-          <Route path="/order-history" element={<OrderHistoryPage />} />
-          <Route path="/order-details" element={<OrderDetailsPage />} />
-          <Route path="/order-cart" element={<OrderCartPage />} />
           {/* order track routes starts */}
           <Route
             path="/order-track/*"
@@ -116,14 +166,35 @@ function App() {
               <CustomerMealAppProvider>
                 <Routes>
                   <Route path="home-page" element={<CustomerHomePage />} />
-                  <Route path="food-provider-page/:foodProviderId" element={<FoodProviderPage />}/>
-                  <Route path="meal-page/:mealId" element={<MealPageCustomer />} />
+                  <Route
+                    path="food-provider-page/:foodProviderId"
+                    element={<FoodProviderPage />}
+                  />
+                  <Route
+                    path="meal-page/:mealId"
+                    element={<MealPageCustomer />}
+                  />
                 </Routes>
               </CustomerMealAppProvider>
             }
           />
+          <Route
+            path="/orders/*"
+            element={
+              <OrderProvider>
+                <OrderRoutesCustomer />
+              </OrderProvider>
+            }
+          />
+          <Route
+            path="/orders/fsp/*"
+            element={
+              <OrderProvider>
+                <OrderRoutesFoodServiceProvider />
+              </OrderProvider>
+            }
+          />
         </Routes>
-        <Footer />
       </Router>
     </main>
   );

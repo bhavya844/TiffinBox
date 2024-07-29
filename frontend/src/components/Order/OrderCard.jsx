@@ -8,22 +8,32 @@ import { Link } from "react-router-dom";
 
 function OrderCard({ order }) {
   return (
-    <section className="shadow card md:card-side bg-base-100">
+    <section
+      className={`shadow card md:card-side bg-base-100 ${
+        order.orderStatus === "DELIVERED" && "bg-slate-300"
+      }`}
+    >
       <figure>
         <img
-          src={order.providerImage}
+          src={order.mealImage || "https://picsum.photos/200"}
           alt="Album"
           className="object-cover w-full h-52 md:h-full md:w-80"
         />
       </figure>
       <div className="card-body">
-        <h2 className="text-3xl card-title">{order.rName}</h2>
+        <h2 className="text-3xl card-title">{order.companyName}</h2>
         <p className="flex flex-col gap-2">
-          <span className="text-2xl">${order.price}</span>
-          <span className="text-gray-500 text-md">{order.date}</span>
+          <span className="text-2xl">${order.amount}</span>
+          <span className="text-gray-500 text-md">{order.orderDate}</span>
         </p>
         <div className="justify-end card-actions">
-          <Link to="/order-details" className="btn btn-primary">
+          <Link to="#" className="btn btn-neutral">
+            Track Order
+          </Link>
+          <Link
+            to={`/orders/order-details/${order.orderId}`}
+            className="btn btn-primary"
+          >
             View
           </Link>
         </div>

@@ -1,10 +1,6 @@
-/**
- * Author : Savan Patel
- */
+package com.tiffinbox.backend.dto.response.orders;
 
-package com.tiffinbox.backend.dto.response.mealmenumanagement;
-
-import com.tiffinbox.backend.dto.MealResponseDTO;
+import com.tiffinbox.backend.dto.OrderDetailsDTO;
 import com.tiffinbox.backend.dto.response.BasicResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class GetMealListResponse extends BasicResponse {
-    List<MealResponseDTO> mealResponseList;
+public class GetAllOrderDetailsResponse extends BasicResponse {
+    private List<OrderDetailsDTO> orderDetails;
 }
