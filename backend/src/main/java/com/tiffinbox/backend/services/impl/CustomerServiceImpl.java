@@ -126,6 +126,7 @@ public class CustomerServiceImpl implements ICustomerService {
         response.setMealName(meal.getMealName());
         response.setMealDescription(meal.getMealDescription());
         response.setMealType(meal.getMealType());
+        response.setMealImage(meal.getMealImage());
         response.setCuisineType(meal.getCuisineType());
         response.setMealPrice(meal.getMealPrice());
         if (meal.getUser() != null) {

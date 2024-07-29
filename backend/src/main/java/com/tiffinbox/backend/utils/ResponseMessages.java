@@ -26,7 +26,6 @@ public class ResponseMessages {
     //Meal Menu Management
     public static final String MEAL_ADD_SUCCESSFUL = "Meal added Successfully";
     public static final String MEALS_RETRIEVED_SUCCESSFUL = "Meals retrieved Successfully";
-    public static final String MEAL_NOT_FOUND = "Cannot find this meal";
     public static final String MEAL_UPDATE_SUCCESSFUL = "Meal updated Successfullly";
     public static final String MEAL_RETRIEVED_SUCCESSFUL = "Meal retrieved Successfully";
     public static final String MEAL_DELETE_SUCCESSFUL = "Meal deleted Successfully";

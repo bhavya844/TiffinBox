@@ -4,7 +4,7 @@ import { useFoodProviderMealContext } from '../../context/FoodProviderMealContex
 
 const AddAMeal = () => {
   const [mealData, setMealData] = useState({
-    mealImage: "",
+    mealImage: null,
     mealName: "",
     mealDescription: "",
     mealType: "",
@@ -19,7 +19,7 @@ const AddAMeal = () => {
   } = useFoodProviderMealContext()
   
   const handleImageChange = (e) => {
-    setMealData({ ...mealData, mealImage: ""});
+    setMealData({ ...mealData, mealImage: e.target.files[0]});
     console.log(e.target.files[0])
   };
 
@@ -30,7 +30,16 @@ const AddAMeal = () => {
     if(!regex.test(price)){
       setError(true);
     }else{
-      await addAMeal(mealData);
+
+      const formData = new FormData();
+      formData.append('mealName', mealData.mealName);
+      formData.append('mealDescription', mealData.mealDescription);
+      formData.append('mealPrice',mealData.mealPrice);
+      formData.append('mealImage', mealData.mealImage);
+      formData.append('mealType', mealData.mealType);
+      formData.append('cuisineType',mealData.cuisineType);
+      console.log(formData)
+      await addAMeal(formData);
     }    
   };
 
@@ -98,9 +107,9 @@ const AddAMeal = () => {
               className="input input-bordered w-full"
             >
               <option value="">Select Meal Type</option>
-              <option value="veg">Vegetarian</option>
-              <option value="non-veg">Non-Vegetarian</option>
-              <option value="vegan">Vegan</option>
+              <option value="Vegetarian">Vegetarian</option>
+              <option value="Non-Vegetarian">Non-Vegetarian</option>
+              <option value="Vegan">Vegan</option>
             </select>
           </div>
           <div className="form-control">
@@ -116,9 +125,9 @@ const AddAMeal = () => {
               className="input input-bordered w-full"
             >
               <option value="">Select Cuisine Type</option>
-              <option value="indian">Indian</option>
-              <option value="chinese">Chinese</option>
-              <option value="italian">Italian</option>
+              <option value="Indian">Indian</option>
+              <option value="Chinese">Chinese</option>
+              <option value="Italian">Italian</option>
             </select>
           </div>
           <div className="form-control col-span-full">

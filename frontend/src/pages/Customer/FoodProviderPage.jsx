@@ -40,7 +40,7 @@ const FoodProviderPage = () => {
     }
   return (
     <div className="container mx-auto px-4 py-8 flex">
-      <div className="w-1/3">
+      <div className="w-1/3 mx-3">
         <div className="bg-white rounded-lg shadow-md p-4">
           <img
             src={foodServiceProvider.profileImage}
@@ -53,7 +53,7 @@ const FoodProviderPage = () => {
           <p className="text-gray-700">{foodServiceProvider.contact}</p>
         </div>
       </div>
-      <div className="w-2/3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="w-2/3 h-[50%] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-3">
         {mealsProvided.map((meal, index) => (
             <MealCard key={index} mealId={meal.mealId} image={meal.mealImage} name={meal.mealName} price={meal.mealPrice} handleCardClick={handleCardClick}/>
         ))}

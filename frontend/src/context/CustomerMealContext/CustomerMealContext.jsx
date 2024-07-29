@@ -27,7 +27,7 @@ const AppContext = createContext();
 
 const CustomerMealAppProvider = ({children}) => {
     const [state, dispatch] = useReducer(reducer,initialState);
-    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lLnNtaXRoQGZtYWlsLmNvbSIsImlhdCI6MTcyMjEzOTAxNiwiZXhwIjoxNzIyMTQyNjE2fQ.ykb8TqMfG8IE2kTc6-Y4RoycEeI4XJgh7FY0hSgJmLw"
+    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lLnNtaXRoQGZtYWlsLmNvbSIsImlhdCI6MTcyMjIyMTYyOSwiZXhwIjoxNzIyMjI1MjI5fQ.q3z1mhVdUzeIjipCjJkpc6MCT2w9ZYvJ436r5gAd-Do"
     const getAllFoodServiceProvider = async () => {
         await API.get(`${backendURLs.GET_ALL_FOOD_SERVICE_PROVIDER_URL}`,{
             headers:{
@@ -75,7 +75,7 @@ const CustomerMealAppProvider = ({children}) => {
     }
 
     const getAllMealsFromProvider = async (foodProviderId) => {
-        await API.post(`${backendURLs.GET_ALL_MEALS_FROM_PROVIDER_URL}/${foodProviderId}`,{
+        await API.get(`${backendURLs.GET_ALL_MEALS_FROM_PROVIDER_URL}/${foodProviderId}`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }

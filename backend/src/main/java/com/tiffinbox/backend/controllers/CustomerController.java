@@ -32,7 +32,7 @@ public class CustomerController {
     public ResponseEntity<GetASingleFoodProvider> getFoodProvider(@PathVariable String foodProviderId){
         return new ResponseEntity<>(customerService.getFoodProvider(foodProviderId), HttpStatus.OK);
     }
-    @PostMapping("/getmeals/{foodServiceProviderId}")
+    @GetMapping("/getmeals/{foodServiceProviderId}")
     public ResponseEntity<GetMealListResponse> getMealsFromProvider(@PathVariable String foodServiceProviderId){
         return new ResponseEntity<>(customerService.getMeals(foodServiceProviderId),HttpStatus.OK);
     }

@@ -10,11 +10,14 @@ import com.tiffinbox.backend.models.Meal;
 import com.tiffinbox.backend.models.User;
 import com.tiffinbox.backend.repositories.MealRepository;
 import com.tiffinbox.backend.repositories.UserRepository;
+import com.tiffinbox.backend.services.CloudinaryService;
 import com.tiffinbox.backend.services.IFoodProviderService;
 import com.tiffinbox.backend.utils.ResponseMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,22 +27,26 @@ import java.util.List;
 public class FoodProviderServiceImpl implements IFoodProviderService {
     private final UserRepository userRepository;
     private final MealRepository mealRepository;
+    private final CloudinaryService cloudinaryService;
 
     @Override
-    public GetASingleMealResponse addMeal(Principal principal, AddMealRequest addMealRequest) {
+    public GetASingleMealResponse addMeal(Principal principal, AddMealRequest addMealRequest, MultipartFile mealImage) throws IOException {
         User user = userRepository.findByEmail(principal.getName());
         if (user == null) {
             throw new RuntimeException("User not found");
         }
 
+        String imageUrl = (String)cloudinaryService.upload(mealImage).get("url");
+        System.out.println(imageUrl);
         Meal meal = new Meal();
         meal.setMealName(addMealRequest.getMealName());
         meal.setMealDescription(addMealRequest.getMealDescription());
-        meal.setMealImage(addMealRequest.getMealImage());
+        meal.setMealImage(imageUrl);
         meal.setCuisineType(addMealRequest.getCuisineType());
         meal.setMealType(addMealRequest.getMealType());
         meal.setMealPrice(addMealRequest.getMealPrice());
         meal.setUser(user);
+        System.out.println(meal);
 
         mealRepository.save(meal);
 
@@ -89,7 +96,7 @@ public class FoodProviderServiceImpl implements IFoodProviderService {
     }
 
     @Override
-    public GetASingleMealResponse updateMeal(String mealId, AddMealRequest addMealRequest) {
+    public GetASingleMealResponse updateMeal(String mealId, AddMealRequest addMealRequest,MultipartFile mealImage) throws IOException {
         Meal meal = mealRepository.findById(mealId).orElse(null);
         System.out.println(meal);
         if (meal == null) {
@@ -97,9 +104,10 @@ public class FoodProviderServiceImpl implements IFoodProviderService {
             throw new NotFoundException(ResponseMessages.MEAL_NOT_FOUND);
         }
 
+        String imageUrl = (String)cloudinaryService.upload(mealImage).get("url");
         meal.setMealName(addMealRequest.getMealName());
         meal.setMealDescription(addMealRequest.getMealDescription());
-        meal.setMealImage(addMealRequest.getMealImage());
+        meal.setMealImage(imageUrl);
         meal.setCuisineType(addMealRequest.getCuisineType());
         meal.setMealType(addMealRequest.getMealType());
         meal.setMealPrice(addMealRequest.getMealPrice());
@@ -137,6 +145,7 @@ public class FoodProviderServiceImpl implements IFoodProviderService {
         MealResponseDTO response = new MealResponseDTO();
         response.setMealId(meal.getMealId());
         response.setMealName(meal.getMealName());
+        response.setMealImage(meal.getMealImage());
         response.setMealDescription(meal.getMealDescription());
         response.setMealType(meal.getMealType());
         response.setCuisineType(meal.getCuisineType());
