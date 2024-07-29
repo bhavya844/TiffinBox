@@ -109,7 +109,7 @@ function Navbar() {
           </ul>
         </div>
         <div className="navbar-end">
-          <Link className="text-slate-100 btn btn-secondary">Login</Link>
+          <Link to="/login" className="text-slate-100 btn btn-secondary">Login</Link>
         </div>
       </nav>
     </header>

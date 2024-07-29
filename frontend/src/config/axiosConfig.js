@@ -1,14 +1,12 @@
 import axios from "axios";
 
-const authToken =
-  "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGVtYWlsLmNvbSIsImlhdCI6MTcyMjIyMTczNCwiZXhwIjoxNzIyMjI1MzM0fQ.HySzXqbTIWPiCpJ0iit75wSJgmXDethHE9p3N9dQWs4";
-
 const api = axios.create({
   baseURL: "http://localhost:8080/api",
 });
 
 api.interceptors.request.use(
   (config) => {
+    const authToken = localStorage.getItem("authToken");
     if (authToken) {
       config.headers.Authorization = `Bearer ${authToken}`;
     }
@@ -34,9 +32,10 @@ api.interceptors.response.use(
           refreshToken,
         }
       );
-      const { token } = response.data;
+      const data = response.data;
 
-      localStorage.setItem("token", token);
+      localStorage.setItem("authToken", data?.token);
+      localStorage.setItem("refreshToken", data?.refreshToken);
 
       originalRequest.headers.Authorization = `Bearer ${token}`;
       return axios(originalRequest);

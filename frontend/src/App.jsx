@@ -27,6 +27,9 @@ import { CustomerMealAppProvider } from "./context/CustomerMealContext/CustomerM
 import CustomerHomePage from "./pages/Customer/CustomerHomePage";
 import FoodProviderPage from "./pages/Customer/FoodProviderPage";
 import MealPageCustomer from "./pages/Customer/MealPageCustomer";
+import LoginPage from "./pages/Authentication/LoginPage";
+import SellerRegisterPage from "./pages/Authentication/SellerRegisterPage";
+import CustomerRegisterPage from "./pages/Authentication/CustomerRegisterPage";
 import ViewReceivedOrdersPage from "./pages/Order/ViewReceivedOrdersPage";
 import { OrderProvider } from "./context/OrderContext/OrderContext";
 import ViewOrderDetailsPage from "./pages/Order/ViewOrderDetailsPage";
@@ -147,6 +150,14 @@ function App() {
             }
           />
           {/* Food Service Provider routes ends */}
+          {/* Routes for the Authentication starts */}
+        
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/customer-register" element={<CustomerRegisterPage />} />
+            <Route path="/seller-register" element={<SellerRegisterPage />} />
+            {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
+        
+          {/* Routes for the Authentication ends */}
 
           {/* Routes for Customer */}
           <Route
