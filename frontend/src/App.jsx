@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ContactUsPage from "./pages/ContactUsPage";
 import FAQPage from "./pages/FAQPage";
-import AllReviewsPage from "./components/AllReviewsPage";
+import AllReviewsPage from "./pages/Customer/AllReviewsPage";
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
 import LandingPage from "./pages/LandingPage";
@@ -27,6 +27,7 @@ import {CustomerMealAppProvider} from "./context/CustomerMealContext/CustomerMea
 import CustomerHomePage from "./pages/Customer/CustomerHomePage";
 import FoodProviderPage from "./pages/Customer/FoodProviderPage";
 import MealPageCustomer from "./pages/Customer/MealPageCustomer";
+import ViewAllReviews from "./pages/FoodProvider/ViewAllReviews";
 
 function App() {
   return (
@@ -84,6 +85,7 @@ function App() {
                     path="update-a-meal/:mealId"
                     element={<UpdateAMeal />}
                   />
+                  <Route path="/view-all-reviews/:foodProviderId" element={<ViewAllReviews />} />
                 </Routes>
               </FoodProviderMealAppProvider>
             }

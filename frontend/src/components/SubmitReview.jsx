@@ -48,7 +48,7 @@ const SubmitReview = () => {
     try {
       const abc= await axios.post('http://localhost:8080/api/reviews/addReview', reviewData,{
         headers:{
-          Authorization:'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIxOTE1MzYsImV4cCI6MTcyMjE5NTEzNn0.cZntchwribeWj23_F4l16mdUbn_x08WnBhCxFO1JY8w'
+          Authorization:'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIyNjgxODYsImV4cCI6MTcyMjI3MTc4Nn0.nmf-xDKC6aCOaMURoVhs9nBLeN7ceyePW721eJ7cLdY'
         }
       });
       console.log(abc)
@@ -57,10 +57,8 @@ const SubmitReview = () => {
         duration: 2000
       });
 
-      
-      setTimeout(() => {
-        navigate('/');
-      }, 2000); 
+      navigate(`/customer/food-provider-page/${foodProviderId}`)
+
     } catch (error) {
       console.error('Failed to submit review:', error);
       toast.error('Failed to submit the review. Please try again.', {

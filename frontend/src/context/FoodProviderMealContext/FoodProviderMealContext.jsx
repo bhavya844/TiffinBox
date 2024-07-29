@@ -34,7 +34,7 @@ const AppContext = createContext();
 const FoodProviderMealAppProvider = ({ children }) => {
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, initialState);
-  const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5lLnNtaXRoQGZtYWlsLmNvbSIsImlhdCI6MTcyMjIyMTYyOSwiZXhwIjoxNzIyMjI1MjI5fQ.q3z1mhVdUzeIjipCjJkpc6MCT2w9ZYvJ436r5gAd-Do"
+  const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIyNjgxODYsImV4cCI6MTcyMjI3MTc4Nn0.nmf-xDKC6aCOaMURoVhs9nBLeN7ceyePW721eJ7cLdY"
   const addAMeal = async (formData) => {
     await API.post(backendURLs.ADD_A_MEAL_URL, formData,{
       headers:{
