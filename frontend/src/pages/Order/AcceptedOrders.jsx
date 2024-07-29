@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useOrderTrackContext } from "../../context/OrderTrackContext/OrderTrackContext";
+import { toast } from "react-hot-toast";
 
 function AcceptedOrders() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const {acceptedOrderList, getAllAcceptedOrders} = useOrderTrackContext();
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [newStatus, setNewStatus] = useState("");
+  const { acceptedOrderList, getAllAcceptedOrders, updateOrderStatus } = useOrderTrackContext();
 
-  
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -23,10 +25,31 @@ function AcceptedOrders() {
     navigate("/view-detailed-order", { state: item });
   };
 
+  const handleUpdateClick = (item, status) => {
+    if (item.currentOrderStatus === "DELIVERED" && (status === "DELIVERED" || status === "IN_PREPARATION")) {
+      toast.error("Order is already delivered!");
+      return;
+    }
+
+    setSelectedOrder(item);
+    setNewStatus(status);
+
+    if (status === "DELIVERED") {
+      updateOrderStatus({ ...item, newStatus: status });
+      document.getElementById("update_order_status_modal").showModal();
+    } else {
+      updateOrderStatus({ ...item, newStatus: status });
+    }
+  };
+
+  const handleSubmit = () => {
+    
+    document.getElementById("update_order_status_modal").close();
+  };
+
   useEffect(() => {
     getAllAcceptedOrders();
-  }, [])
-  
+  }, []);
 
   return (
     <div className="container mx-auto px-6 py-6">
@@ -112,22 +135,12 @@ function AcceptedOrders() {
                           className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
                         >
                           <li>
-                            <a
-                              onClick={(item) =>
-                                (item.currentOrderStatus = "IN_PREPARATION")
-                              }
-                            >
+                            <a onClick={() => handleUpdateClick(item, "IN_PREPARATION")}>
                               In-Preparation
                             </a>
                           </li>
                           <li>
-                            <a
-                              onClick={() =>
-                                document
-                                  .getElementById("update_order_status_modal")
-                                  .showModal()
-                              }
-                            >
+                            <a onClick={() => handleUpdateClick(item, "DELIVERED")}>
                               Delivered
                             </a>
                           </li>
@@ -176,7 +189,7 @@ function AcceptedOrders() {
                   </form>
                 </div>
                 <div>
-                  <button className="btn btn-info">Submit</button>
+                  <button className="btn btn-info" onClick={handleSubmit}>Submit</button>
                 </div>
               </div>
             </div>
