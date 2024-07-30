@@ -1,9 +1,7 @@
 package com.tiffinbox.backend.services.impl;
 
-import com.tiffinbox.backend.dto.request.LoginRequest;
-import com.tiffinbox.backend.dto.request.RefreshTokenRequest;
-import com.tiffinbox.backend.dto.request.SignUpRequestCustomer;
-import com.tiffinbox.backend.dto.request.SignUpRequestSeller;
+import com.tiffinbox.backend.dto.request.*;
+import com.tiffinbox.backend.dto.response.BasicResponse;
 import com.tiffinbox.backend.dto.response.LoginResponse;
 import com.tiffinbox.backend.dto.response.SignUpResponse;
 import com.tiffinbox.backend.exceptions.ApiRequestException;
@@ -11,20 +9,28 @@ import com.tiffinbox.backend.exceptions.NotFoundException;
 import com.tiffinbox.backend.exceptions.NotVerifiedException;
 import com.tiffinbox.backend.models.Customer;
 import com.tiffinbox.backend.models.FoodServiceProvider;
+import com.tiffinbox.backend.models.TempPasswordRegistry;
 import com.tiffinbox.backend.models.User;
 import com.tiffinbox.backend.repositories.CustomerRepository;
 import com.tiffinbox.backend.repositories.SellerRepository;
+import com.tiffinbox.backend.repositories.TempPasswordRepository;
 import com.tiffinbox.backend.repositories.UserRepository;
+import com.tiffinbox.backend.services.EmailService;
 import com.tiffinbox.backend.services.IAuthService;
 import com.tiffinbox.backend.services.JwtService;
+import com.tiffinbox.backend.utils.EmailType;
 import com.tiffinbox.backend.utils.ResponseMessages;
 import com.tiffinbox.backend.utils.UserRole;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
+import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class AuthServiceImpl implements IAuthService {
@@ -38,6 +44,10 @@ public class AuthServiceImpl implements IAuthService {
     private SellerRepository sellerRepository;
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private EmailService emailService;
+    @Autowired
+    private TempPasswordRepository tempPasswordRepository;
 
     public SignUpResponse customerSignUp(SignUpRequestCustomer signUpRequestCustomer) {
 
@@ -182,5 +192,50 @@ public class AuthServiceImpl implements IAuthService {
             return loginResponse;
         }
         return null;
+    }
+
+    @SneakyThrows
+    public BasicResponse forgotPassword (ForgotPasswordRequest forgotPasswordRequest){
+        BasicResponse basicResponse = new BasicResponse();
+        TempPasswordRegistry tempPasswordRegistry = new TempPasswordRegistry();
+        User user = userRepository.findByEmail(forgotPasswordRequest.getEmail());
+        if(user == null){
+            throw new NotFoundException("No User Found for the provided email!");
+        }
+        String tempPswd = UUID.randomUUID().toString().replace("-", "");
+        String encodedPswd = passwordEncoder.encode(tempPswd);
+        emailService.sendEmail(EmailType.DELIVERY_OTP, forgotPasswordRequest.getEmail(), ResponseMessages.TEMP_PSWD,ResponseMessages.TEMP_PSWD_BODY,tempPswd);
+        tempPasswordRegistry.setUser(user);
+        tempPasswordRegistry.setPermanantPassword(user.getPassword());
+        tempPasswordRegistry.setTempPassword(encodedPswd);
+        tempPasswordRepository.save(tempPasswordRegistry);
+        user.setPassword(encodedPswd);
+        userRepository.save(user);
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.schedule(() -> {
+
+            User latestUser = userRepository.findByUserId(user.getUserId());
+            TempPasswordRegistry latestTempPasswordRegistry = tempPasswordRepository.findByTempPswdId(tempPasswordRegistry.getTempPswdId());
+
+            if (latestTempPasswordRegistry == null){
+                throw new NotFoundException("Temporary Password Expired!");
+            }
+
+            if (latestUser == null){
+                throw new NotFoundException("Error Fetching User!");
+            }
+
+            if (latestUser.getPassword().equals(latestTempPasswordRegistry.getTempPassword())) {
+                latestUser.setPassword(latestTempPasswordRegistry.getPermanantPassword());
+                userRepository.save(latestUser);
+                tempPasswordRepository.delete(latestTempPasswordRegistry);
+            }
+
+            scheduler.shutdown();
+        }, 3, TimeUnit.MINUTES);
+        basicResponse.setTimeStamp(LocalDateTime.now());
+        basicResponse.setSuccess(true);
+        basicResponse.setMessage("Email has been sent Successfully!");
+        return basicResponse;
     }
 }

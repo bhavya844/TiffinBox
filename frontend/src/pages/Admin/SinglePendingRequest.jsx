@@ -27,11 +27,11 @@ const SinglePendingRequest = () => {
   }, [foodServiceProviderId]);
 
   return (
-    <div className="container mx-auto px-6 py-6">
+    <div className="container px-6 py-6 mx-auto">
       <div className="grid grid-cols-1 gap-10">
         <div className="flex flex-row justify-between">
           <div>
-            <h1 className="font-bold text-3xl">User Details</h1>
+            <h1 className="text-3xl font-bold">User Details</h1>
           </div>
           <div className="flex space-x-4">
             <button
@@ -55,94 +55,94 @@ const SinglePendingRequest = () => {
           </div>
         </div>
         <form>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-bold">First Name</span>
+                <span className="font-bold label-text">First Name</span>
               </label>
               <input
                 type="text"
                 value={singleUserDetails?.firstName || ""}
-                className="input input-bordered w-full"
+                className="w-full input input-bordered"
                 readOnly
               />
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-bold">Last Name</span>
+                <span className="font-bold label-text">Last Name</span>
               </label>
               <input
                 type="text"
                 value={singleUserDetails?.lastName || ""}
-                className="input input-bordered w-full"
+                className="w-full input input-bordered"
                 readOnly
               />
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-bold">Email</span>
+                <span className="font-bold label-text">Email</span>
               </label>
               <input
                 type="email"
                 value={singleUserDetails?.email || ""}
-                className="input input-bordered w-full"
+                className="w-full input input-bordered"
                 readOnly
               />
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-bold">Contact Number</span>
+                <span className="font-bold label-text">Contact Number</span>
               </label>
               <input
                 type="text"
                 value={singleUserDetails?.contact || ""}
-                className="input input-bordered w-full"
+                className="w-full input input-bordered"
                 readOnly
               />
             </div>
             <div className="form-control sm:col-span-2">
               <label className="label">
-                <span className="label-text font-bold">
+                <span className="font-bold label-text">
                   Company/Restaurant Address
                 </span>
               </label>
               <input
                 type="text"
                 value={singleUserDetails?.companyAddress || ""}
-                className="input input-bordered w-full"
+                className="w-full input input-bordered"
                 readOnly
               />
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-bold">City</span>
+                <span className="font-bold label-text">City</span>
               </label>
               <input
                 type="text"
                 value={singleUserDetails?.city || ""}
-                className="input input-bordered w-full"
+                className="w-full input input-bordered"
                 readOnly
               />
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-bold">Province</span>
+                <span className="font-bold label-text">Province</span>
               </label>
               <input
                 type="text"
                 value={singleUserDetails?.province || ""}
-                className="input input-bordered w-full"
+                className="w-full input input-bordered"
                 readOnly
               />
             </div>
             <div className="form-control sm:col-span-2">
               <label className="label">
-                <span className="label-text font-bold">License Number</span>
+                <span className="font-bold label-text">License Number</span>
               </label>
               <input
                 type="text"
                 value={singleUserDetails?.licenseNumber || ""}
-                className="input input-bordered w-full"
+                className="w-full input input-bordered"
                 readOnly
               />
             </div>

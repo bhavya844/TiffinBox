@@ -35,14 +35,14 @@ const UserList = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-6 py-6">
+    <div className="container px-6 py-6 mx-auto">
       <div className="grid grid-cols-1 gap-10">
         <div>
-          <h1 className="font-bold text-3xl">User List</h1>
+          <h1 className="text-3xl font-bold">User List</h1>
         </div>
         {/* Search box starts */}
         <div>
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="flex items-center gap-2 input input-bordered">
             <input
               type="text"
               className="grow"
@@ -96,7 +96,7 @@ const UserList = () => {
               </tbody>
             </table>
             {filteredRows.length === 0 ? (
-              <h1 className="text-xl text-center font-bold my-2">No Users!</h1>
+              <h1 className="my-2 text-xl font-bold text-center">No Users!</h1>
             ) : (
               <></>
             )}
@@ -110,10 +110,10 @@ const UserList = () => {
         className="modal modal-middle sm:modal-middle"
       >
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Remove User</h3>
+          <h3 className="text-lg font-bold">Remove User</h3>
           <p className="py-4">Are you sure want to remove this user?</p>
           <div className="modal-action">
-            <div className="mt-4 flex justify-start gap-2">
+            <div className="flex justify-start gap-2 mt-4">
               <div>
                 <form method="dialog">
                   <button className="btn">Close</button>

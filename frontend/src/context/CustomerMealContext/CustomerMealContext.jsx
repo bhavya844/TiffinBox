@@ -2,8 +2,7 @@
  * Author: Savan Patel
  */
 
-import axios from "axios";
-import { React, useContext, useReducer, createContext } from "react";
+import { useContext, useReducer, createContext } from "react";
 import {
   GET_A_MEAL_FROM_ID,
   GET_ALL_FOOD_SERVICE_PROVIDER_IN_CITY,
@@ -12,17 +11,14 @@ import {
 } from "./action";
 import reducer from "./reducer";
 import toast from "react-hot-toast";
-
-const API = axios.create({
-  baseURL: "http://localhost:8080/api/customer/",
-});
+import { api } from "../../config/axiosConfig";
 
 const backendURLs = {
-  GET_ALL_FOOD_SERVICE_PROVIDER_URL: "getfoodproviders",
-  SEARCH_FOOD_SERVICE_PROVIDERS_URL: "searchfoodproviders",
-  GET_ALL_MEALS_FROM_PROVIDER_URL: "getmeals",
-  GET_A_MEAL_FROM_ID_URL: "getMealFromId",
-  GET_FOOD_SERVICE_PROVIDER_URL: "getfoodprovider",
+  GET_ALL_FOOD_SERVICE_PROVIDER_URL: "customer/getfoodproviders",
+  SEARCH_FOOD_SERVICE_PROVIDERS_URL: "customer/searchfoodproviders",
+  GET_ALL_MEALS_FROM_PROVIDER_URL: "customer/getmeals",
+  GET_A_MEAL_FROM_ID_URL: "customer/getMealFromId",
+  GET_FOOD_SERVICE_PROVIDER_URL: "customer/getfoodprovider",
 };
 
 const initialState = {
@@ -38,11 +34,8 @@ const CustomerMealAppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const token = localStorage.getItem('authToken')
   const getAllFoodServiceProvider = async () => {
-    await API.get(`${backendURLs.GET_ALL_FOOD_SERVICE_PROVIDER_URL}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    await api
+      .get(`${backendURLs.GET_ALL_FOOD_SERVICE_PROVIDER_URL}`)
       .then((response) => {
         console.log(response);
         dispatch({
@@ -57,15 +50,8 @@ const CustomerMealAppProvider = ({ children }) => {
   };
 
   const getAllFoodServiceProviderwithSearch = async (searchData) => {
-    await API.post(
-      `${backendURLs.SEARCH_FOOD_SERVICE_PROVIDERS_URL}`,
-      searchData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
+    await api
+      .post(`${backendURLs.SEARCH_FOOD_SERVICE_PROVIDERS_URL}`, searchData)
       .then((response) => {
         console.log(response);
         dispatch({
@@ -80,14 +66,8 @@ const CustomerMealAppProvider = ({ children }) => {
   };
 
   const getFoodServiceProvider = async (foodProviderId) => {
-    await API.get(
-      `${backendURLs.GET_FOOD_SERVICE_PROVIDER_URL}/${foodProviderId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
+    await api
+      .get(`${backendURLs.GET_FOOD_SERVICE_PROVIDER_URL}/${foodProviderId}`)
       .then((response) => {
         console.log(response);
         dispatch({ type: GET_FOOD_SERVICE_PROVIDER, payload: response.data });
@@ -99,14 +79,8 @@ const CustomerMealAppProvider = ({ children }) => {
   };
 
   const getAllMealsFromProvider = async (foodProviderId) => {
-    await API.get(
-      `${backendURLs.GET_ALL_MEALS_FROM_PROVIDER_URL}/${foodProviderId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
+    await api
+      .get(`${backendURLs.GET_ALL_MEALS_FROM_PROVIDER_URL}/${foodProviderId}`)
       .then((response) => {
         console.log(response);
         dispatch({ type: GET_ALL_MEALS_FROM_PROVIDER, payload: response.data });
@@ -120,11 +94,8 @@ const CustomerMealAppProvider = ({ children }) => {
   };
 
   const getMealFromId = async (mealId) => {
-    await API.get(`${backendURLs.GET_A_MEAL_FROM_ID_URL}/${mealId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    await api
+      .get(`${backendURLs.GET_A_MEAL_FROM_ID_URL}/${mealId}`)
       .then((response) => {
         console.log(response);
         dispatch({ type: GET_A_MEAL_FROM_ID, payload: response.data });

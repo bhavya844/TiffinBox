@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { api } from "../../config/axiosConfig";
+import toast from "react-hot-toast";
+import { useOrderCartContext } from "../OrderCartContext/OrderCartContext";
 
 /**
  * Author: Raj Kamlesh Patel
@@ -59,6 +61,36 @@ const OrderProvider = ({ children }) => {
       .finally(() => setLoading(false));
   };
 
+  const placeOrder = async (cart) => {
+    const { cartItem } = cart;
+    const data = {
+      mealId: cartItem.mealId,
+      foodServiceProviderId: cartItem.foodServiceProviderId,
+      totalAmount: cart.totalAmount,
+      quantity: cart.quantity,
+      additionalRequestDescription: "",
+    };
+    await api
+      .post("/orders", data)
+      .then((res) => {
+        toast.success("Order Placed.");
+        setCart(initialState);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const subscribe = async (data) => {
+    setLoading(true);
+    await api
+      .post("/subscription", data)
+      .then((res) => {
+        console.log(res);
+        toast.success("Subscribed to the Meal.");
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(false));
+  };
+
   return (
     <OrderContext.Provider
       value={{
@@ -66,6 +98,8 @@ const OrderProvider = ({ children }) => {
         fetchAllOrders,
         fetchOrderDetails,
         fetchReceivedOrders,
+        placeOrder,
+        subscribe,
         loading,
       }}
     >

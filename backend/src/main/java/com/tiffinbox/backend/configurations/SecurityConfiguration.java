@@ -33,6 +33,7 @@ public class SecurityConfiguration {
                        .requestMatchers("/api/home/**").permitAll()
                        .requestMatchers("/api/meal/**").permitAll()
                        .requestMatchers("/api/orders/**").authenticated()
+                       .requestMatchers("/api/foodserviceprovider/**").authenticated()
                        .requestMatchers("/api/ordertrack/**").authenticated()
                        .requestMatchers("/api/subscription/**").authenticated()
                        .anyRequest().authenticated()

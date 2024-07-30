@@ -62,7 +62,7 @@ function ViewReceivedOrdersPage() {
                       <td>{order.customerName}</td>
                       <td>
                         <Link
-                          to={`/orders/fsp/received-orders/${order.orderId}`}
+                          to={`/foodprovider/received-orders/${order.orderId}`}
                           className="btn btn-neutral"
                         >
                           View

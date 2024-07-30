@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import OrderBreakDown from "../../components/OrderCart/OrderBreakDown";
 import OrderItems from "../../components/OrderCart/OrderItems";
 import { useOrderCartContext } from "../../context/OrderCartContext/OrderCartContext";
+import { useEffect } from "react";
 
 /**
  * Author: Raj Kamlesh Patel
@@ -10,7 +11,13 @@ import { useOrderCartContext } from "../../context/OrderCartContext/OrderCartCon
  */
 
 function OrderCartPage() {
-  const { cart, loading } = useOrderCartContext();
+  const { cart, addToCart, loading } = useOrderCartContext();
+  const { state } = useLocation();
+  const { foodServiceProviderId, mealId } = state;
+  useEffect(() => {
+    console.log(state);
+    addToCart(mealId, foodServiceProviderId);
+  }, []);
 
   return (
     <div className="flex flex-col items-center min-h-dvh">
@@ -37,7 +44,7 @@ function OrderCartPage() {
             </div>
           </div>
         )}
-        {cart?.cartItem !== null && !loading && (
+        {cart.cartItem !== null && !loading && (
           <div className="flex flex-col gap-8 lg:flex-row">
             <section className="flex-[1.5] flex flex-col gap-4">
               <OrderItems />
