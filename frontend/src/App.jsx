@@ -29,7 +29,6 @@ import { CustomerMealAppProvider } from "./context/CustomerMealContext/CustomerM
 import CustomerHomePage from "./pages/Customer/CustomerHomePage";
 import FoodProviderPage from "./pages/Customer/FoodProviderPage";
 import MealPageCustomer from "./pages/Customer/MealPageCustomer";
-import ViewAllReviews from "./pages/FoodProvider/ViewAllReviews";
 import LoginPage from "./pages/Authentication/LoginPage";
 import SellerRegisterPage from "./pages/Authentication/SellerRegisterPage";
 import CustomerRegisterPage from "./pages/Authentication/CustomerRegisterPage";
@@ -39,6 +38,7 @@ import ViewOrderDetailsPage from "./pages/Order/ViewOrderDetailsPage";
 import React from "react";
 import Sidebar from "./components/shared/Sidebar";
 import { OrderCartProvider } from "./context/OrderCartContext/OrderCartContext";
+import ReviewAnalytics from "./pages/FoodProvider/ReviewAnalytics";
 
 const AnonymousRoutes = () => {
   return (
@@ -151,7 +151,7 @@ function App() {
                     path="update-a-meal/:mealId"
                     element={<UpdateAMeal />}
                   />
-                  <Route path="/view-all-reviews/:foodProviderId" element={<ViewAllReviews />} />
+                  <Route path="/review-analytics" element={<ReviewAnalytics />} />
                 </Routes>
               </FoodProviderMealAppProvider>
             }

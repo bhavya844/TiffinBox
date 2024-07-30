@@ -15,6 +15,7 @@ const SubmitReview = () => {
   const navigate = useNavigate();
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
+  const token= localStorage.getItem('authToken')
 
   const handleRating = (rate) => {
     setRating(rate);
@@ -53,7 +54,7 @@ const SubmitReview = () => {
     try {
       const abc= await axios.post('http://localhost:8080/api/reviews/addReview', reviewData,{
         headers:{
-          Authorization:'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIyNzM1ODQsImV4cCI6MTcyMjI3NzE4NH0.Q6JzihGoo0-Fj8b866Jn5cBsap2ZElJRB1A67BYUU94'
+          Authorization:`Bearer ${token}` 
         }
       });
       console.log(abc)
