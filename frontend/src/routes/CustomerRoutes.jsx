@@ -15,6 +15,8 @@ import OrderCartPage from "../pages/OrderCart/OrderCartPage";
 import ViewProfile from "../pages/Profile/ViewProfile";
 import EditProfile from "../pages/Profile/EditProfile";
 import TrackOrderStatus from "../pages/Order/TrackOrderStatus";
+import AllReviewsPage from "../pages/Customer/AllReviewsPage";
+import SubmitReview from "../components/SubmitReview";
 
 function CustomerRoutes() {
   return (
@@ -29,6 +31,8 @@ function CustomerRoutes() {
                 path="food-provider-page/:foodProviderId"
                 element={<FoodProviderPage />}
               />
+              <Route path="all-reviews/:foodProviderId" element={<AllReviewsPage />} />
+              <Route path="add-review/:foodProviderId" element={<SubmitReview />} />
               <Route path="meal-page/:mealId" element={<MealPageCustomer />} />
               <Route path="order-history" element={<OrderHistoryPage />} />
 
@@ -43,6 +47,7 @@ function CustomerRoutes() {
                 path="order-track/:orderId"
                 element={<TrackOrderStatus />}
               />
+
             </Routes>
             <Footer />
           </OrderCartProvider>

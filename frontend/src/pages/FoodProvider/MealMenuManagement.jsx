@@ -41,14 +41,14 @@ const MealMenuManagement = () => {
           </h1>
           <div className="px-2 py-2">
           <button
-            className="px-2 py-2 mx-2 bg-yellow-500 text-white rounded-md shadow-md hover:bg-yellow-600 transition duration-300"
+            className="px-2 my-2 py-2 mx-2 bg-yellow-500 text-white rounded-md shadow-md hover:bg-yellow-600 transition duration-300"
             name="add-a-meal"
             onClick={handleButtonClick}
           >
             Add a New Meal
           </button>
           <button
-              className= "mx-2 px-2 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition duration-300"
+              className= "mx-2 my-2 px-2 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition duration-300"
               onClick={handleReviewAnalyticsClick}
             >
               Review Analytics

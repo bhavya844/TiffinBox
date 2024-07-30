@@ -13,6 +13,7 @@ import AcceptedOrders from "../pages/Order/AcceptedOrders";
 import Footer from "../components/shared/Footer";
 import ViewProfile from "../pages/Profile/ViewProfile";
 import EditProfile from "../pages/Profile/EditProfile";
+import ReviewAnalytics from "../pages/FoodProvider/ReviewAnalytics";
 
 function FoodServiceProviderRoutes() {
   return (
@@ -39,6 +40,7 @@ function FoodServiceProviderRoutes() {
               <Route path="accepted-orders" element={<AcceptedOrders />} />
               <Route path="/view-profile" element={<ViewProfile />} />
               <Route path="/edit-profile" element={<EditProfile />} />
+              <Route path="review-analytics" element={<ReviewAnalytics />} />
             </Routes>
             <Footer />
           </Sidebar>

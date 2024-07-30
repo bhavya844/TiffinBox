@@ -66,10 +66,10 @@ function ReviewsManagement() {
     <div className="min-h-screen bg-white p-5 w-full">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="col-span-1 md:col-span-3 flex justify-between items-center mb-4">
-        <button onClick={() => navigate(`/add-review/${foodProviderId}`)} className="btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow">
+        <button onClick={() => navigate(`/customer/add-review/${foodProviderId}`)} className="btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow">
             Add a Review
           </button>
-          <button onClick={() => navigate(`/all-reviews/${foodProviderId}`)} className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow">
+          <button onClick={() => navigate(`/customer/all-reviews/${foodProviderId}`)} className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow">
             View All Reviews
           </button>
         </div>

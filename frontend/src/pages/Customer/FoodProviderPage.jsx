@@ -47,6 +47,7 @@ const FoodProviderPage = () => {
     return <div>Loading...</div>;
   }
   return (
+    <div>
     <div className="container flex px-4 py-8 mx-auto">
       <div className="w-1/3 mx-3">
         <div className="p-4 bg-white rounded-lg shadow-md">
@@ -78,6 +79,11 @@ const FoodProviderPage = () => {
         ))}
       </div>
     </div>
+    <div className="container mx-auto px-4 py-8">
+        <ReviewsManagement foodProviderId={foodProviderId} />
+      </div>
+    </div>
+
   );
 };
 
