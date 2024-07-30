@@ -11,6 +11,7 @@ function AllReviewsPage() {
   const [reviews, setReviews] = useState([]);
   const [expandedReviews, setExpandedReviews] = useState({});
   const [averageRating, setAverageRating] = useState(0);
+  const token= localStorage.getItem('authToken')
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -19,7 +20,7 @@ function AllReviewsPage() {
           `http://localhost:8080/api/reviews/foodServiceProvider/${foodProviderId}`,
           {
             headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIyNzM1ODQsImV4cCI6MTcyMjI3NzE4NH0.Q6JzihGoo0-Fj8b866Jn5cBsap2ZElJRB1A67BYUU94`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );

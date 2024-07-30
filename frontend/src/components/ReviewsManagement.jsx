@@ -13,13 +13,14 @@ function ReviewsManagement() {
   const [ratingDistribution, setRatingDistribution] = useState(new Array(5).fill({ value: 0 }));
   const [averageRating, setAverageRating] = useState(0);
   const [expandedReviews, setExpandedReviews] = useState({});
+  const token= localStorage.getItem("authToken")
 
   useEffect(() => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/api/reviews/foodServiceProvider/${foodProviderId}`, {
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBleGFtcGxlbWFpbC5jb20iLCJpYXQiOjE3MjIyNzM1ODQsImV4cCI6MTcyMjI3NzE4NH0.Q6JzihGoo0-Fj8b866Jn5cBsap2ZElJRB1A67BYUU94`
+            Authorization: `Bearer ${token}`
           }
         });
         const fetchedReviews = response.data.map(review => ({
