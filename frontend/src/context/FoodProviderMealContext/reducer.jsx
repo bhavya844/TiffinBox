@@ -1,3 +1,7 @@
+/**
+ * Author: Savan Patel
+ */
+
 import { ADD_A_MEAL, UPDATE_A_MEAL, DELETE_A_MEAL, GET_ALL_MEALS, GET_A_MEAL_FROM_ID } from "./action";
 
 const reducer = (state, action) => {

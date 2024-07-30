@@ -1,14 +1,12 @@
 import axios from "axios";
 
-const authToken =
-  "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGVtYWlsLmNvbSIsImlhdCI6MTcyMjIyMTczNCwiZXhwIjoxNzIyMjI1MzM0fQ.HySzXqbTIWPiCpJ0iit75wSJgmXDethHE9p3N9dQWs4";
-
 const api = axios.create({
   baseURL: "http://localhost:8080/api",
 });
 
 api.interceptors.request.use(
   (config) => {
+    const authToken = localStorage.getItem("authToken");
     if (authToken) {
       config.headers.Authorization = `Bearer ${authToken}`;
     }
@@ -28,14 +26,18 @@ api.interceptors.response.use(
 
     try {
       const refreshToken = localStorage.getItem("refreshToken");
-      const response = await axios.post("/auth/refresh-token", {
-        refreshToken,
-      });
-      const { token } = response.data;
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/refreshToken",
+        {
+          refreshToken,
+        }
+      );
+      const data = response.data;
 
-      localStorage.setItem("token", token);
+      localStorage.setItem("authToken", data?.token);
+      localStorage.setItem("refreshToken", data?.refreshToken);
 
-      originalRequest.headers.Authorization = `Bearer ${token}`;
+      originalRequest.headers.Authorization = `Bearer ${data?.token}`;
       return axios(originalRequest);
     } catch (error) {
       console.log(error);

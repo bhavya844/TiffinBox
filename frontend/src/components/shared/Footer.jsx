@@ -1,5 +1,11 @@
 import { Link } from "react-router-dom";
 
+/**
+ * Author: Raj Kamlesh Patel
+ * Banner ID: B00978721
+ * Email: rj227488@dal.ca
+ */
+
 function Footer() {
   return (
     <footer className="p-10 rounded footer footer-center bg-secondary text-accent-content">

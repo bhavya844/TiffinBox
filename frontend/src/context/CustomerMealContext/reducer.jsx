@@ -1,3 +1,7 @@
+/**
+ * Author: Savan Patel
+ */
+
 import { GET_ALL_FOOD_SERVICE_PROVIDER_IN_CITY, GET_ALL_MEALS_FROM_PROVIDER, GET_A_MEAL_FROM_ID, GET_FOOD_SERVICE_PROVIDER } from "./action";
 
 const reducer = (state, action) => {

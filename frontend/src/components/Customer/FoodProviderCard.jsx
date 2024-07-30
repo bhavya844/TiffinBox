@@ -1,3 +1,7 @@
+/**
+ * Author: Savan Patel
+ */
+
 import React from 'react';
 
 const FoodProviderCard = ({ provider, handleClick }) => {

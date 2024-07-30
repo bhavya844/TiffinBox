@@ -1,3 +1,7 @@
+/**
+ * Author: Savan Patel
+ */
+
 import React, { useEffect, useState } from 'react';
 import { useCustomerMealContext } from '../../context/CustomerMealContext/CustomerMealContext.jsx';
 import toast from 'react-hot-toast';
@@ -58,7 +62,7 @@ const CustomerHomePage = () => {
             value={searchData.city}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-lg mx-2"
-            placeholder="Search meal providers..."
+            placeholder="Enter City to Search Meal Providers..."
           />
           <select
               id="cuisineType"

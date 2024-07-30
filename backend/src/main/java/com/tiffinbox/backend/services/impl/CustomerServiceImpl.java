@@ -1,3 +1,7 @@
+/**
+ * Author: Savan Patel
+ */
+
 package com.tiffinbox.backend.services.impl;
 
 import com.tiffinbox.backend.dto.FoodProviderResponseDTO;
@@ -36,7 +40,6 @@ public class CustomerServiceImpl implements ICustomerService {
         String city = searchFoodProviderRequest.getCity();
         if(city == null || city == ""){
             foodProviderResponseDTOList = sellerRepository.findAll().stream().map(this::convertToFoodProviderDTO).toList();
-            System.out.println(foodProviderResponseDTOList);
             int end = Math.min(foodProviderResponseDTOList.size(), 10);
             foodProviderResponseDTOList = foodProviderResponseDTOList.subList(0, end);
         }else{
@@ -70,9 +73,7 @@ public class CustomerServiceImpl implements ICustomerService {
     @Override
     public GetMealListResponse getMeals(String foodServiceProviderId) {
         FoodServiceProvider foodServiceProvider = sellerRepository.findSellerByFoodServiceProviderId(foodServiceProviderId);
-        System.out.println(foodServiceProvider);
         User user = userRepository.findByFoodServiceProvider(foodServiceProvider);
-        System.out.println(user);
         List<Meal> listOfMeals = mealRepository.findByUser(user);
         System.out.println(listOfMeals);
 

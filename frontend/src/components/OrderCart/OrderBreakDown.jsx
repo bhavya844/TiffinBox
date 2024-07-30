@@ -1,4 +1,5 @@
 import { FaArrowRight } from "react-icons/fa";
+import { useOrderCartContext } from "../../context/OrderCartContext/OrderCartContext";
 
 /**
  * Author: Raj Kamlesh Patel
@@ -7,6 +8,8 @@ import { FaArrowRight } from "react-icons/fa";
  */
 
 function OrderBreakDown() {
+  const { cart } = useOrderCartContext();
+
   return (
     <div className="flex flex-col w-full gap-8 lg:w-5/6">
       <div className="flex flex-col gap-2">
@@ -16,16 +19,16 @@ function OrderBreakDown() {
       <div className="flex flex-col gap-2">
         <div className="flex justify-between">
           <span className="capitalize text-md">cart total</span>
-          <span className="text-md">$36.78</span>
+          <span className="text-md">${cart?.amount}</span>
         </div>
         <div className="flex justify-between">
           <span className="capitalize text-md">tax</span>
-          <span className="text-md">$36.78</span>
+          <span className="text-md">${cart?.taxAmount}</span>
         </div>
         <div className="my-0 divider"></div>
         <div className="flex justify-between">
           <span className="capitalize text-md">total amount</span>
-          <span className="text-md">$36.78</span>
+          <span className="text-md">${cart?.totalAmount}</span>
         </div>
       </div>
       <button

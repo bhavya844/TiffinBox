@@ -1,3 +1,7 @@
+/**
+ * Author: Savan Patel
+ */
+
 package com.tiffinbox.backend.services.impl;
 
 import com.tiffinbox.backend.dto.MealResponseDTO;
@@ -30,14 +34,13 @@ public class FoodProviderServiceImpl implements IFoodProviderService {
     private final CloudinaryService cloudinaryService;
 
     @Override
-    public GetASingleMealResponse addMeal(Principal principal, AddMealRequest addMealRequest, MultipartFile mealImage) throws IOException {
+    public GetASingleMealResponse  addMeal(Principal principal, AddMealRequest addMealRequest, MultipartFile mealImage) throws IOException {
         User user = userRepository.findByEmail(principal.getName());
         if (user == null) {
             throw new RuntimeException("User not found");
         }
 
         String imageUrl = (String)cloudinaryService.upload(mealImage).get("url");
-        System.out.println(imageUrl);
         Meal meal = new Meal();
         meal.setMealName(addMealRequest.getMealName());
         meal.setMealDescription(addMealRequest.getMealDescription());
@@ -46,7 +49,6 @@ public class FoodProviderServiceImpl implements IFoodProviderService {
         meal.setMealType(addMealRequest.getMealType());
         meal.setMealPrice(addMealRequest.getMealPrice());
         meal.setUser(user);
-        System.out.println(meal);
 
         mealRepository.save(meal);
 
@@ -98,16 +100,17 @@ public class FoodProviderServiceImpl implements IFoodProviderService {
     @Override
     public GetASingleMealResponse updateMeal(String mealId, AddMealRequest addMealRequest,MultipartFile mealImage) throws IOException {
         Meal meal = mealRepository.findById(mealId).orElse(null);
-        System.out.println(meal);
         if (meal == null) {
             System.out.println("Meal not found");
             throw new NotFoundException(ResponseMessages.MEAL_NOT_FOUND);
         }
 
-        String imageUrl = (String)cloudinaryService.upload(mealImage).get("url");
+        if(mealImage != null && !mealImage.isEmpty()) {
+            String imageUrl = (String) cloudinaryService.upload(mealImage).get("url");
+            meal.setMealImage(imageUrl);
+        }
         meal.setMealName(addMealRequest.getMealName());
         meal.setMealDescription(addMealRequest.getMealDescription());
-        meal.setMealImage(imageUrl);
         meal.setCuisineType(addMealRequest.getCuisineType());
         meal.setMealType(addMealRequest.getMealType());
         meal.setMealPrice(addMealRequest.getMealPrice());
