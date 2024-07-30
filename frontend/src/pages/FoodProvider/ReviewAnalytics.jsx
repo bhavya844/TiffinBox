@@ -63,7 +63,7 @@ function ReviewAnalytics() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-200 p-5 w-full">
+    <div className="min-h-screen bg-gray-100 p-5 w-full">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
         <div className="bg-white p-6 rounded-lg shadow-lg col-span-1 h-96">
           <h2 className="text-2xl font-bold text-center">Ratings Overview</h2>
