@@ -7,19 +7,14 @@ import com.tiffinbox.backend.dto.response.orders.GetAllOrderDetailsResponse;
 import com.tiffinbox.backend.dto.response.orders.GetOrderDetailsResponse;
 import com.tiffinbox.backend.exceptions.ApiRequestException;
 import com.tiffinbox.backend.exceptions.NotFoundException;
-import com.tiffinbox.backend.models.Meal;
-import com.tiffinbox.backend.models.Order;
-import com.tiffinbox.backend.models.Payment;
-import com.tiffinbox.backend.models.User;
-import com.tiffinbox.backend.repositories.MealRepository;
-import com.tiffinbox.backend.repositories.OrderRepository;
-import com.tiffinbox.backend.repositories.PaymentRepository;
-import com.tiffinbox.backend.repositories.UserRepository;
+import com.tiffinbox.backend.models.*;
+import com.tiffinbox.backend.repositories.*;
 import com.tiffinbox.backend.services.OrderService;
 import com.tiffinbox.backend.utils.OrderStatus;
 import com.tiffinbox.backend.utils.OrderType;
 import com.tiffinbox.backend.utils.ResponseMessages;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -38,6 +33,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private SellerRepository sellerRepository;
+    @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private MealRepository mealRepository;
@@ -53,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(CreateOrderRequest request, Principal principal) {
         User customer = userRepository.findByEmail(principal.getName());
-        Optional<User> foodServiceProvider = userRepository.findById(request.getFoodServiceProviderId());
+        Optional<FoodServiceProvider> foodServiceProvider = sellerRepository.findById(request.getFoodServiceProviderId());
         Optional<Meal> meal = mealRepository.findById(request.getMealId());
 
         if(meal.isEmpty()){
@@ -70,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = Order.builder()
                 .customer(customer)
-                .foodServiceProvider(foodServiceProvider.get())
+                .foodServiceProvider(foodServiceProvider.get().getUser())
                 .meal(meal.get())
                 .totalAmount(request.getTotalAmount())
                 .quantity(request.getQuantity())
@@ -97,7 +94,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public GetAllOrderDetailsResponse getOwnOrders(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
-        List<Order> orders = orderRepository.findAllByCustomer(user);
+        Sort sort = Sort.by(Sort.Direction.DESC, "orderDate");
+        List<Order> orders = orderRepository.findAllByCustomer(user, sort);
 
         List<OrderDetailsDTO> orderDetailsDTOList = OrderDetailsMapper.convertToOrderDetailsDTOList(orders);
 
@@ -118,7 +116,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public GetOrderDetailsResponse getOrderDetails(String orderId, Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
-        Optional<Order> order = orderRepository.findByOrderIdAndCustomerOrFoodServiceProvider(orderId, user, user);
+        Optional<Order> order = orderRepository.findById(orderId);
 
         if(order.isEmpty()){
             throw new NotFoundException(ResponseMessages.ORDER_NOT_FOUND);
@@ -142,7 +140,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public GetAllOrderDetailsResponse getFoodServiceProviderOrders(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
-        List<Order> orders = orderRepository.findAllByFoodServiceProviderAndOrderStatus(user, OrderStatus.PLACED);
+        Sort sort = Sort.by(Sort.Direction.DESC, "orderDate");
+        List<Order> orders = orderRepository.findAllByFoodServiceProviderAndOrderStatus(user, OrderStatus.PLACED, sort);
 
         List<OrderDetailsDTO> orderDetailsDTOList = OrderDetailsMapper.convertToOrderDetailsDTOList(orders);
 
