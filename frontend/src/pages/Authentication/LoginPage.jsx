@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Model from "../../components/Login/Modal";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { useAuthContext } from "../../context/AuthenticationContext/AuthContext";
 import { UserRoles } from "../../utils/UserRoles";
 const LoginPage = () => {
@@ -19,12 +19,6 @@ const LoginPage = () => {
     getValues,
     formState: { errors },
   } = useForm();
-
-  const onSubmit = (data) => {
-    console.log(data);
-    // Handle form submission logic here
-    toast.success("logged successfulllyyy");
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
