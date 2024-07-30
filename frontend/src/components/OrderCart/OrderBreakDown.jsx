@@ -1,5 +1,6 @@
 import { FaArrowRight } from "react-icons/fa";
 import { useOrderCartContext } from "../../context/OrderCartContext/OrderCartContext";
+import { useOrderContext } from "../../context/OrderContext/OrderContext";
 
 /**
  * Author: Raj Kamlesh Patel
@@ -9,6 +10,7 @@ import { useOrderCartContext } from "../../context/OrderCartContext/OrderCartCon
 
 function OrderBreakDown() {
   const { cart } = useOrderCartContext();
+  const { placeOrder } = useOrderContext();
 
   return (
     <div className="flex flex-col w-full gap-8 lg:w-5/6">
@@ -33,7 +35,9 @@ function OrderBreakDown() {
       </div>
       <button
         className="w-full btn btn-primary"
-        onClick={() => alert("Proceed to Checkout")}
+        onClick={() => {
+          placeOrder(cart);
+        }}
       >
         <p className="flex items-center gap-2">
           <span>Checkout</span>

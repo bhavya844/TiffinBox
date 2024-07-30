@@ -34,7 +34,7 @@ function OrderHistoryPage() {
             })}
           </div>
         )}
-        {orders?.orderList.length === 0 && (
+        {!loading && orders?.orderList.length === 0 && (
           <div className="grid flex-1 w-full h-full gap-8 place-content-center">
             <h2 className="text-3xl font-semibold">
               You haven't ordered anything yet.

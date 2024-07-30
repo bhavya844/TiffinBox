@@ -29,18 +29,37 @@ const initialState = {
 
 const OrderCartProvider = ({ children }) => {
   const [cart, setCart] = useState(initialState);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  const addToCart = async (mealId) => {
+  const addToCart = async (mealId, foodServiceProviderId) => {
     setLoading(true);
     await api
-      .get(`getMeal/${mealId}`)
+      .get(`/customer/getMealFromId/${mealId}`)
       .then((res) => {
         const data = res.data;
-        console.log(data);
+        const { mealResponse } = data;
+        const taxAmount = Number(
+          mealResponse.mealPrice * initialState.taxRate
+        ).toFixed(2);
+        const totalAmount = Number(
+          mealResponse.mealPrice + Number(taxAmount)
+        ).toFixed(2);
+        console.log(taxAmount, totalAmount);
+        setCart({
+          ...cart,
+          cartItem: { ...mealResponse, foodServiceProviderId },
+          quantity: 1,
+          amount: mealResponse.mealPrice,
+          taxAmount,
+          totalAmount,
+        });
+        console.log(mealResponse);
+        toast.success("Meal Added to Cart.");
       })
       .catch((error) => console.log(error))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const increaseQuantity = () => {
@@ -86,26 +105,15 @@ const OrderCartProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    const taxAmount = Number(data.mealPrice * initialState.taxRate).toFixed(2);
-    const totalAmount = Number(data.mealPrice + Number(taxAmount)).toFixed(2);
-    setTimeout(() => {
-      setLoading(true);
-      setCart({
-        ...cart,
-        cartItem: data,
-        amount: data.mealPrice,
-        quantity: 1,
-        taxAmount,
-        totalAmount,
-      });
-      setLoading(false);
-    }, 2000);
-  }, []);
-
   return (
     <OrderCartContext.Provider
-      value={{ cart, addToCart, increaseQuantity, decreaseQuantity, loading }}
+      value={{
+        cart,
+        addToCart,
+        increaseQuantity,
+        decreaseQuantity,
+        loading,
+      }}
     >
       {children}
     </OrderCartContext.Provider>

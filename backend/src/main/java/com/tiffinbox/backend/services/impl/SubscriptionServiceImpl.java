@@ -4,14 +4,8 @@ import com.tiffinbox.backend.dto.request.CreateSubscriptionRequest;
 import com.tiffinbox.backend.exceptions.AlreadySubscribedException;
 import com.tiffinbox.backend.exceptions.ApiRequestException;
 import com.tiffinbox.backend.exceptions.NotFoundException;
-import com.tiffinbox.backend.models.Meal;
-import com.tiffinbox.backend.models.Order;
-import com.tiffinbox.backend.models.Subscription;
-import com.tiffinbox.backend.models.User;
-import com.tiffinbox.backend.repositories.MealRepository;
-import com.tiffinbox.backend.repositories.OrderRepository;
-import com.tiffinbox.backend.repositories.SubscriptionRepository;
-import com.tiffinbox.backend.repositories.UserRepository;
+import com.tiffinbox.backend.models.*;
+import com.tiffinbox.backend.repositories.*;
 import com.tiffinbox.backend.services.SubscriptionService;
 import com.tiffinbox.backend.utils.OrderStatus;
 import com.tiffinbox.backend.utils.OrderType;
@@ -39,9 +33,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private SellerRepository sellerRepository;
+    @Autowired
     private MealRepository mealRepository;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     /**
      * Function to create new subscription
@@ -65,7 +63,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             throw new AlreadySubscribedException(ResponseMessages.ALREADY_SUBSCRIBED);
         }
 
-        Optional<User> foodServiceProvider = userRepository.findById(request.getFoodServiceProviderId());
+        Optional<FoodServiceProvider> foodServiceProvider = sellerRepository.findById(request.getFoodServiceProviderId());
 
         if(foodServiceProvider.isEmpty()){
             throw new ApiRequestException(ResponseMessages.USER_NOT_FOUND);
@@ -90,7 +88,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
         Subscription subscription = Subscription.builder()
                 .customer(customer)
-                .foodServiceProvider(foodServiceProvider.get())
+                .foodServiceProvider(foodServiceProvider.get().getUser())
                 .meal(meal.get())
                 .subscriptionType(SubscriptionType.valueOf(request.getSubscriptionType()))
                 .startDate(startDate)
@@ -104,7 +102,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     /**
      * Cron Job to place order for subscribers
      */
-    @Scheduled(cron = "0 */1 * * * *")
+//    @Scheduled(cron = "0 */1 * * * *")
+    @Scheduled(cron = "*/10 * * * * *")
+//    @Scheduled(cron = "55 23 * * * *")
     @Override
     public void placeOrderCron() {
         List<Subscription> subscriptionList = subscriptionRepository.findAll();
@@ -117,6 +117,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                 continue;
             }
 
+            Payment payment = Payment.builder()
+                    .paymentMethod("Card")
+                    .amount(subscription.getMeal().getMealPrice())
+                    .paymentDate(subscription.getStartDate().minusDays(1))
+                    .build();
+
             Order order = Order.builder()
                     .customer(subscription.getCustomer())
                     .foodServiceProvider(subscription.getFoodServiceProvider())
@@ -127,8 +133,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                     .additionalRequestDescription("")
                     .quantity(1)
                     .orderType(OrderType.SUBSCRIPTION)
+                    .payment(payment)
                     .build();
 
+            paymentRepository.save(payment);
             orderRepository.save(order);
         }
     }

@@ -29,14 +29,14 @@ const PendingRequests = () => {
   }, [location]);
 
   return (
-    <div className="container mx-auto px-6 py-6">
+    <div className="container px-6 py-6 mx-auto">
       <div className="grid grid-cols-1 gap-10">
         <div>
-          <h1 className="font-bold text-3xl">User Pending Requests</h1>
+          <h1 className="text-3xl font-bold">User Pending Requests</h1>
         </div>
         {/* Search box starts */}
         <div>
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="flex items-center gap-2 input input-bordered">
             <input
               type="text"
               className="grow"
@@ -92,7 +92,7 @@ const PendingRequests = () => {
               </tbody>
             </table>
             {filteredRows.length === 0 ? (
-              <h1 className="text-xl text-center font-bold my-2">
+              <h1 className="my-2 text-xl font-bold text-center">
                 No Pending Requests!
               </h1>
             ) : (
