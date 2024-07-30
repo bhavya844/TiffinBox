@@ -16,6 +16,8 @@ public class ResponseMessages {
     public static final String MEAL_NOT_FOUND = "No such meal exists!";
     public static final String INVALID_SUBSCRIPTION = "Invalid subscription type.";
     public static final String ORDER_DETAILS_FETCH = "Order details fetched!";
+    public static final String TEMP_PSWD = "Forget Password Request";
+    public static final String TEMP_PSWD_BODY = "Your Temporary Password is given below and it's meant to change."+System.lineSeparator()+"This Password will Expire after 10 Minutes."+System.lineSeparator()+"The password will then be reset to your old password.";
     // Admin Service Response
     public static final String FOOD_SERVICE_PROVIDER_NOT_FOUND = "Food service provider does not exist";
     public static final String USER_PENDING_REQUEST_RETRIVED = "User pending requests retrieved.";

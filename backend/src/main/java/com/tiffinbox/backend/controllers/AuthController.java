@@ -1,10 +1,8 @@
 package com.tiffinbox.backend.controllers;
 
 
-import com.tiffinbox.backend.dto.request.LoginRequest;
-import com.tiffinbox.backend.dto.request.RefreshTokenRequest;
-import com.tiffinbox.backend.dto.request.SignUpRequestCustomer;
-import com.tiffinbox.backend.dto.request.SignUpRequestSeller;
+import com.tiffinbox.backend.dto.request.*;
+import com.tiffinbox.backend.dto.response.BasicResponse;
 import com.tiffinbox.backend.dto.response.LoginResponse;
 import com.tiffinbox.backend.dto.response.SignUpResponse;
 import com.tiffinbox.backend.services.IAuthService;
@@ -51,4 +49,9 @@ public class AuthController {
 
     }
 
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<BasicResponse> forgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest){
+        BasicResponse response = authService.forgotPassword(forgotPasswordRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }
