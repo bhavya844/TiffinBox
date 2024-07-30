@@ -13,4 +13,5 @@ import java.util.List;
 public interface ReviewService {
     BasicResponse addReview(ReviewRequest reviewRequest, Principal principal);
     List<ReviewResponse> getReviewsByFoodServiceProviderId(String foodServiceProviderId);
+    List<ReviewResponse> getReviewByFoodProvider(Principal principal);
 }

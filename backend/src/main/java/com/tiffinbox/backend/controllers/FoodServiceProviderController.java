@@ -91,10 +91,15 @@ public class FoodServiceProviderController {
         return new ResponseEntity<>(foodProviderService.deleteMeal(mealId), HttpStatus.OK);
     }
 
-    @GetMapping("/view-all-reviews/{foodServiceProviderId}")
-    public ResponseEntity<List<ReviewResponse>> getReviewsByFoodServiceProviderId(@PathVariable String foodServiceProviderId) {
-        List<ReviewResponse> reviews = reviewService.getReviewsByFoodServiceProviderId(foodServiceProviderId);
+    @GetMapping("/view-all-reviews")
+    public ResponseEntity<List<ReviewResponse>> getReviewsByFoodServiceProviderId(Principal principal) {
+        List<ReviewResponse> reviews = reviewService.getReviewByFoodProvider(principal);
         return ResponseEntity.ok(reviews);
     }
     
+    // @GetMapping("/view-all-reviews")
+    // public ResponseEntity<ReviewResponse> getFoodProviderId(Principal principal){
+    //     ReviewResponse response=reviewService.getFoodProviderId(principal);
+    //     return ResponseEntity.ok(response);
+    // }
 }

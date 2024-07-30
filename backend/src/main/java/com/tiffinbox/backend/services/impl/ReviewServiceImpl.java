@@ -77,4 +77,12 @@ public class ReviewServiceImpl implements ReviewService{
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public List<ReviewResponse> getReviewByFoodProvider(Principal principal){
+        User user=userRepository.findByEmail(principal.getName());
+        FoodServiceProvider foodServiceProvider=user.getFoodServiceProvider();
+        List<ReviewResponse> response=getReviewsByFoodServiceProviderId(foodServiceProvider.getFoodServiceProviderId());
+        return response;
+    }
+
 }
