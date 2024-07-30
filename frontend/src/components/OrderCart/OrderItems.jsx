@@ -16,8 +16,8 @@ function OrderItems() {
     <div className="flex flex-col items-center w-full overflow-hidden rounded-md shadow-md md:flex-row bg-slate-50">
       <figure className="w-full md:w-48">
         <img
-          src="https://picsum.photos/300"
-          alt="Shoes"
+          src={cartItem.mealImage}
+          alt={cartItem.mealName}
           className="object-cover w-full h-40 -z-10 md:h-full md:w-80"
         />
       </figure>
@@ -41,7 +41,7 @@ function OrderItems() {
             type="text"
             name=""
             id=""
-            value={cart?.quantity}
+            value={cart.quantity}
             className="w-10 text-center text-black border-1 border-neutral input input-sm"
           />
           <button

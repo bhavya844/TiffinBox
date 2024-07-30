@@ -63,7 +63,7 @@ function ViewOrderDetailsPage() {
           </div>
           {/* Order Id and status ends */}
           {/* Customer details, delivery address, payment information starts */}
-          <div className="grid grid-cols-1 gap-3 lg:grid-cols-3 md:grid-cols-2 justify-stretch">
+          <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 md:grid-cols-2 justify-stretch">
             <div className="shadow-md card bg-base-100">
               <div className="card-body">
                 <h2 className="card-title">Customer Details</h2>
@@ -104,9 +104,9 @@ function ViewOrderDetailsPage() {
                 </div>
                 <div className="flex flex-row justify-between">
                   <div>
-                    <p className="font-semibold">Email: </p>
+                    <p className="font-semibold">Amount Paid: </p>
                   </div>
-                  <div>{orderDetails.paymentId}</div>
+                  <div>${orderDetails.amountPaid}</div>
                 </div>
               </div>
             </div>
@@ -135,7 +135,7 @@ function ViewOrderDetailsPage() {
                         </span>
                       </td>
                       <td>{orderDetails.quantity}</td>
-                      <td>{orderDetails.amount}</td>
+                      <td>${orderDetails.amount.toFixed(2)}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -150,7 +150,7 @@ function ViewOrderDetailsPage() {
                 <div className="shadow-md card w-50 bg-base-100">
                   <div className="card-body">
                     <h2 className="card-title">Additional Request</h2>
-                    <p>{orderDetails.additionalRequest}</p>
+                    <p>{orderDetails.additionalRequest || "None"}</p>
                   </div>
                 </div>
               </div>

@@ -29,7 +29,7 @@ function AcceptedOrders() {
   );
 
   const handleViewClick = (item) => {
-    navigate("/view-detailed-order", { state: item });
+    navigate(`/foodprovider/received-orders/${item.orderId}`);
   };
 
   const handleUpdateClick = (item, status) => {
@@ -81,14 +81,14 @@ function AcceptedOrders() {
   }, []);
 
   return (
-    <div className="container mx-auto px-6 py-6">
+    <div className="container px-6 py-6 mx-auto min-h-dvh">
       <div className="grid grid-cols-1 gap-10">
         <div>
-          <h1 className="font-bold text-3xl">Accepted Orders</h1>
+          <h1 className="text-3xl font-bold">Accepted Orders</h1>
         </div>
         {/* Search box starts */}
         <div>
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="flex items-center gap-2 input input-bordered">
             <input
               type="text"
               className="grow"
@@ -155,7 +155,7 @@ function AcceptedOrders() {
                         <div
                           tabIndex={0}
                           role="button"
-                          className="btn btn-accent m-1"
+                          className="m-1 btn btn-accent"
                         >
                           Update
                         </div>
@@ -189,7 +189,7 @@ function AcceptedOrders() {
               </tbody>
             </table>
             {filteredRows.length === 0 ? (
-              <h1 className="text-xl text-center font-bold my-2">
+              <h1 className="my-2 text-xl font-bold text-center">
                 No Accepted Orders!
               </h1>
             ) : (
@@ -204,27 +204,27 @@ function AcceptedOrders() {
         className="modal modal-middle sm:modal-middle"
       >
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Order Verification</h3>
+          <h3 className="text-lg font-bold">Order Verification</h3>
           <form className="mt-2">
             <div className="grid grid-cols-1 gap-4">
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-bold">OTP</span>
+                  <span className="font-bold label-text">OTP</span>
                 </label>
                 <input
                   type="text"
                   placeholder="Enter OTP"
-                  className="input input-bordered w-full"
+                  className="w-full input input-bordered"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
                 />
                 {otpError && (
-                  <p className="text-red-500 text-sm mt-1">{otpError}</p>
+                  <p className="mt-1 text-sm text-red-500">{otpError}</p>
                 )}
               </div>
             </div>
             <div className="modal-action">
-              <div className="mt-4 flex justify-start gap-2">
+              <div className="flex justify-start gap-2 mt-4">
                 <div>
                   <form method="dialog">
                     <button className="btn">Close</button>
